@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fashion-Way | Modern Fashion Shop</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <!-- Entfernt: Locomotive Scroll CSS -->
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css"> -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <!-- Entfernt: Locomotive Scroll JS -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script> -->
   <style>
     /* Minimaler Reset und moderne Grundgestaltung */
     html, body {
@@ -20,7 +22,7 @@
       color: #18181b;
       scroll-behavior: smooth;
     }
-    body[data-scroll-container] { overflow: hidden; }
+    body[data-scroll-container] { /* overflow: hidden; */ }
     .navbar {
       display: flex;
       align-items: center;
@@ -28,11 +30,12 @@
       padding: 1.2rem 4vw 1.2rem 2vw;
       background: rgba(255,255,255,0.96);
       backdrop-filter: blur(12px);
-      position: fixed;
+      position: fixed; /* wieder fixed */
       width: 100vw;
       z-index: 2000;
       top: 0;
       left: 0;
+      right: 0;
       border-bottom: 1.5px solid #ececec;
       box-shadow: 0 2px 16px #e0e7ef55;
       box-sizing: border-box;
@@ -141,7 +144,7 @@
     .hero-content {
       position: relative; z-index: 2; text-align: center; color: #fff;
       width: 100%; max-width: 700px; margin: 0 auto;
-      padding-top: 8rem;
+      padding-top: 7rem; /* Abstand für Navbar */
     }
     .hero-title {
       font-family: 'Montserrat', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: 3px;
@@ -172,13 +175,39 @@
       gap: 2.5rem; max-width: 1200px; margin: 0 auto 4rem auto; padding: 0 2vw;
     }
     .product-card {
-      background: #fff; border-radius: 2rem; box-shadow: 0 4px 32px #18181b10;
-      overflow: hidden; display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.18s, box-shadow 0.18s;
-      position: relative;
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: 0 4px 32px #18181b10;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.3s;
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+      /* Design bleibt wie vorher, keine border, kein rotate */
+      box-shadow: 0 4px 32px #18181b10;
+      border: none;
+    }
+    .product-card.visible {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s cubic-bezier(.4,2,.6,1), transform 0.5s cubic-bezier(.4,2,.6,1);
     }
     .product-card:hover {
-      transform: translateY(-8px) scale(1.03); box-shadow: 0 12px 48px #ff3e5520;
+      /* Kein rotate, kein border, nur leichtes zoomen und Schatten */
+      transform: scale(1.04);
+      box-shadow: 0 16px 48px #ff3e5525, 0 2px 16px #ff3e5520;
+      z-index: 2;
+    }
+    .product-card:hover .buy-btn {
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff;
+      box-shadow: 0 4px 24px #ff3e5530;
+      transform: scale(1.07);
+    }
+    .product-card .buy-btn {
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
     .product-card img {
       width: 100%; height: 260px; object-fit: cover; border-radius: 2rem 2rem 0 0;
@@ -299,6 +328,8 @@
       gap: 2.5rem;
       justify-items: center;
       align-items: stretch;
+      /* Neu: Reihenfolge von links nach rechts, dann nächste Zeile */
+      direction: ltr;
     }
     .product-card {
       background: #fff;
@@ -308,66 +339,32 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.18s, box-shadow 0.18s;
-      min-width: 0;
-      max-width: 350px;
-      width: 100%;
-      margin: 0 auto;
-      opacity: 1;
-      pointer-events: auto;
-      will-change: transform, opacity;
-    }
-    .product-card.hide {
-      opacity: 0 !important;
-      pointer-events: none !important;
-      transition: opacity 0.3s;
-    }
-    .product-card img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 2rem 2rem 0 0;
-      margin-bottom: 0.8rem;
-    }
-    .product-content {
-      padding: 1.2rem 1.2rem 0.5rem 1.2rem;
-      width: 100%;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .product-content h3 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
-    .product-content p {
-      color: #6b7280;
-      margin-bottom: 0.7rem;
-      font-size: 1rem;
-    }
-    .product-content .price {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #ff3e55;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .product-content .buy-btn {
-      background: #ff3e55;
-      color: #fff;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.3s;
+      opacity: 0;
+      transform: translateY(40px) scale(0.97);
+      /* Design bleibt wie vorher, keine border, kein rotate */
+      box-shadow: 0 4px 32px #18181b10;
       border: none;
-      border-radius: 30px;
-      padding: 0.7rem 2rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
     }
-    .product-content .buy-btn:hover {
-      background: #ff8c3e;
+    .product-card.visible {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s cubic-bezier(.4,2,.6,1), transform 0.5s cubic-bezier(.4,2,.6,1);
+    }
+    .product-card:hover {
+      /* Kein rotate, kein border, nur leichtes zoomen und Schatten */
+      transform: scale(1.04);
+      box-shadow: 0 16px 48px #ff3e5525, 0 2px 16px #ff3e5520;
+      z-index: 2;
+    }
+    .product-card:hover .buy-btn {
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff;
+      box-shadow: 0 4px 24px #ff3e5530;
+      transform: scale(1.07);
+    }
+    .product-card .buy-btn {
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
     @media (max-width: 1000px) {
       .shop-grid {
@@ -515,19 +512,32 @@
         padding: 0.4rem 0.8rem;
       }
     }
-    /* ...existing code... */
+    /* --- NEU: Shop-Main Layout für Sidebar + Produkte --- */
+    .shop-main {
+      display: grid;
+      grid-template-columns: 220px 1fr; /* Sidebar mit angenehmer Breite */
+      gap: 2.5rem;
+      max-width: 1500px; /* Mehr Platz für Produkte */
+      margin: 0 auto 5rem auto;
+      padding: 0; /* Kein extra Padding, damit alles maximal ausgenutzt wird */
+      width: 100%;
+      align-items: flex-start;
+    }
     .shop-sidebar {
-      min-width: 220px;
-      max-width: 260px;
+      grid-row: 1 / span 2;
+      grid-column: 1 / 2;
+      min-width: 200px;
+      max-width: 220px;
+      margin-left: 0;
       background: #fff;
-      border-radius: 1.5rem;
+      border-radius: 1.5rem 0 0 1.5rem;
       box-shadow: 0 4px 32px #e0e7ef33, 0 0 0 2px #ececec;
       padding: 2.5rem 1.2rem 2.5rem 1.2rem;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       height: fit-content;
-      margin-top: 2rem;
+      margin-top: 0;
       transition: box-shadow 0.3s;
       animation: sidebarFadeIn 0.7s cubic-bezier(.4,2,.6,1);
       border: 2.5px solid #ececec;
@@ -639,10 +649,10 @@
     /* ...existing code for .shop-products, .shop-grid, .product-card... */
   </style>
 </head>
-<body data-scroll-container>
+<body>
   <header class="hero" data-scroll-section>
     <div class="hero-bg"></div>
-    <nav class="navbar sticky">
+    <nav class="navbar sticky" data-scroll>
       <div class="logo" data-scroll data-scroll-speed="2">FASHION<span class="minus">-</span>WAY</div>
       <ul class="nav-links">
         <li><a href="#shop" data-scroll-to>Shop</a></li>
@@ -670,7 +680,8 @@
               <li><button class="main-cat-btn" data-maincat="kinder">Kinder</button></li>
             </ul>
             <ul class="sub-cat-list">
-              <li><button class="sub-cat-btn active" data-subcat="oberteile">Oberteile</button></li>
+              <li><button class="sub-cat-btn active" data-subcat="alle">Alle</button></li>
+              <li><button class="sub-cat-btn" data-subcat="oberteile">Oberteile</button></li>
               <li><button class="sub-cat-btn" data-subcat="hosen">Hosen</button></li>
               <li><button class="sub-cat-btn" data-subcat="schuhe">Schuhe</button></li>
               <li><button class="sub-cat-btn" data-subcat="accessoires">Accessoires</button></li>
@@ -679,149 +690,8 @@
         </aside>
         <div class="shop-products">
           <h2 class="section-title" data-scroll data-scroll-speed="1" style="text-align:left;margin-left:0;">Shop</h2>
-          <div class="shop-grid">
-            <!-- 10 Beispielprodukte pro Kategorie/Kombination -->
-            <!-- Herren - Oberteile -->
-            <div class="product-card" data-maincat="herren" data-subcat="oberteile">
-              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Herren Shirt 1">
-              <div class="product-content">
-                <h3>Herren Shirt 1</h3>
-                <p>Modernes Herren T-Shirt in Grau.</p>
-                <span class="price">29,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <div class="product-card" data-maincat="herren" data-subcat="oberteile">
-              <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Herren Shirt 2">
-              <div class="product-content">
-                <h3>Herren Shirt 2</h3>
-                <p>Basic T-Shirt mit Rundhalsausschnitt.</p>
-                <span class="price">19,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 8 Produkte für Herren Oberteile... -->
-            <!-- Herren - Hosen -->
-            <div class="product-card" data-maincat="herren" data-subcat="hosen">
-              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Herren Hose 1">
-              <div class="product-content">
-                <h3>Herren Hose 1</h3>
-                <p>Bequeme Jeans für jeden Tag.</p>
-                <span class="price">49,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Herren Hosen... -->
-            <!-- Herren - Schuhe -->
-            <div class="product-card" data-maincat="herren" data-subcat="schuhe">
-              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Herren Sneaker 1">
-              <div class="product-content">
-                <h3>Herren Sneaker 1</h3>
-                <p>Weiße Sneaker für den Alltag.</p>
-                <span class="price">59,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Herren Schuhe... -->
-            <!-- Herren - Accessoires -->
-            <div class="product-card" data-maincat="herren" data-subcat="accessoires">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Herren Cap 1">
-              <div class="product-content">
-                <h3>Herren Cap 1</h3>
-                <p>Stylische Cap für Herren.</p>
-                <span class="price">14,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Herren Accessoires... -->
-            <!-- Damen - Oberteile -->
-            <div class="product-card" data-maincat="damen" data-subcat="oberteile">
-              <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Damen Bluse 1">
-              <div class="product-content">
-                <h3>Damen Bluse 1</h3>
-                <p>Leichte Sommerbluse in Weiß.</p>
-                <span class="price">34,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Damen Oberteile... -->
-            <!-- Damen - Hosen -->
-            <div class="product-card" data-maincat="damen" data-subcat="hosen">
-              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Damen Hose 1">
-              <div class="product-content">
-                <h3>Damen Hose 1</h3>
-                <p>Elegante Stoffhose für Damen.</p>
-                <span class="price">44,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Damen Hosen... -->
-            <!-- Damen - Schuhe -->
-            <div class="product-card" data-maincat="damen" data-subcat="schuhe">
-              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Damen Sneaker 1">
-              <div class="product-content">
-                <h3>Damen Sneaker 1</h3>
-                <p>Trendige Sneaker für Damen.</p>
-                <span class="price">69,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Damen Schuhe... -->
-            <!-- Damen - Accessoires -->
-            <div class="product-card" data-maincat="damen" data-subcat="accessoires">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Damen Tasche 1">
-              <div class="product-content">
-                <h3>Damen Tasche 1</h3>
-                <p>Modische Handtasche.</p>
-                <span class="price">24,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Damen Accessoires... -->
-            <!-- Kinder - Oberteile -->
-            <div class="product-card" data-maincat="kinder" data-subcat="oberteile">
-              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Kinder Shirt 1">
-              <div class="product-content">
-                <h3>Kinder Shirt 1</h3>
-                <p>Buntes Kinder T-Shirt.</p>
-                <span class="price">14,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Kinder Oberteile... -->
-            <!-- Kinder - Hosen -->
-            <div class="product-card" data-maincat="kinder" data-subcat="hosen">
-              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Kinder Hose 1">
-              <div class="product-content">
-                <h3>Kinder Hose 1</h3>
-                <p>Bequeme Kinderhose.</p>
-                <span class="price">19,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Kinder Hosen... -->
-            <!-- Kinder - Schuhe -->
-            <div class="product-card" data-maincat="kinder" data-subcat="schuhe">
-              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Kinder Sneaker 1">
-              <div class="product-content">
-                <h3>Kinder Sneaker 1</h3>
-                <p>Coole Sneaker für Kids.</p>
-                <span class="price">29,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Kinder Schuhe... -->
-            <!-- Kinder - Accessoires -->
-            <div class="product-card" data-maincat="kinder" data-subcat="accessoires">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Kinder Cap 1">
-              <div class="product-content">
-                <h3>Kinder Cap 1</h3>
-                <p>Cooles Accessoire für Kids.</p>
-                <span class="price">9,99 €</span>
-                <button class="buy-btn">In den Warenkorb</button>
-              </div>
-            </div>
-            <!-- ...weitere 9 Produkte für Kinder Accessoires... -->
+          <div class="shop-grid" id="shopGrid">
+            <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
           </div>
         </div>
       </div>
@@ -854,27 +724,54 @@
   </footer>
   <script src="assets/js/main.js"></script>
   <script>
-    // Locomotive Scroll + GSAP ScrollTrigger Integration
-    const scroll = new LocomotiveScroll({
-      el: document.querySelector('[data-scroll-container]'),
-      smooth: true,
-      lerp: 0.08
+    // Entfernt: Locomotive Scroll + GSAP ScrollTrigger Integration
+    // const scroll = new LocomotiveScroll({
+    //   el: document.querySelector('[data-scroll-container]'),
+    //   smooth: true,
+    //   lerp: 0.08
+    // });
+
+    // scroll.on("scroll", ScrollTrigger.update);
+
+    // ScrollTrigger.scrollerProxy("[data-scroll-container]", {
+    //   scrollTop(value) {
+    //     return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
+    //   },
+    //   getBoundingClientRect() {
+    //     return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+    //   },
+    //   pinType: document.querySelector("[data-scroll-container]").style.transform ? "transform" : "fixed"
+    // });
+
+    // ScrollTrigger.addEventListener("refresh", () => scroll.update());
+    // ScrollTrigger.refresh();
+
+    // --- NEU: Nach jedem Resize Locomotive Scroll & ScrollTrigger updaten ---
+    // window.addEventListener('resize', () => {
+    //   if (window.scroll && window.scroll.update) scroll.update();
+    //   if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+    // });
+
+    // --- NEU: Nach jedem Laden Locomotive Scroll & ScrollTrigger updaten ---
+    // window.addEventListener('load', () => {
+    //   if (window.scroll && window.scroll.update) scroll.update();
+    //   if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+    // });
+
+    // --- NEU: ScrollTo-Fix für Locomotive Scroll bei Anker-Links ---
+    document.querySelectorAll('[data-scroll-to]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(targetId);
+          if (target) {
+            // Entfernt: scroll.scrollTo(target, { offset: 0, duration: 800, disableLerp: false });
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
     });
-
-    scroll.on("scroll", ScrollTrigger.update);
-
-    ScrollTrigger.scrollerProxy("[data-scroll-container]", {
-      scrollTop(value) {
-        return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
-      },
-      getBoundingClientRect() {
-        return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
-      },
-      pinType: document.querySelector("[data-scroll-container]").style.transform ? "transform" : "fixed"
-    });
-
-    ScrollTrigger.addEventListener("refresh", () => scroll.update());
-    ScrollTrigger.refresh();
 
     // GSAP Animationen
     gsap.from(".hero-title .highlight", {
@@ -890,7 +787,7 @@
       gsap.from(card, {
         scrollTrigger: {
           trigger: card,
-          scroller: "[data-scroll-container]",
+          // scroller: "[data-scroll-container]", // Entfernt
           start: "top 80%",
         },
         y: 60,
@@ -904,7 +801,7 @@
       gsap.from(img, {
         scrollTrigger: {
           trigger: img,
-          scroller: "[data-scroll-container]",
+          // scroller: "[data-scroll-container]", // Entfernt
           start: "top 90%",
         },
         scale: 1.2,
@@ -915,52 +812,28 @@
       });
     });
 
-    // Entferne GSAP-Logo-Hover-Animation
-    // const logo = document.querySelector('.logo');
-    // if (logo) {
-    //   logo.addEventListener('mouseenter', () => {
-    //     gsap.to(logo, {
-    //       scale: 1.08,
-    //       duration: 0.25,
-    //       boxShadow: "0 0 32px #ff3e55, 0 0 64px #ff8c3e",
-    //       overwrite: true
-    //     });
-    //   });
-    //   logo.addEventListener('mouseleave', () => {
-    //     gsap.to(logo, {
-    //       scale: 1,
-    //       duration: 0.25,
-    //       boxShadow: "none",
-    //       overwrite: true
-    //     });
-    //   });
-    // }
-    window.addEventListener('load', () => {
-      if (window.scroll && window.scroll.update) scroll.update();
-      if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
-    });
-
     // Shop Kategorie-Filter (Oberkategorie + Unterkategorie)
     document.addEventListener('DOMContentLoaded', function () {
       const mainBtns = document.querySelectorAll('.main-cat-btn');
       const subBtns = document.querySelectorAll('.sub-cat-btn');
       const productCards = document.querySelectorAll('.product-card');
       let selectedMain = 'herren';
-      let selectedSub = 'oberteile';
+      let selectedSub = 'alle';
 
       function filterProducts() {
         productCards.forEach(card => {
           const main = card.getAttribute('data-maincat');
           const sub = card.getAttribute('data-subcat');
-          const showMain = (main === selectedMain);
-          const showSub = (sub === selectedSub);
-          if (showMain && showSub) {
+          // Zeige ALLE Produkte der Hauptkategorie, wenn "alle" gewählt ist
+          if (main === selectedMain && (selectedSub === 'alle' || sub === selectedSub)) {
             card.classList.remove('hide');
           } else {
             card.classList.add('hide');
           }
         });
-        if (window.scroll && window.scroll.update) scroll.update();
+        // --- Nach jedem Filter Locomotive Scroll & ScrollTrigger updaten ---
+        // if (window.scroll && window.scroll.update) scroll.update();
+        // if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
         if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
       }
 
@@ -969,6 +842,211 @@
           mainBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           selectedMain = btn.getAttribute('data-maincat');
+          // Beim Wechsel der Hauptkategorie immer auf "Alle" zurücksetzen
+          subBtns.forEach(b => b.classList.remove('active'));
+          const alleBtn = document.querySelector('.sub-cat-btn[data-subcat="alle"]');
+          if (alleBtn) {
+            alleBtn.classList.add('active');
+            selectedSub = 'alle';
+          }
+          filterProducts();
+        });
+      });
+      subBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          subBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedSub = btn.getAttribute('data-subcat');
+          filterProducts();
+        });
+      });
+
+      // Initial-Filter
+      filterProducts();
+    });
+
+    // Produktdaten für jede Kategorie
+    const products = {
+      herren: [
+        {
+          name: "Herren Shirt 1",
+          desc: "Modernes Herren T-Shirt in Grau.",
+          price: "29,99 €",
+          img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+          subcat: "oberteile"
+        },
+        {
+          name: "Herren Shirt 2",
+          desc: "Basic T-Shirt mit Rundhalsausschnitt.",
+          price: "19,99 €",
+          img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+          subcat: "oberteile"
+        },
+        {
+          name: "Herren Hose 1",
+          desc: "Bequeme Jeans für jeden Tag.",
+          price: "49,99 €",
+          img: "https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80",
+          subcat: "hosen"
+        },
+        {
+          name: "Herren Sneaker 1",
+          desc: "Weiße Sneaker für den Alltag.",
+          price: "59,99 €",
+          img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
+          subcat: "schuhe"
+        },
+        {
+          name: "Herren Cap 1",
+          desc: "Stylische Cap für Herren.",
+          price: "14,99 €",
+          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          subcat: "accessoires"
+        },
+        // ...weitere Herren-Produkte...
+      ],
+      damen: [
+        {
+          name: "Damen Bluse 1",
+          desc: "Leichte Sommerbluse in Weiß.",
+          price: "34,99 €",
+          img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80",
+          subcat: "oberteile"
+        },
+        {
+          name: "Damen Hose 1",
+          desc: "Elegante Stoffhose für Damen.",
+          price: "44,99 €",
+          img: "https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80",
+          subcat: "hosen"
+        },
+        {
+          name: "Damen Sneaker 1",
+          desc: "Trendige Sneaker für Damen.",
+          price: "69,99 €",
+          img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
+          subcat: "schuhe"
+        },
+        {
+          name: "Damen Tasche 1",
+          desc: "Modische Handtasche.",
+          price: "24,99 €",
+          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          subcat: "accessoires"
+        },
+        // ...weitere Damen-Produkte...
+      ],
+      kinder: [
+        {
+          name: "Kinder Shirt 1",
+          desc: "Buntes Kinder T-Shirt.",
+          price: "14,99 €",
+          img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+          subcat: "oberteile"
+        },
+        {
+          name: "Kinder Hose 1",
+          desc: "Bequeme Kinderhose.",
+          price: "19,99 €",
+          img: "https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80",
+          subcat: "hosen"
+        },
+        {
+          name: "Kinder Sneaker 1",
+          desc: "Coole Sneaker für Kids.",
+          price: "29,99 €",
+          img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
+          subcat: "schuhe"
+        },
+        {
+          name: "Kinder Cap 1",
+          desc: "Cooles Accessoire für Kids.",
+          price: "9,99 €",
+          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          subcat: "accessoires"
+        },
+        // ...weitere Kinder-Produkte...
+      ]
+    };
+
+    // Anzahl Produkte pro Kategorie für das Grid (z.B. 12)
+    const PRODUCTS_PER_CATEGORY = 12;
+
+    function animateProductCards() {
+      // Intersection Observer für Sichtbarkeit
+      const cards = document.querySelectorAll('.product-card');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        cards.forEach(card => {
+          card.classList.remove('visible');
+          observer.observe(card);
+        });
+      } else {
+        // Fallback: alle sichtbar
+        cards.forEach(card => card.classList.add('visible'));
+      }
+    }
+
+    function renderProducts(maincat, subcat) {
+      const grid = document.getElementById('shopGrid');
+      grid.innerHTML = '';
+      let list = products[maincat] || [];
+      while (list.length < PRODUCTS_PER_CATEGORY) {
+        list = list.concat(list);
+      }
+      let filtered = (subcat === 'alle')
+        ? list.slice(0, PRODUCTS_PER_CATEGORY)
+        : list.filter(p => p.subcat === subcat).slice(0, PRODUCTS_PER_CATEGORY);
+
+      filtered.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'product-card';
+        el.setAttribute('data-maincat', maincat);
+        el.setAttribute('data-subcat', p.subcat);
+        el.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div class="product-content">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <span class="price">${p.price}</span>
+            <button class="buy-btn">In den Warenkorb</button>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+      // Animation nach dem Rendern anwenden
+      animateProductCards();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const mainBtns = document.querySelectorAll('.main-cat-btn');
+      const subBtns = document.querySelectorAll('.sub-cat-btn');
+      let selectedMain = 'herren';
+      let selectedSub = 'alle';
+
+      function filterProducts() {
+        renderProducts(selectedMain, selectedSub);
+        if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+      }
+
+      mainBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          mainBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedMain = btn.getAttribute('data-maincat');
+          subBtns.forEach(b => b.classList.remove('active'));
+          const alleBtn = document.querySelector('.sub-cat-btn[data-subcat="alle"]');
+          if (alleBtn) {
+            alleBtn.classList.add('active');
+            selectedSub = 'alle';
+          }
           filterProducts();
         });
       });
