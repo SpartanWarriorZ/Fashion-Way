@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #fff;
+  color: #111;
+  line-height: 1.6;
+}
+
+.navbar {
+  display: flex;
+  align-items: center; /* Vertikal mittig ausrichten */
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: rgba(255,255,255,0.9);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Ergänzung: Logo immer im Vordergrund innerhalb der Navbar */
+.logo {
+  position: static;
+  z-index: 2;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  pointer-events: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  transition: color 0.2s;
+  cursor: pointer;
+  line-height: 1; /* Verhindert Verschiebung durch Schrift */
+  height: auto;
+  /* Vertikal mittig durch flexbox, ggf. kleine Anpassung für optische Mitte: */
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+}
+
+.logo:hover {
+  color: #ff3e55;
+  /* keine Animation, kein letter-spacing, kein text-shadow */
+}
+
+/* Notfall: Verhindere, dass das Logo durch andere Selektoren ausgeblendet wird */
+.navbar .logo,
+header .logo,
+body .logo {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  pointer-events: auto !important;
+}
+
+.hero {
+  position: relative;
+  height: 100vh;
+  background: url('../img/hero.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 1rem 2rem;
+}
+
+.products {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}

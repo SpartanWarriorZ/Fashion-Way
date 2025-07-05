@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fashion-Way | Modern Fashion Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <style>
+    /* Minimaler Reset und moderne Grundgestaltung */
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Roboto', Arial, sans-serif;
+      background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+      color: #18181b;
+      scroll-behavior: smooth;
+    }
+    body[data-scroll-container] { overflow: hidden; }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4vw 1.2rem 2vw;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      position: fixed;
+      width: 100vw;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      border-bottom: 1.5px solid #ececec;
+      box-shadow: 0 2px 16px #e0e7ef55;
+      box-sizing: border-box;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 2.3rem;
+      letter-spacing: 2.5px;
+      color: #18181b;
+      background: none;
+      padding: 0.15em 1.5rem 0.15em 0.2rem;
+      border-radius: 1rem;
+      position: static;
+      box-shadow: none;
+      line-height: 1.1;
+      min-width: 0;
+      min-height: 0;
+      max-width: 100vw;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+      opacity: 1 !important;
+      visibility: visible !important;
+      transition: color 0.2s;
+      cursor: pointer;
+      /* Modernes leichtes Shadow für das Logo */
+      text-shadow: 0 2px 8px #e0e7ef55;
+    }
+    .logo .minus {
+      color: #ff3e55;
+      font-weight: 900;
+      margin: 0 0.1em;
+      font-size: 1.1em;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.2rem;
+      margin: 0;
+      margin-left: auto;
+      align-items: center;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #18181b;
+      font-weight: 600;
+      font-size: 1.13rem;
+      position: relative;
+      padding: 0.3em 0.7em;
+      border-radius: 0.7em;
+      transition: color 0.18s, background 0.18s;
+      letter-spacing: 0.5px;
+      background: transparent;
+    }
+    .nav-links a::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 2.5px;
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      border-radius: 2px;
+      transition: width 0.3s;
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus {
+      color: #ff3e55;
+      background: #f8fafc;
+    }
+    .nav-links a:hover::after,
+    .nav-links a:focus::after {
+      width: 100%;
+    }
+    @media (max-width: 700px) {
+      .navbar {
+        padding: 0.7rem 2vw 0.7rem 1vw;
+      }
+      .logo {
+        font-size: 1.3rem;
+        padding: 0.1em 0.7rem 0.1em 0.1em;
+      }
+      .nav-links {
+        gap: 1.2rem;
+      }
+      .nav-links a {
+        font-size: 1rem;
+        padding: 0.2em 0.5em;
+      }
+    }
+
+    .hero {
+      min-height: 100vh; width: 100vw; position: relative; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1500&q=80') center center/cover no-repeat;
+      filter: brightness(0.7) blur(1px);
+      transition: filter 0.5s;
+    }
+    .hero-content {
+      position: relative; z-index: 2; text-align: center; color: #fff;
+      width: 100%; max-width: 700px; margin: 0 auto;
+      padding-top: 8rem;
+    }
+    .hero-title {
+      font-family: 'Montserrat', sans-serif; font-size: 4rem; font-weight: 900; letter-spacing: 3px;
+      line-height: 1.1; margin-bottom: 1.2rem; text-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+    .hero-title .highlight { color: #ff3e55; }
+    .hero-title .redefined { color: #fff; }
+    .hero-subtitle {
+      font-size: 1.4rem; font-weight: 500; margin-bottom: 2.5rem; color: #f3f4f6;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .cta-btn {
+      display: inline-block; padding: 1.1rem 2.8rem; font-size: 1.2rem; font-weight: 700;
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff; border: none; border-radius: 40px; box-shadow: 0 4px 24px #ff3e5530;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .cta-btn:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 8px 32px #ff3e5550; }
+
+    main { margin-top: 8rem; }
+    .section-title {
+      font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-weight: 900; letter-spacing: 2px;
+      margin: 4rem 0 2.5rem 0; text-align: center; color: #18181b;
+    }
+    .product-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2.5rem; max-width: 1200px; margin: 0 auto 4rem auto; padding: 0 2vw;
+    }
+    .product-card {
+      background: #fff; border-radius: 2rem; box-shadow: 0 4px 32px #18181b10;
+      overflow: hidden; display: flex; flex-direction: column; align-items: center;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.03); box-shadow: 0 12px 48px #ff3e5520;
+    }
+    .product-card img {
+      width: 100%; height: 260px; object-fit: cover; border-radius: 2rem 2rem 0 0;
+      transition: filter 0.3s;
+    }
+    .product-card h3 {
+      font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 700; margin: 1.2rem 0 0.5rem 0;
+    }
+    .product-card p { color: #6b7280; margin: 0 0 1.2rem 0; }
+    .price {
+      font-size: 1.2rem; font-weight: 700; color: #ff3e55; margin-bottom: 1.2rem;
+    }
+    .buy-btn {
+      background: #ff3e55; color: #fff; border: none; border-radius: 30px;
+      padding: 0.7rem 2rem; font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .buy-btn:hover { background: #ff8c3e; }
+
+    .lookbook-gallery {
+      display: flex; gap: 2rem; overflow-x: auto; padding: 2rem 0 4rem 0; justify-content: center;
+      scrollbar-width: thin; scrollbar-color: #ff3e55 #e0e7ef;
+    }
+    .lookbook-gallery img {
+      width: 340px; height: 420px; object-fit: cover; border-radius: 1.5rem;
+      box-shadow: 0 4px 32px #18181b18; transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .lookbook-gallery img:hover { transform: scale(1.04) rotate(-2deg); box-shadow: 0 8px 40px #ff3e5525; }
+
+    .contact-form {
+      max-width: 500px; margin: 0 auto 4rem auto; display: flex; flex-direction: column; gap: 1.2rem;
+      background: #fff; border-radius: 1.5rem; box-shadow: 0 2px 16px #18181b10; padding: 2.5rem 2rem;
+    }
+    .contact-form input, .contact-form textarea {
+      border: 1px solid #e5e7eb; border-radius: 0.8rem; padding: 1rem; font-size: 1rem;
+      font-family: inherit; resize: none; outline: none; transition: border 0.2s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus { border: 1.5px solid #ff3e55; }
+    .contact-form button {
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff; border: none; border-radius: 30px; padding: 0.9rem 2.2rem;
+      font-size: 1.1rem; font-weight: 700; cursor: pointer; align-self: flex-end;
+      transition: background 0.2s;
+    }
+    .contact-form button:hover { background: #ff3e55; }
+
+    footer {
+      background: #18181b; color: #fff; padding: 3rem 0 2rem 0; text-align: center;
+      margin-top: 4rem;
+    }
+    .footer-content { max-width: 1200px; margin: 0 auto; }
+    .footer-logo {
+      font-family: 'Montserrat', sans-serif; font-size: 2rem; font-weight: 900; letter-spacing: 2px;
+      margin-bottom: 1.2rem; color: #fff;
+    }
+    .footer-logo .minus { color: #ff3e55; }
+    .footer-links {
+      list-style: none; display: flex; gap: 2.5rem; justify-content: center; margin: 0 0 1.2rem 0; padding: 0;
+    }
+    .footer-links a { color: #fff; text-decoration: none; font-weight: 500; font-size: 1.1rem; transition: color 0.2s; }
+    .footer-links a:hover { color: #ff3e55; }
+    .footer-social {
+      margin: 1.5rem 0 0.5rem 0; display: flex; gap: 1.5rem; justify-content: center;
+    }
+    .footer-social a {
+      color: #fff; font-size: 1.5rem; transition: color 0.2s;
+    }
+    .footer-social a:hover { color: #ff3e55; }
+    @media (max-width: 700px) {
+      .hero-title { font-size: 2.2rem; }
+      .section-title { font-size: 1.5rem; }
+      .navbar { padding: 1rem 2vw 1rem 1vw; }
+      .logo { font-size: 1.4rem; padding: 0.1rem 0.8rem 0.1rem 0; }
+      .product-card img { height: 180px; }
+      .lookbook-gallery img { width: 180px; height: 220px; }
+    }
+    .shop-wrapper {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 5rem auto;
+      padding: 0 2vw;
+    }
+    .shop-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 2rem 0 2.5rem 0;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: #fff;
+      border: 1.5px solid #ececec;
+      color: #18181b;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 2rem;
+      padding: 0.6rem 1.8rem;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border 0.18s;
+      outline: none;
+    }
+    .tab-btn.active,
+    .tab-btn:hover {
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff;
+      border: 1.5px solid #ff3e55;
+    }
+    .shop-catalog {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 5rem auto;
+      padding: 0 2vw;
+    }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.5rem;
+      justify-items: center;
+      align-items: stretch;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: 0 4px 32px #18181b10;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.18s, box-shadow 0.18s;
+      min-width: 0;
+      max-width: 350px;
+      width: 100%;
+      margin: 0 auto;
+      opacity: 1;
+      pointer-events: auto;
+      will-change: transform, opacity;
+    }
+    .product-card.hide {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s;
+    }
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 2rem 2rem 0 0;
+      margin-bottom: 0.8rem;
+    }
+    .product-content {
+      padding: 1.2rem 1.2rem 0.5rem 1.2rem;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product-content h3 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .product-content p {
+      color: #6b7280;
+      margin-bottom: 0.7rem;
+      font-size: 1rem;
+    }
+    .product-content .price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ff3e55;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .product-content .buy-btn {
+      background: #ff3e55;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 0.7rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .product-content .buy-btn:hover {
+      background: #ff8c3e;
+    }
+    @media (max-width: 1000px) {
+      .shop-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .shop-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .product-card img {
+        height: 140px;
+      }
+    }
+    .shop-categories {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-end;
+      gap: 2.5rem;
+      margin: 2.2rem auto 2.5rem auto;
+      max-width: 1200px;
+      padding: 0 2vw;
+    }
+    .main-categories {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      align-items: flex-start;
+      min-width: 160px;
+      background: #fff;
+      border-radius: 1.2rem;
+      box-shadow: 0 1px 8px #ececec80;
+      padding: 1.2rem 0.7rem;
+    }
+    .main-cat-btn {
+      background: none;
+      border: none;
+      color: #18181b;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border-radius: 1.5rem;
+      padding: 0.7rem 1.7rem;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 0.1rem;
+      outline: none;
+      position: relative;
+    }
+    .main-cat-btn.active,
+    .main-cat-btn:hover {
+      background: #f8fafc;
+      color: #ff3e55;
+    }
+    .main-cat-btn.active::before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+    }
+    .sub-categories {
+      display: flex;
+      flex-direction: row;
+      gap: 0.7rem;
+      flex-wrap: wrap;
+      align-items: center;
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: 0 1px 8px #ececec80;
+      padding: 0.7rem 1.5rem;
+      min-width: 0;
+    }
+    .sub-cat-btn {
+      background: none;
+      border: none;
+      color: #18181b;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.02rem;
+      border-radius: 1.2rem;
+      padding: 0.5rem 1.3rem;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      outline: none;
+      position: relative;
+    }
+    .sub-cat-btn.active,
+    .sub-cat-btn:hover {
+      background: #ff3e55;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .shop-categories {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.2rem;
+        padding: 0 1vw;
+      }
+      .main-categories {
+        flex-direction: row;
+        gap: 0.7rem;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        padding: 0.7rem 0.5rem;
+      }
+      .main-cat-btn {
+        width: auto;
+        text-align: center;
+      }
+      .sub-categories {
+        justify-content: center;
+        padding: 0.5rem 0.5rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .shop-categories {
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0;
+      }
+      .main-categories,
+      .sub-categories {
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
+        min-width: 0;
+        padding: 0.3rem 0.2rem;
+      }
+      .main-cat-btn,
+      .sub-cat-btn {
+        font-size: 0.97rem;
+        padding: 0.4rem 0.8rem;
+      }
+    }
+    /* ...existing code... */
+    .shop-sidebar {
+      min-width: 220px;
+      max-width: 260px;
+      background: #fff;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 32px #e0e7ef33, 0 0 0 2px #ececec;
+      padding: 2.5rem 1.2rem 2.5rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      height: fit-content;
+      margin-top: 2rem;
+      transition: box-shadow 0.3s;
+      animation: sidebarFadeIn 0.7s cubic-bezier(.4,2,.6,1);
+      border: 2.5px solid #ececec;
+      /* Animation für Schatten beim Hover */
+    }
+    .shop-sidebar:hover {
+      box-shadow: 0 8px 32px #ff3e5533, 0 0 0 2.5px #ff3e55;
+      border-color: #ff3e55;
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    @keyframes sidebarFadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: none;}
+    }
+    .shop-nav {
+      width: 100%;
+    }
+    .main-cat-list,
+    .sub-cat-list {
+      list-style: none;
+      margin: 0 0 2.2rem 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .main-cat-btn,
+    .sub-cat-btn {
+      background: #f8fafc;
+      border: 2px solid #ececec;
+      color: #18181b;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border-radius: 1.5rem;
+      padding: 0.7rem 1.7rem;
+      cursor: pointer;
+      transition: 
+        background 0.22s cubic-bezier(.4,2,.6,1), 
+        color 0.18s, 
+        border 0.18s, 
+        box-shadow 0.22s cubic-bezier(.4,2,.6,1),
+        transform 0.18s;
+      text-align: left;
+      width: 100%;
+      outline: none;
+      position: relative;
+      box-shadow: 0 1px 4px #ececec40;
+      margin-bottom: 0.1rem;
+      will-change: background, color, box-shadow, transform;
+      /* Animation beim Einblenden */
+      opacity: 0;
+      animation: catBtnFadeIn 0.6s cubic-bezier(.4,2,.6,1) forwards;
+    }
+    .main-cat-btn { animation-delay: 0.1s; }
+    .sub-cat-btn { animation-delay: 0.2s; }
+    @keyframes catBtnFadeIn {
+      from { opacity: 0; transform: translateX(-30px);}
+      to { opacity: 1; transform: none;}
+    }
+    .main-cat-btn:hover,
+    .sub-cat-btn:hover {
+      background: #fff;
+      color: #ff3e55;
+      border-color: #ff3e55;
+      box-shadow: 0 2px 12px #ff3e5522;
+      transform: translateX(4px) scale(1.03);
+      z-index: 2;
+    }
+    .main-cat-btn.active,
+    .sub-cat-btn.active {
+      background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+      color: #fff;
+      border-color: #ff3e55;
+      box-shadow: 0 4px 16px #ff3e5533;
+      transform: scale(1.05);
+      z-index: 3;
+    }
+    .main-cat-btn.active::before,
+    .sub-cat-btn.active::before {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 2px #ff3e55;
+    }
+    .main-cat-btn:not(.active)::before,
+    .sub-cat-btn:not(.active)::before {
+      display: none;
+    }
+    .sub-cat-list {
+      flex-direction: column;
+      gap: 0.5rem;
+      border-top: 1.5px solid #ececec;
+      padding-top: 1.2rem;
+      margin-top: 0.5rem;
+      animation: subcatFadeIn 0.7s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes subcatFadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: none;}
+    }
+    /* ...existing code for .shop-products, .shop-grid, .product-card... */
+  </style>
+</head>
+<body data-scroll-container>
+  <header class="hero" data-scroll-section>
+    <div class="hero-bg"></div>
+    <nav class="navbar sticky">
+      <div class="logo" data-scroll data-scroll-speed="2">FASHION<span class="minus">-</span>WAY</div>
+      <ul class="nav-links">
+        <li><a href="#shop" data-scroll-to>Shop</a></li>
+        <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
+        <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="hero-content" data-scroll data-scroll-speed="1.5">
+      <h1 class="hero-title">
+        <span class="highlight">FASHION</span> <span class="redefined">WAY</span>
+      </h1>
+      <p class="hero-subtitle">Dein Weg zu exklusiven Styles, Trends und Inspiration.<br>Erlebe Fashion neu gedacht.</p>
+      <a href="#shop" class="cta-btn" data-scroll-to>Jetzt shoppen</a>
+    </div>
+  </header>
+
+  <main data-scroll-section>
+    <section class="products" id="shop">
+      <div class="shop-main">
+        <aside class="shop-sidebar">
+          <nav class="shop-nav">
+            <ul class="main-cat-list">
+              <li><button class="main-cat-btn active" data-maincat="herren">Herren</button></li>
+              <li><button class="main-cat-btn" data-maincat="damen">Damen</button></li>
+              <li><button class="main-cat-btn" data-maincat="kinder">Kinder</button></li>
+            </ul>
+            <ul class="sub-cat-list">
+              <li><button class="sub-cat-btn active" data-subcat="oberteile">Oberteile</button></li>
+              <li><button class="sub-cat-btn" data-subcat="hosen">Hosen</button></li>
+              <li><button class="sub-cat-btn" data-subcat="schuhe">Schuhe</button></li>
+              <li><button class="sub-cat-btn" data-subcat="accessoires">Accessoires</button></li>
+            </ul>
+          </nav>
+        </aside>
+        <div class="shop-products">
+          <h2 class="section-title" data-scroll data-scroll-speed="1" style="text-align:left;margin-left:0;">Shop</h2>
+          <div class="shop-grid">
+            <!-- 10 Beispielprodukte pro Kategorie/Kombination -->
+            <!-- Herren - Oberteile -->
+            <div class="product-card" data-maincat="herren" data-subcat="oberteile">
+              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Herren Shirt 1">
+              <div class="product-content">
+                <h3>Herren Shirt 1</h3>
+                <p>Modernes Herren T-Shirt in Grau.</p>
+                <span class="price">29,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <div class="product-card" data-maincat="herren" data-subcat="oberteile">
+              <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Herren Shirt 2">
+              <div class="product-content">
+                <h3>Herren Shirt 2</h3>
+                <p>Basic T-Shirt mit Rundhalsausschnitt.</p>
+                <span class="price">19,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 8 Produkte für Herren Oberteile... -->
+            <!-- Herren - Hosen -->
+            <div class="product-card" data-maincat="herren" data-subcat="hosen">
+              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Herren Hose 1">
+              <div class="product-content">
+                <h3>Herren Hose 1</h3>
+                <p>Bequeme Jeans für jeden Tag.</p>
+                <span class="price">49,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Herren Hosen... -->
+            <!-- Herren - Schuhe -->
+            <div class="product-card" data-maincat="herren" data-subcat="schuhe">
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Herren Sneaker 1">
+              <div class="product-content">
+                <h3>Herren Sneaker 1</h3>
+                <p>Weiße Sneaker für den Alltag.</p>
+                <span class="price">59,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Herren Schuhe... -->
+            <!-- Herren - Accessoires -->
+            <div class="product-card" data-maincat="herren" data-subcat="accessoires">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Herren Cap 1">
+              <div class="product-content">
+                <h3>Herren Cap 1</h3>
+                <p>Stylische Cap für Herren.</p>
+                <span class="price">14,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Herren Accessoires... -->
+            <!-- Damen - Oberteile -->
+            <div class="product-card" data-maincat="damen" data-subcat="oberteile">
+              <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Damen Bluse 1">
+              <div class="product-content">
+                <h3>Damen Bluse 1</h3>
+                <p>Leichte Sommerbluse in Weiß.</p>
+                <span class="price">34,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Damen Oberteile... -->
+            <!-- Damen - Hosen -->
+            <div class="product-card" data-maincat="damen" data-subcat="hosen">
+              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Damen Hose 1">
+              <div class="product-content">
+                <h3>Damen Hose 1</h3>
+                <p>Elegante Stoffhose für Damen.</p>
+                <span class="price">44,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Damen Hosen... -->
+            <!-- Damen - Schuhe -->
+            <div class="product-card" data-maincat="damen" data-subcat="schuhe">
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Damen Sneaker 1">
+              <div class="product-content">
+                <h3>Damen Sneaker 1</h3>
+                <p>Trendige Sneaker für Damen.</p>
+                <span class="price">69,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Damen Schuhe... -->
+            <!-- Damen - Accessoires -->
+            <div class="product-card" data-maincat="damen" data-subcat="accessoires">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Damen Tasche 1">
+              <div class="product-content">
+                <h3>Damen Tasche 1</h3>
+                <p>Modische Handtasche.</p>
+                <span class="price">24,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Damen Accessoires... -->
+            <!-- Kinder - Oberteile -->
+            <div class="product-card" data-maincat="kinder" data-subcat="oberteile">
+              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Kinder Shirt 1">
+              <div class="product-content">
+                <h3>Kinder Shirt 1</h3>
+                <p>Buntes Kinder T-Shirt.</p>
+                <span class="price">14,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Kinder Oberteile... -->
+            <!-- Kinder - Hosen -->
+            <div class="product-card" data-maincat="kinder" data-subcat="hosen">
+              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80" alt="Kinder Hose 1">
+              <div class="product-content">
+                <h3>Kinder Hose 1</h3>
+                <p>Bequeme Kinderhose.</p>
+                <span class="price">19,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Kinder Hosen... -->
+            <!-- Kinder - Schuhe -->
+            <div class="product-card" data-maincat="kinder" data-subcat="schuhe">
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Kinder Sneaker 1">
+              <div class="product-content">
+                <h3>Kinder Sneaker 1</h3>
+                <p>Coole Sneaker für Kids.</p>
+                <span class="price">29,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Kinder Schuhe... -->
+            <!-- Kinder - Accessoires -->
+            <div class="product-card" data-maincat="kinder" data-subcat="accessoires">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Kinder Cap 1">
+              <div class="product-content">
+                <h3>Kinder Cap 1</h3>
+                <p>Cooles Accessoire für Kids.</p>
+                <span class="price">9,99 €</span>
+                <button class="buy-btn">In den Warenkorb</button>
+              </div>
+            </div>
+            <!-- ...weitere 9 Produkte für Kinder Accessoires... -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lookbook" id="lookbook" data-scroll-section>
+      <!-- Inhalt entfernt -->
+    </section>
+
+    <section class="contact" id="kontakt" data-scroll-section>
+      <!-- Inhalt entfernt -->
+    </section>
+  </main>
+
+  <footer data-scroll-section>
+    <div class="footer-content">
+      <div class="footer-logo">FASHION<span class="minus">-</span>WAY</div>
+      <ul class="footer-links">
+        <li><a href="#shop" data-scroll-to>Shop</a></li>
+        <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
+        <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
+      </ul>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg#icon"></use></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg#icon"></use></svg></a>
+        <a href="#" aria-label="TikTok"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg#icon"></use></svg></a>
+      </div>
+      <p style="margin-top:1.5rem;">&copy; 2025 FASHION-WAY. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Locomotive Scroll + GSAP ScrollTrigger Integration
+    const scroll = new LocomotiveScroll({
+      el: document.querySelector('[data-scroll-container]'),
+      smooth: true,
+      lerp: 0.08
+    });
+
+    scroll.on("scroll", ScrollTrigger.update);
+
+    ScrollTrigger.scrollerProxy("[data-scroll-container]", {
+      scrollTop(value) {
+        return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
+      },
+      getBoundingClientRect() {
+        return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
+      },
+      pinType: document.querySelector("[data-scroll-container]").style.transform ? "transform" : "fixed"
+    });
+
+    ScrollTrigger.addEventListener("refresh", () => scroll.update());
+    ScrollTrigger.refresh();
+
+    // GSAP Animationen
+    gsap.from(".hero-title .highlight", {
+      y: 80, opacity: 0, duration: 1.2, ease: "power4.out"
+    });
+    gsap.from(".hero-title .redefined", {
+      y: 80, opacity: 0, duration: 1.2, delay: 0.2, ease: "power4.out"
+    });
+    gsap.from(".hero-subtitle, .cta-btn", {
+      y: 40, opacity: 0, duration: 1, delay: 0.5, stagger: 0.2, ease: "power2.out"
+    });
+    gsap.utils.toArray(".product-card").forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          scroller: "[data-scroll-container]",
+          start: "top 80%",
+        },
+        y: 60,
+        opacity: 0,
+        duration: 1,
+        delay: i * 0.15,
+        ease: "power3.out"
+      });
+    });
+    gsap.utils.toArray(".lookbook-gallery img").forEach((img, i) => {
+      gsap.from(img, {
+        scrollTrigger: {
+          trigger: img,
+          scroller: "[data-scroll-container]",
+          start: "top 90%",
+        },
+        scale: 1.2,
+        opacity: 0,
+        duration: 1,
+        delay: i * 0.1,
+        ease: "power2.out"
+      });
+    });
+
+    // Entferne GSAP-Logo-Hover-Animation
+    // const logo = document.querySelector('.logo');
+    // if (logo) {
+    //   logo.addEventListener('mouseenter', () => {
+    //     gsap.to(logo, {
+    //       scale: 1.08,
+    //       duration: 0.25,
+    //       boxShadow: "0 0 32px #ff3e55, 0 0 64px #ff8c3e",
+    //       overwrite: true
+    //     });
+    //   });
+    //   logo.addEventListener('mouseleave', () => {
+    //     gsap.to(logo, {
+    //       scale: 1,
+    //       duration: 0.25,
+    //       boxShadow: "none",
+    //       overwrite: true
+    //     });
+    //   });
+    // }
+    window.addEventListener('load', () => {
+      if (window.scroll && window.scroll.update) scroll.update();
+      if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+    });
+
+    // Shop Kategorie-Filter (Oberkategorie + Unterkategorie)
+    document.addEventListener('DOMContentLoaded', function () {
+      const mainBtns = document.querySelectorAll('.main-cat-btn');
+      const subBtns = document.querySelectorAll('.sub-cat-btn');
+      const productCards = document.querySelectorAll('.product-card');
+      let selectedMain = 'herren';
+      let selectedSub = 'oberteile';
+
+      function filterProducts() {
+        productCards.forEach(card => {
+          const main = card.getAttribute('data-maincat');
+          const sub = card.getAttribute('data-subcat');
+          const showMain = (main === selectedMain);
+          const showSub = (sub === selectedSub);
+          if (showMain && showSub) {
+            card.classList.remove('hide');
+          } else {
+            card.classList.add('hide');
+          }
+        });
+        if (window.scroll && window.scroll.update) scroll.update();
+        if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+      }
+
+      mainBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          mainBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedMain = btn.getAttribute('data-maincat');
+          filterProducts();
+        });
+      });
+      subBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          subBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedSub = btn.getAttribute('data-subcat');
+          filterProducts();
+        });
+      });
+
+      // Initial-Filter
+      filterProducts();
+    });
+  </script>
+</body>
+</html>
