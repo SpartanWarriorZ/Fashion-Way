@@ -474,45 +474,50 @@
         width: 100vw;
         overflow-x: hidden;
       }
-      .shop-main,
-      .shop-sidebar,
-      .shop-products,
-      .shop-grid,
-      .product-card {
+      .shop-main {
+        display: block !important;
         max-width: 100vw !important;
         width: 100vw !important;
-        box-sizing: border-box !important;
-        margin: 0 auto !important;
+        padding: 0;
+        margin: 0 0 2.5rem 0;
+        box-sizing: border-box;
       }
       .shop-sidebar {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+        width: 100vw !important;
+        border-radius: 1.5rem 1.5rem 0 0;
+        box-shadow: 0 2px 12px #ececec80;
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        margin: 0 0 1.2rem 0;
+        border-width: 1.5px;
+        border-radius: 1.5rem;
+        box-sizing: border-box;
         overflow-x: auto;
+        /* Neu: untereinander statt nebeneinander */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        position: static !important;
       }
-      .shop-grid {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-      .product-card {
-        width: 100% !important;
-        min-width: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-      .product-card img {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-        display: block;
+      .shop-nav {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
       }
       .main-cat-list,
       .sub-cat-list {
-        width: 100%;
-        min-width: 0;
-        box-sizing: border-box;
+        flex-direction: row !important;
+        gap: 0.5rem;
+        margin-bottom: 0.7rem;
+        justify-content: flex-start;
+        align-items: center;
         overflow-x: auto;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
         flex-wrap: nowrap;
       }
       .main-cat-btn,
@@ -520,6 +525,28 @@
         min-width: 0;
         max-width: 100%;
         box-sizing: border-box;
+        white-space: nowrap;
+      }
+      .shop-products {
+        width: 100vw !important;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .shop-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        padding: 0 0.5rem;
+        max-width: 100vw !important;
+        width: 100vw !important;
+        box-sizing: border-box;
+      }
+      .product-card {
+        max-width: 100% !important;
+        min-width: 0 !important;
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 12px #ececec80;
+        box-sizing: border-box;
+        margin: 0 auto;
       }
     }
 
@@ -703,6 +730,7 @@
   <main data-scroll-section>
     <section class="products" id="shop">
       <div class="shop-main">
+        <!-- Sidebar/Kategorien werden auf Mobil über dem Shop angezeigt -->
         <aside class="shop-sidebar">
           <nav class="shop-nav">
             <ul class="main-cat-list">
@@ -1112,34 +1140,6 @@
   </script>
 </body>
 </html>
-          name: "Kinder Hose 1",
-          desc: "Bequeme Kinderhose.",
-          price: "19,99 €",
-          img: "https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80",
-          subcat: "hosen"
-        },
-        {
-          name: "Kinder Sneaker 1",
-          desc: "Coole Sneaker für Kids.",
-          price: "29,99 €",
-          img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
-          subcat: "schuhe"
-        },
-        {
-          name: "Kinder Cap 1",
-          desc: "Cooles Accessoire für Kids.",
-          price: "9,99 €",
-          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-          subcat: "accessoires"
-        },
-        // ...weitere Kinder-Produkte...
-      ]
-    };
-
-    // Anzahl Produkte pro Kategorie für das Grid (z.B. 12)
-    const PRODUCTS_PER_CATEGORY = 12;
-
-    function animateProductCards() {
       // Intersection Observer für Sichtbarkeit
       const cards = document.querySelectorAll('.product-card');
       if ('IntersectionObserver' in window) {
