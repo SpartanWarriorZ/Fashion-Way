@@ -470,197 +470,77 @@
       color: #fff;
     }
     @media (max-width: 900px) {
-      .shop-main {
-        display: block;
-        max-width: 100vw;
-        padding: 0;
-        margin: 0 0 2.5rem 0;
+      html, body {
+        width: 100vw;
+        overflow-x: hidden;
+      }
+      .shop-main,
+      .shop-sidebar,
+      .shop-products,
+      .shop-grid,
+      .product-card {
+        max-width: 100vw !important;
+        width: 100vw !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
       }
       .shop-sidebar {
-        max-width: 100vw;
-        min-width: 0;
-        width: 100vw;
-        border-radius: 1.5rem 1.5rem 0 0;
-        box-shadow: 0 2px 12px #ececec80;
-        padding: 1.2rem 0.7rem 1.2rem 0.7rem;
-        margin: 0 0 1.2rem 0;
-        border-width: 1.5px;
-        border-radius: 1.5rem;
-      }
-      .shop-products {
-        width: 100vw;
-        padding: 0;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        overflow-x: auto;
       }
       .shop-grid {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        padding: 0 0.5rem;
-        max-width: 100vw;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
       .product-card {
-        max-width: 100vw;
-        min-width: 0;
-        border-radius: 1.2rem;
-        box-shadow: 0 2px 12px #ececec80;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
       }
       .product-card img {
-        height: 140px;
-        border-radius: 1.2rem 1.2rem 0 0;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        display: block;
       }
-      .product-content {
-        padding: 1rem 0.7rem 1.2rem 0.7rem;
-        min-height: 0;
-        gap: 0.3rem;
-      }
-      .product-content h3 {
-        font-size: 1.01rem;
-        min-height: 0;
-      }
-      .product-content p {
-        font-size: 0.93rem;
-        min-height: 0;
-      }
-      .product-content .price {
-        font-size: 1.05rem;
-        padding: 0.3em 1em;
-        margin-bottom: 0.7rem;
-        min-width: 70px;
-      }
-      .product-content .buy-btn {
-        font-size: 0.98rem;
-        padding: 0.7rem 1.2rem;
-        max-width: 100%;
-      }
-      .shop-sidebar .main-cat-list,
-      .shop-sidebar .sub-cat-list {
-        flex-direction: row;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        justify-content: flex-start;
-        align-items: center;
+      .main-cat-list,
+      .sub-cat-list {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         overflow-x: auto;
-        padding: 0;
+        flex-wrap: nowrap;
       }
       .main-cat-btn,
       .sub-cat-btn {
-        font-size: 0.97rem;
-        padding: 0.4rem 0.8rem;
         min-width: 0;
-        border-radius: 1rem;
-        margin-bottom: 0;
-        white-space: nowrap;
-      }
-      .main-cat-btn.active::before,
-      .sub-cat-btn.active::before {
-        left: 0.5rem;
-        width: 6px;
-        height: 6px;
-      }
-      .sub-cat-list {
-        border-top: none;
-        padding-top: 0.5rem;
-        margin-top: 0;
-      }
-      .shop-categories {
-        flex-direction: column;
-        gap: 0.7rem;
-        padding: 0;
-        margin: 1.2rem 0 1.2rem 0;
-      }
-      .main-categories,
-      .sub-categories {
-        flex-direction: row;
-        gap: 0.5rem;
-        justify-content: flex-start;
-        align-items: center;
-        min-width: 0;
-        padding: 0.3rem 0.2rem;
-      }
-      .section-title {
-        font-size: 1.3rem;
-        margin: 2.2rem 0 1.2rem 0;
-        text-align: left;
-        padding-left: 1rem;
-      }
-      .hero {
-        min-height: 70vh;
-        padding-top: 3.5rem;
-        flex-direction: column;
-      }
-      .hero-content {
-        padding-top: 5.5rem;
-        max-width: 95vw;
-      }
-      .hero-title {
-        font-size: 2.1rem;
-        line-height: 1.15;
-        margin-bottom: 0.8rem;
-      }
-      .hero-subtitle {
-        font-size: 1.05rem;
-        margin-bottom: 1.5rem;
-      }
-      .cta-btn {
-        font-size: 1rem;
-        padding: 0.8rem 1.7rem;
-      }
-      .navbar {
-        padding: 0.7rem 2vw 0.7rem 1vw;
-        font-size: 1rem;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        width: 100vw;
-        z-index: 2000;
-      }
-      .logo {
-        font-size: 1.3rem;
-        padding: 0.1em 0.7rem 0.1em 0.1em;
-      }
-      .nav-links {
-        gap: 1.2rem;
-      }
-      .nav-links a {
-        font-size: 1rem;
-        padding: 0.2em 0.5em;
-      }
-      footer {
-        padding: 2rem 0 1.2rem 0;
-        font-size: 0.95rem;
-      }
-      .footer-content {
-        padding: 0 0.5rem;
-      }
-      .footer-logo {
-        font-size: 1.2rem;
-        margin-bottom: 0.7rem;
-      }
-      .footer-links {
-        gap: 1.2rem;
-        font-size: 0.97rem;
-        margin-bottom: 0.7rem;
-      }
-      .footer-social {
-        gap: 1rem;
-        margin: 1rem 0 0.3rem 0;
-      }
-      .footer-social a {
-        font-size: 1.2rem;
+        max-width: 100%;
+        box-sizing: border-box;
       }
     }
 
     @media (max-width: 400px) {
-      .hero-content {
-        padding-top: 4.2rem;
+      .shop-main,
+      .shop-sidebar,
+      .shop-products,
+      .shop-grid,
+      .product-card {
+        max-width: 100vw !important;
+        width: 100vw !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
       }
-      .section-title {
-        font-size: 1.1rem;
-        padding-left: 0.3rem;
+      .shop-sidebar {
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
       }
-      .product-content .buy-btn {
-        font-size: 0.93rem;
-        padding: 0.6rem 0.7rem;
+      .shop-grid {
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
       }
     }
     /* --- NEU: Shop-Main Layout für Sidebar + Produkte --- */
@@ -1112,6 +992,126 @@
           subcat: "oberteile"
         },
         {
+          name: "Kinder Hose 1",
+          desc: "Bequeme Kinderhose.",
+          price: "19,99 €",
+          img: "https://images.unsplash.com/photo-1469398715555-76331a6c7fa0?auto=format&fit=crop&w=600&q=80",
+          subcat: "hosen"
+        },
+        {
+          name: "Kinder Sneaker 1",
+          desc: "Coole Sneaker für Kids.",
+          price: "29,99 €",
+          img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80",
+          subcat: "schuhe"
+        },
+        {
+          name: "Kinder Cap 1",
+          desc: "Cooles Accessoire für Kids.",
+          price: "9,99 €",
+          img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+          subcat: "accessoires"
+        },
+        // ...weitere Kinder-Produkte...
+      ]
+    };
+
+    // Anzahl Produkte pro Kategorie für das Grid (z.B. 12)
+    const PRODUCTS_PER_CATEGORY = 12;
+
+    function animateProductCards() {
+      // Intersection Observer für Sichtbarkeit
+      const cards = document.querySelectorAll('.product-card');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+        cards.forEach(card => {
+          card.classList.remove('visible');
+          observer.observe(card);
+        });
+      } else {
+        // Fallback: alle sichtbar
+        cards.forEach(card => card.classList.add('visible'));
+      }
+    }
+
+    function renderProducts(maincat, subcat) {
+      const grid = document.getElementById('shopGrid');
+      grid.innerHTML = '';
+      let list = products[maincat] || [];
+      while (list.length < PRODUCTS_PER_CATEGORY) {
+        list = list.concat(list);
+      }
+      let filtered = (subcat === 'alle')
+        ? list.slice(0, PRODUCTS_PER_CATEGORY)
+        : list.filter(p => p.subcat === subcat).slice(0, PRODUCTS_PER_CATEGORY);
+
+      filtered.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'product-card';
+        el.setAttribute('data-maincat', maincat);
+        el.setAttribute('data-subcat', p.subcat);
+        el.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div class="product-content">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <span class="price">${p.price}</span>
+            <button class="buy-btn">In den Warenkorb</button>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+      // Animation nach dem Rendern anwenden
+      animateProductCards();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const mainBtns = document.querySelectorAll('.main-cat-btn');
+      const subBtns = document.querySelectorAll('.sub-cat-btn');
+      let selectedMain = 'herren';
+      let selectedSub = 'alle';
+
+      function filterProducts() {
+        renderProducts(selectedMain, selectedSub);
+        if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
+      }
+
+      mainBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          mainBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedMain = btn.getAttribute('data-maincat');
+          subBtns.forEach(b => b.classList.remove('active'));
+          const alleBtn = document.querySelector('.sub-cat-btn[data-subcat="alle"]');
+          if (alleBtn) {
+            alleBtn.classList.add('active');
+            selectedSub = 'alle';
+          }
+          filterProducts();
+        });
+      });
+      subBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          subBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedSub = btn.getAttribute('data-subcat');
+          filterProducts();
+        });
+      });
+
+      // Initial-Filter 123
+      filterProducts();
+    });
+  </script>
+</body>
+</html>
           name: "Kinder Hose 1",
           desc: "Bequeme Kinderhose.",
           price: "19,99 €",
