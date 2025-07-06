@@ -468,48 +468,197 @@
       color: #fff;
     }
     @media (max-width: 900px) {
-      .shop-categories {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 1.2rem;
-        padding: 0 1vw;
+      .shop-main {
+        display: block;
+        max-width: 100vw;
+        padding: 0;
+        margin: 0 0 2.5rem 0;
       }
-      .main-categories {
-        flex-direction: row;
-        gap: 0.7rem;
-        align-items: center;
-        justify-content: center;
+      .shop-sidebar {
+        max-width: 100vw;
         min-width: 0;
-        padding: 0.7rem 0.5rem;
+        width: 100vw;
+        border-radius: 1.5rem 1.5rem 0 0;
+        box-shadow: 0 2px 12px #ececec80;
+        padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+        margin: 0 0 1.2rem 0;
+        border-width: 1.5px;
+        border-radius: 1.5rem;
       }
-      .main-cat-btn {
-        width: auto;
-        text-align: center;
-      }
-      .sub-categories {
-        justify-content: center;
-        padding: 0.5rem 0.5rem;
-      }
-    }
-    @media (max-width: 600px) {
-      .shop-categories {
-        flex-direction: column;
-        gap: 0.7rem;
+      .shop-products {
+        width: 100vw;
         padding: 0;
       }
-      .main-categories,
-      .sub-categories {
+      .shop-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        padding: 0 0.5rem;
+        max-width: 100vw;
+      }
+      .product-card {
+        max-width: 100vw;
+        min-width: 0;
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 12px #ececec80;
+      }
+      .product-card img {
+        height: 140px;
+        border-radius: 1.2rem 1.2rem 0 0;
+      }
+      .product-content {
+        padding: 1rem 0.7rem 1.2rem 0.7rem;
+        min-height: 0;
+        gap: 0.3rem;
+      }
+      .product-content h3 {
+        font-size: 1.01rem;
+        min-height: 0;
+      }
+      .product-content p {
+        font-size: 0.93rem;
+        min-height: 0;
+      }
+      .product-content .price {
+        font-size: 1.05rem;
+        padding: 0.3em 1em;
+        margin-bottom: 0.7rem;
+        min-width: 70px;
+      }
+      .product-content .buy-btn {
+        font-size: 0.98rem;
+        padding: 0.7rem 1.2rem;
+        max-width: 100%;
+      }
+      .shop-sidebar .main-cat-list,
+      .shop-sidebar .sub-cat-list {
         flex-direction: row;
         gap: 0.5rem;
-        justify-content: center;
+        margin-bottom: 1rem;
+        justify-content: flex-start;
         align-items: center;
-        min-width: 0;
-        padding: 0.3rem 0.2rem;
+        overflow-x: auto;
+        padding: 0;
       }
       .main-cat-btn,
       .sub-cat-btn {
         font-size: 0.97rem;
         padding: 0.4rem 0.8rem;
+        min-width: 0;
+        border-radius: 1rem;
+        margin-bottom: 0;
+        white-space: nowrap;
+      }
+      .main-cat-btn.active::before,
+      .sub-cat-btn.active::before {
+        left: 0.5rem;
+        width: 6px;
+        height: 6px;
+      }
+      .sub-cat-list {
+        border-top: none;
+        padding-top: 0.5rem;
+        margin-top: 0;
+      }
+      .shop-categories {
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0;
+        margin: 1.2rem 0 1.2rem 0;
+      }
+      .main-categories,
+      .sub-categories {
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: 0;
+        padding: 0.3rem 0.2rem;
+      }
+      .section-title {
+        font-size: 1.3rem;
+        margin: 2.2rem 0 1.2rem 0;
+        text-align: left;
+        padding-left: 1rem;
+      }
+      .hero {
+        min-height: 70vh;
+        padding-top: 3.5rem;
+        flex-direction: column;
+      }
+      .hero-content {
+        padding-top: 5.5rem;
+        max-width: 95vw;
+      }
+      .hero-title {
+        font-size: 2.1rem;
+        line-height: 1.15;
+        margin-bottom: 0.8rem;
+      }
+      .hero-subtitle {
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+      }
+      .cta-btn {
+        font-size: 1rem;
+        padding: 0.8rem 1.7rem;
+      }
+      .navbar {
+        padding: 0.7rem 2vw 0.7rem 1vw;
+        font-size: 1rem;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100vw;
+        z-index: 2000;
+      }
+      .logo {
+        font-size: 1.3rem;
+        padding: 0.1em 0.7rem 0.1em 0.1em;
+      }
+      .nav-links {
+        gap: 1.2rem;
+      }
+      .nav-links a {
+        font-size: 1rem;
+        padding: 0.2em 0.5em;
+      }
+      footer {
+        padding: 2rem 0 1.2rem 0;
+        font-size: 0.95rem;
+      }
+      .footer-content {
+        padding: 0 0.5rem;
+      }
+      .footer-logo {
+        font-size: 1.2rem;
+        margin-bottom: 0.7rem;
+      }
+      .footer-links {
+        gap: 1.2rem;
+        font-size: 0.97rem;
+        margin-bottom: 0.7rem;
+      }
+      .footer-social {
+        gap: 1rem;
+        margin: 1rem 0 0.3rem 0;
+      }
+      .footer-social a {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hero-content {
+        padding-top: 4.2rem;
+      }
+      .section-title {
+        font-size: 1.1rem;
+        padding-left: 0.3rem;
+      }
+      .product-content .buy-btn {
+        font-size: 0.93rem;
+        padding: 0.6rem 0.7rem;
       }
     }
     /* --- NEU: Shop-Main Layout für Sidebar + Produkte --- */
