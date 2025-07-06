@@ -22,7 +22,9 @@
       color: #18181b;
       scroll-behavior: smooth;
     }
-    body[data-scroll-container] { overflow: hidden; }
+    body[data-scroll-container] {
+      /* overflow: hidden; */ /* Entferne overflow: hidden für Mobilgeräte */
+    }
     .navbar {
       display: flex;
       align-items: center;
