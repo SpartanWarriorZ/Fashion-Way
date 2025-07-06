@@ -21,9 +21,12 @@
       background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
       color: #18181b;
       scroll-behavior: smooth;
+      min-height: 100vh;
+      box-sizing: border-box;
     }
     body[data-scroll-container] {
       /* overflow: hidden; */ /* Entferne overflow: hidden für Mobilgeräte */
+      position: relative;
     }
     .navbar {
       display: flex;
@@ -133,9 +136,20 @@
     }
 
     .hero {
-      min-height: 100vh; width: 100vw; position: relative; display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      width: 100vw;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
       overflow: hidden;
+      /* Entferne sticky/fixed Verhalten */
+      position: relative !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      z-index: 1;
     }
     .hero-bg {
       position: absolute; inset: 0; z-index: 0;
@@ -259,6 +273,11 @@
     footer {
       background: #18181b; color: #fff; padding: 3rem 0 2rem 0; text-align: center;
       margin-top: 4rem;
+      width: 100vw;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 10;
+      margin-bottom: 0;
     }
     .footer-content { max-width: 1200px; margin: 0 auto; }
     .footer-logo {
@@ -470,125 +489,121 @@
       color: #fff;
     }
     @media (max-width: 900px) {
-      html, body {
+      .navbar {
+        justify-content: center;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
         width: 100vw;
-        overflow-x: hidden;
+        z-index: 2000;
+        display: flex;
+        align-items: center;
       }
-      .shop-main {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        max-width: 100vw !important;
-        width: 100vw !important;
-        padding: 0;
-        margin: 0 0 2.5rem 0;
-        box-sizing: border-box;
+      .logo {
+        font-size: 1.5rem;
+        padding: 0.1em 0.7rem 0.1em 0.1em;
+        margin: 0 auto;
+        text-align: center;
+        flex: 1 1 auto;
+        justify-content: center;
+        display: flex;
       }
-      .shop-sidebar {
-        max-width: 100vw !important;
-        min-width: 0 !important;
-        width: 100vw !important;
-        border-radius: 1.5rem;
-        box-shadow: 0 2px 12px #ececec80;
-        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
-        margin: 0 auto 1.2rem auto;
-        border-width: 1.5px;
-        border-radius: 1.5rem;
-        box-sizing: border-box;
-        overflow-x: auto;
+      .nav-links {
+        display: none !important;
+      }
+      .burger {
         display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        position: static !important;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        font-size: 2.1rem;
+        color: #18181b;
+        cursor: pointer;
+        margin-left: auto;
+        z-index: 2100;
+        padding: 0.2em 0.7em 0.2em 0.7em;
+        transition: color 0.2s;
+      }
+      .burger.active {
+        color: #ff3e55;
+      }
+      .mobile-nav {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80vw;
+        max-width: 320px;
+        height: 100vh;
         background: #fff;
+        box-shadow: -2px 0 24px #18181b22;
+        z-index: 3000;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+        transition: transform 0.3s cubic-bezier(.4,2,.6,1), opacity 0.2s;
+        transform: translateX(100%);
+        opacity: 0;
       }
-      .shop-nav {
+      .mobile-nav.active {
+        display: flex;
+        transform: translateX(0);
+        opacity: 1;
+      }
+      .mobile-nav .close-btn {
+        background: none;
+        border: none;
+        font-size: 2.2rem;
+        color: #18181b;
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        cursor: pointer;
+        z-index: 3100;
+      }
+      .mobile-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 2.5rem 0 0 0;
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        gap: 0.7rem;
+        gap: 2rem;
       }
-      .main-cat-list,
-      .sub-cat-list {
-        flex-direction: row !important;
-        gap: 0.5rem;
-        margin-bottom: 0.7rem;
-        justify-content: center !important;
-        align-items: center;
-        overflow-x: auto;
-        padding: 0;
-        width: 100%;
-        box-sizing: border-box;
-        flex-wrap: nowrap;
-        list-style: none;
-      }
-      .main-cat-btn,
-      .sub-cat-btn {
-        min-width: 0;
-        max-width: 100%;
-        box-sizing: border-box;
-        white-space: nowrap;
-        margin: 0 0.2rem;
-      }
-      .shop-products {
-        width: 100vw !important;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      .shop-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        grid-template-columns: none !important;
-        gap: 1.2rem;
-        padding: 0 0.5rem;
-        max-width: 100vw !important;
-        width: 100vw !important;
-        box-sizing: border-box;
-      }
-      .product-card {
-        max-width: 95vw !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        border-radius: 1.2rem;
-        box-shadow: 0 2px 12px #ececec80;
-        box-sizing: border-box;
-        margin: 0.5rem auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-      }
-      .product-card img {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
+      .mobile-nav a {
+        color: #18181b;
+        font-size: 1.3rem;
+        font-weight: 700;
+        text-decoration: none;
+        padding: 0.7rem 0;
+        border-radius: 0.7em;
+        transition: color 0.18s, background 0.18s;
         display: block;
-        object-fit: cover;
+        width: 100%;
+      }
+      .mobile-nav a:hover,
+      .mobile-nav a:focus {
+        color: #ff3e55;
+        background: #f8fafc;
       }
     }
-
-    @media (max-width: 400px) {
-      .shop-main,
-      .shop-sidebar,
-      .shop-products,
-      .shop-grid,
-      .product-card {
-        max-width: 100vw !important;
-        width: 100vw !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
+    @media (min-width: 901px) {
+      .burger,
+      .mobile-nav {
+        display: none !important;
       }
-      .shop-sidebar {
-        padding-left: 0.2rem;
-        padding-right: 0.2rem;
+      .nav-links {
+        display: flex !important;
       }
-      .shop-grid {
-        padding-left: 0.2rem;
-        padding-right: 0.2rem;
+      .navbar {
+        justify-content: space-between;
       }
-      .product-card {
-        max-width: 98vw !important;
+      .logo {
+        margin: 0;
+        justify-content: flex-start;
+        text-align: left;
       }
     }
     /* --- NEU: Shop-Main Layout für Sidebar + Produkte --- */
@@ -733,11 +748,22 @@
     <div class="hero-bg" data-scroll></div>
     <nav class="navbar sticky" data-scroll>
       <div class="logo" data-scroll data-scroll-speed="2">FASHION<span class="minus">-</span>WAY</div>
+      <button class="burger" id="burgerMenu" aria-label="Menü öffnen" style="display:none;">
+        &#9776;
+      </button>
       <ul class="nav-links">
         <li><a href="#shop" data-scroll-to>Shop</a></li>
         <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
         <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
       </ul>
+      <nav class="mobile-nav" id="mobileNav">
+        <button class="close-btn" id="closeMobileNav" aria-label="Menü schließen">&times;</button>
+        <ul>
+          <li><a href="#shop" data-scroll-to>Shop</a></li>
+          <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
+          <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
+        </ul>
+      </nav>
     </nav>
     <div class="hero-content" data-scroll data-scroll-speed="1.5">
       <h1 class="hero-title">
@@ -786,6 +812,7 @@
     </section>
   </main>
 
+  <!-- Entferne ggf. Spacer-Divs oder zusätzliche leere Elemente vor dem Footer -->
   <footer data-scroll-section>
     <div class="footer-content">
       <div class="footer-logo">FASHION<span class="minus">-</span>WAY</div>
@@ -1158,74 +1185,47 @@
       // Initial-Filter 123
       filterProducts();
     });
+
+    // Hamburger Menü für Mobil
+    document.addEventListener('DOMContentLoaded', function () {
+      const burger = document.getElementById('burgerMenu');
+      const mobileNav = document.getElementById('mobileNav');
+      const closeBtn = document.getElementById('closeMobileNav');
+      function toggleBurgerDisplay() {
+        if (window.innerWidth <= 900) {
+          burger.style.display = 'flex';
+        } else {
+          burger.style.display = 'none';
+          mobileNav.classList.remove('active');
+          burger.classList.remove('active');
+        }
+      }
+      toggleBurgerDisplay();
+      window.addEventListener('resize', toggleBurgerDisplay);
+
+      burger.addEventListener('click', function () {
+        mobileNav.classList.add('active');
+        burger.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      closeBtn.addEventListener('click', function () {
+        mobileNav.classList.remove('active');
+        burger.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      // Schließe Menü bei Klick auf Link
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function () {
+          mobileNav.classList.remove('active');
+          burger.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      });
+    });
+    // ...existing code...
   </script>
 </body>
 </html>
-    function renderProducts(maincat, subcat) {
-      const grid = document.getElementById('shopGrid');
-      grid.innerHTML = '';
-      let list = products[maincat] || [];
-      while (list.length < PRODUCTS_PER_CATEGORY) {
-        list = list.concat(list);
-      }
-      let filtered = (subcat === 'alle')
-        ? list.slice(0, PRODUCTS_PER_CATEGORY)
-        : list.filter(p => p.subcat === subcat).slice(0, PRODUCTS_PER_CATEGORY);
-
-      filtered.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'product-card';
-        el.setAttribute('data-maincat', maincat);
-        el.setAttribute('data-subcat', p.subcat);
-        el.innerHTML = `
-          <img src="${p.img}" alt="${p.name}">
-          <div class="product-content">
-            <h3>${p.name}</h3>
-            <p>${p.desc}</p>
-            <span class="price">${p.price}</span>
-            <button class="buy-btn">In den Warenkorb</button>
-          </div>
-        `;
-        grid.appendChild(el);
-      });
-      // Animation nach dem Rendern anwenden
-      animateProductCards();
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const mainBtns = document.querySelectorAll('.main-cat-btn');
-      const subBtns = document.querySelectorAll('.sub-cat-btn');
-      let selectedMain = 'herren';
-      let selectedSub = 'alle';
-
-      function filterProducts() {
-        renderProducts(selectedMain, selectedSub);
-        if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
-      }
-
-      mainBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-          mainBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedMain = btn.getAttribute('data-maincat');
-          subBtns.forEach(b => b.classList.remove('active'));
-          const alleBtn = document.querySelector('.sub-cat-btn[data-subcat="alle"]');
-          if (alleBtn) {
-            alleBtn.classList.add('active');
-            selectedSub = 'alle';
-          }
-          filterProducts();
-        });
-      });
-      subBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-          subBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedSub = btn.getAttribute('data-subcat');
-          filterProducts();
-        });
-      });
-
       // Initial-Filter 123
       filterProducts();
     });
