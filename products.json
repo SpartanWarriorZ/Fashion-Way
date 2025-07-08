@@ -1,0 +1,86 @@
+{
+  "herren": [
+    {
+      "name": "Herren Shirt 1",
+      "price": "29,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "oberteile"
+    },
+    {
+      "name": "Herren Shirt 2",
+      "price": "19,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "oberteile"
+    },
+    {
+      "name": "Herren Hose 1",
+      "price": "49,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "hosen"
+    },
+    {
+      "name": "Herren Sneaker 1",
+      "price": "59,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "schuhe"
+    },
+    {
+      "name": "Herren Cap 1",
+      "price": "14,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "accessoires"
+    }
+  ],
+  "damen": [
+    {
+      "name": "Damen Bluse 1",
+      "price": "34,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "oberteile"
+    },
+    {
+      "name": "Damen Hose 1",
+      "price": "44,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "hosen"
+    },
+    {
+      "name": "Damen Sneaker 1",
+      "price": "69,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "schuhe"
+    },
+    {
+      "name": "Damen Tasche 1",
+      "price": "24,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "accessoires"
+    }
+  ],
+  "kinder": [
+    {
+      "name": "Kinder Shirt 1",
+      "price": "14,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "oberteile"
+    },
+    {
+      "name": "Kinder Hose 1",
+      "price": "19,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "hosen"
+    },
+    {
+      "name": "Kinder Sneaker 1",
+      "price": "29,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "schuhe"
+    },
+    {
+      "name": "Kinder Cap 1",
+      "price": "9,99 €",
+      "img": "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80",
+      "subcat": "accessoires"
+    }
+  ]
+} 

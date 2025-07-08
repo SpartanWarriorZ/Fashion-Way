@@ -100,6 +100,13 @@
     </section>
   </main>
 
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Nach oben scrollen">
+    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+    </svg>
+  </button>
+
   <footer data-scroll-section>
     <div class="footer-content">
       <div class="footer-logo">FASHION<span class="minus">-</span>WAY</div>
@@ -212,107 +219,24 @@
       });
     });
 
-    // Produktdaten für jede Kategorie
-    const universalImg = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80";
-    const products = {
-      herren: [
-        {
-          name: "Herren Shirt 1",
-          desc: "Modernes Herren T-Shirt in Grau.",
-          price: "29,99 €",
-          img: universalImg,
-          subcat: "oberteile"
-        },
-        {
-          name: "Herren Shirt 2",
-          desc: "Basic T-Shirt mit Rundhalsausschnitt.",
-          price: "19,99 €",
-          img: universalImg,
-          subcat: "oberteile"
-        },
-        {
-          name: "Herren Hose 1",
-          desc: "Bequeme Jeans für jeden Tag.",
-          price: "49,99 €",
-          img: universalImg,
-          subcat: "hosen"
-        },
-        {
-          name: "Herren Sneaker 1",
-          desc: "Weiße Sneaker für den Alltag.",
-          price: "59,99 €",
-          img: universalImg,
-          subcat: "schuhe"
-        },
-        {
-          name: "Herren Cap 1",
-          desc: "Stylische Cap für Herren.",
-          price: "14,99 €",
-          img: universalImg,
-          subcat: "accessoires"
-        }
-      ],
-      damen: [
-        {
-          name: "Damen Bluse 1",
-          desc: "Leichte Sommerbluse in Weiß.",
-          price: "34,99 €",
-          img: universalImg,
-          subcat: "oberteile"
-        },
-        {
-          name: "Damen Hose 1",
-          desc: "Elegante Stoffhose für Damen.",
-          price: "44,99 €",
-          img: universalImg,
-          subcat: "hosen"
-        },
-        {
-          name: "Damen Sneaker 1",
-          desc: "Trendige Sneaker für Damen.",
-          price: "69,99 €",
-          img: universalImg,
-          subcat: "schuhe"
-        },
-        {
-          name: "Damen Tasche 1",
-          desc: "Modische Handtasche.",
-          price: "24,99 €",
-          img: universalImg,
-          subcat: "accessoires"
-        }
-      ],
-      kinder: [
-        {
-          name: "Kinder Shirt 1",
-          desc: "Buntes Kinder T-Shirt.",
-          price: "14,99 €",
-          img: universalImg,
-          subcat: "oberteile"
-        },
-        {
-          name: "Kinder Hose 1",
-          desc: "Bequeme Kinderhose.",
-          price: "19,99 €",
-          img: universalImg,
-          subcat: "hosen"
-        },
-        {
-          name: "Kinder Sneaker 1",
-          desc: "Coole Sneaker für Kids.",
-          price: "29,99 €",
-          img: universalImg,
-          subcat: "schuhe"
-        },
-        {
-          name: "Kinder Cap 1",
-          desc: "Cooles Accessoire für Kids.",
-          price: "9,99 €",
-          img: universalImg,
-          subcat: "accessoires"
-        }
-      ]
-    };
+    // Produktdaten aus JSON-Datei laden
+    let products = {};
+    
+    async function loadProductsFromJSON() {
+      try {
+        const response = await fetch('products.json');
+        products = await response.json();
+        console.log('Produkte erfolgreich geladen:', products);
+      } catch (error) {
+        console.error('Fehler beim Laden der Produkte:', error);
+        // Fallback zu statischen Daten
+        products = {
+          herren: [],
+          damen: [],
+          kinder: []
+        };
+      }
+    }
 
     // Anzahl Produkte pro Kategorie
     const PRODUCTS_PER_CATEGORY = 12;
@@ -403,8 +327,10 @@
         });
       });
 
-      // Initial-Filter
-      filterProducts();
+      // Produkte laden und dann Initial-Filter
+      loadProductsFromJSON().then(() => {
+        filterProducts();
+      });
     });
 
     // Warenkorb System
@@ -880,6 +806,48 @@
           document.body.style.overflow = '';
         }
       });
+    });
+
+    // Back to Top Button Funktionalität
+    document.addEventListener('DOMContentLoaded', function() {
+      const backToTopBtn = document.getElementById('backToTop');
+      
+      // Button anzeigen/verstecken basierend auf Scroll-Position
+      function toggleBackToTop() {
+        if (window.scrollY > 300) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      }
+      
+      // Smooth Scroll nach oben
+      function scrollToTop() {
+        if (window.scroll && window.scroll.scrollTo) {
+          // Locomotive Scroll verwenden
+          window.scroll.scrollTo(0, { duration: 800, disableLerp: false });
+        } else {
+          // Fallback für normales Scrollen
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      }
+      
+      // Event Listeners
+      backToTopBtn.addEventListener('click', scrollToTop);
+      
+      // Scroll-Event für Locomotive Scroll
+      if (window.scroll && window.scroll.on) {
+        window.scroll.on('scroll', toggleBackToTop);
+      } else {
+        // Fallback für normales Scrollen
+        window.addEventListener('scroll', toggleBackToTop);
+      }
+      
+      // Initial check
+      toggleBackToTop();
     });
   </script>
 </body>
