@@ -203,6 +203,88 @@ body[data-scroll-container] {
   width: 100%;
 }
 
+/* Warenkorb Button */
+.cart-container {
+  position: relative;
+}
+
+.cart-btn {
+  background: none;
+  border: none;
+  color: #18181b;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-btn:hover {
+  background: #f8fafc;
+  color: #ff3e55;
+  transform: scale(1.1);
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff3e55;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 20px;
+  transition: all 0.3s ease;
+}
+
+.cart-count.animate {
+  animation: cartBounce 0.6s ease;
+}
+
+@keyframes cartBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* Mobile Warenkorb */
+.mobile-cart {
+  margin-top: 1rem;
+}
+
+.cart-btn.mobile {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  color: #18181b;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.cart-btn.mobile:hover {
+  background: #ff3e55;
+  color: white;
+}
+
+.cart-btn.mobile .cart-count {
+  position: static;
+  margin-left: auto;
+  background: #ff3e55;
+  color: white;
+}
+
 /* Hero Section */
 .hero {
   min-height: 100vh;
@@ -573,6 +655,8 @@ main {
   flex-direction: column;
   flex: 1 1 auto;
   padding: 0 1.2rem;
+  /* Feste Höhe für einheitliche Darstellung */
+  min-height: 140px;
   /* Preis und Button immer am unteren Rand */
   justify-content: space-between;
 }
@@ -583,6 +667,11 @@ main {
   line-height: 1.2;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
+  /* Begrenze Text auf 2 Zeilen für einheitliche Höhe */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .product-content p {
@@ -602,6 +691,7 @@ main {
   color: #ff3e55;
   margin: 0 0 1rem 0;
   /* Preis immer am unteren Rand vor dem Button */
+  margin-top: auto;
 }
 
 .buy-btn {
