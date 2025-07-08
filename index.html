@@ -45,7 +45,7 @@
     </div>
   </header>
 
-  <main data-scroll-section>
+  <main data-scroll-section style="margin-top:2.5rem;">
     <section class="products" id="shop">
       <div class="shop-main">
         <!-- Sidebar/Kategorien werden auf Mobil über dem Shop angezeigt -->
@@ -66,7 +66,7 @@
           </nav>
         </aside>
         <div class="shop-products">
-          <h2 class="section-title" data-scroll data-scroll-speed="1" style="text-align:left;margin-left:0;">Shop</h2>
+          <h2 class="section-title" data-scroll data-scroll-speed="1" style="text-align:left;margin-left:0;margin-top:0.5rem;margin-bottom:1.2rem;">Shop</h2>
           <div class="shop-grid" id="shopGrid">
             <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
           </div>
@@ -373,6 +373,7 @@
             selectedSub = 'alle';
           }
           filterProducts();
+          document.body.style.overflow = '';
         });
       });
       
@@ -382,6 +383,7 @@
           btn.classList.add('active');
           selectedSub = btn.getAttribute('data-subcat');
           filterProducts();
+          document.body.style.overflow = '';
         });
       });
 
