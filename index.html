@@ -83,7 +83,15 @@
           </nav>
         </aside>
         <div class="shop-products">
-          <h2 class="section-title" data-scroll data-scroll-speed="1" style="text-align:left;margin-left:0;margin-top:0.5rem;margin-bottom:1.2rem;">Shop</h2>
+          <h2 class="section-title" data-scroll data-scroll-speed="1">Shop</h2>
+          <div class="shop-sort-bar" style="display:flex;justify-content:flex-end;align-items:center;gap:1rem;margin-bottom:1.5rem;width:100%;">
+            <label for="sortPrice" style="font-size:1rem;color:#555;">Sortieren nach:</label>
+            <select id="sortPrice" style="padding:0.4rem 1rem;border-radius:0.5rem;border:1px solid #ececec;font-size:1rem;">
+              <option value="default">Standard</option>
+              <option value="price-asc">Preis: aufsteigend</option>
+              <option value="price-desc">Preis: absteigend</option>
+            </select>
+          </div>
           <div class="shop-grid" id="shopGrid">
             <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
           </div>
@@ -261,17 +269,25 @@
       }
     }
 
-    function renderProducts(maincat, subcat) {
+    let selectedSort = 'default';
+
+    function renderProducts(maincat, subcat, sort = 'default') {
       const grid = document.getElementById('shopGrid');
       grid.innerHTML = '';
       let list = products[maincat] || [];
       while (list.length < PRODUCTS_PER_CATEGORY) {
         list = list.concat(list);
       }
-      let filtered = (subcat === 'alle')
-        ? list.slice(0, PRODUCTS_PER_CATEGORY)
-        : list.filter(p => p.subcat === subcat).slice(0, PRODUCTS_PER_CATEGORY);
-
+      // 1. Filtern
+      let filtered = (subcat === 'alle') ? list : list.filter(p => p.subcat === subcat);
+      // 2. Sortieren
+      if (sort === 'price-asc') {
+        filtered.sort((a, b) => parseFloat(a.price.replace(',','.')) - parseFloat(b.price.replace(',','.')));
+      } else if (sort === 'price-desc') {
+        filtered.sort((a, b) => parseFloat(b.price.replace(',','.')) - parseFloat(a.price.replace(',','.')));
+      }
+      // 3. Auf gewünschte Anzahl kürzen
+      filtered = filtered.slice(0, PRODUCTS_PER_CATEGORY);
       filtered.forEach(p => {
         const el = document.createElement('div');
         el.className = 'product-card';
@@ -297,7 +313,7 @@
       let selectedSub = 'alle';
 
       function filterProducts() {
-        renderProducts(selectedMain, selectedSub);
+        renderProducts(selectedMain, selectedSub, selectedSort);
         if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
       }
 
@@ -332,6 +348,15 @@
         filterProducts();
       });
     });
+
+    // EventListener für Sortierung
+    const sortSelect = document.getElementById('sortPrice');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        selectedSort = this.value;
+        filterProducts();
+      });
+    }
 
     // Warenkorb System
     let cart = [];
