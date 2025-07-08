@@ -17,6 +17,19 @@
 <body data-scroll-container>
   <header class="hero" data-scroll-section>
     <div class="hero-bg" data-scroll></div>
+    <script>
+      // Parallax-Effekt nur auf Mobil aktivieren
+      document.addEventListener('DOMContentLoaded', function() {
+        var heroBg = document.querySelector('.hero-bg');
+        if (heroBg) {
+          if (window.innerWidth <= 900) {
+            heroBg.setAttribute('data-scroll-speed', '-1');
+          } else {
+            heroBg.removeAttribute('data-scroll-speed');
+          }
+        }
+      });
+    </script>
     <nav class="navbar sticky" data-scroll>
       <div class="logo">FASHION<span class="minus">-</span>WAY</div>
       <button class="burger" id="burgerMenu" aria-label="Menü öffnen" style="display:none;">
@@ -342,7 +355,13 @@
             selectedSub = 'alle';
           }
           filterProducts();
-          // document.body.style.overflow = ''; // Entfernt, um Scroll-Fehler auf Mobil zu beheben
+          // Nur auf Desktop automatisch zum Shop scrollen
+          if (window.innerWidth > 900) {
+            const shopSection = document.getElementById('shop');
+            if (shopSection) {
+              scroll.scrollTo(shopSection, { offset: 0, duration: 600, disableLerp: false });
+            }
+          }
         });
       });
       
@@ -936,6 +955,46 @@
       updateBackToTopCartHint();
     };
     document.addEventListener('DOMContentLoaded', updateBackToTopCartHint);
+
+    window.addEventListener('beforeunload', function () {
+      window.scrollTo(0, 0);
+    });
+
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function() {
+        if (window.scroll && window.scroll.scrollTo) {
+          window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      }, 10);
+    });
+    window.addEventListener('load', function () {
+      setTimeout(function() {
+        if (window.scroll && window.scroll.scrollTo) {
+          window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
+        } else {
+          window.scrollTo(0, 0);
+        }
+      }, 10);
+    });
+
+    // Logo-Klick scrollt nach oben (nur auf Mobil)
+    document.addEventListener('DOMContentLoaded', function () {
+      var logo = document.querySelector('.logo');
+      if (logo) {
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', function(e) {
+          if (window.innerWidth > 900) return; // Auf Desktop kein Scrollen
+          e.preventDefault();
+          if (window.scroll && window.scroll.scrollTo) {
+            window.scroll.scrollTo(0, { duration: 800, disableLerp: false });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+      }
+    });
   </script>
 </body>
 </html>

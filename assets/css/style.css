@@ -463,6 +463,19 @@ body[data-scroll-container] {
   z-index: 10;
   opacity: 1 !important;
   visibility: visible !important;
+  animation: ctaPulseGlow 2.2s ease-in-out infinite;
+}
+
+@keyframes ctaPulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255,62,85,0.18), 0 0 0 0 rgba(255,140,62,0.12);
+  }
+  50% {
+    box-shadow: 0 0 16px 6px rgba(255,62,85,0.22), 0 0 32px 12px rgba(255,140,62,0.13);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255,62,85,0.18), 0 0 0 0 rgba(255,140,62,0.12);
+  }
 }
 
 .cta-btn::before {
@@ -2188,5 +2201,21 @@ footer {
     padding-left: 0.5rem !important;
     padding-right: 1.2rem !important;
     font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-subtitle {
+    font-size: 1.13rem !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+    margin-bottom: 1.6rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 95vw !important;
+    background: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
   }
 }
