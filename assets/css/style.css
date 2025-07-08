@@ -788,42 +788,70 @@ footer {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 50px;
-  height: 50px;
+  width: 55px;
+  height: 55px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid #e0e7ef;
-  border-radius: 12px;
+  border-radius: 15px;
   color: #18181b;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  pointer-events: none;
 }
 
 .back-to-top.visible {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
+  z-index: 9999 !important;
 }
 
 .back-to-top:hover {
   background: #ff3e55;
   color: white;
   border-color: #ff3e55;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(255, 62, 85, 0.3);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 12px 40px rgba(255, 62, 85, 0.4);
 }
 
 .back-to-top:active {
   transform: translateY(-1px);
   transition: all 0.1s ease;
+}
+
+/* Sicherstellen, dass der Button immer im Vordergrund steht */
+.back-to-top {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: none;
+}
+
+.back-to-top.visible {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+/* Desktop: Button immer sichtbar */
+@media (min-width: 901px) {
+  .back-to-top {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
 }
 
 /* Mobile Navigation */
@@ -840,6 +868,16 @@ footer {
   .shop-grid {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+  }
+  
+  /* Mittlere Bildschirmgrößen Back to Top Button */
+  .back-to-top {
+    width: 52px;
+    height: 52px;
+    bottom: 25px;
+    right: 25px;
+    border-radius: 14px;
+    font-size: 1.15rem;
   }
 }
 
@@ -1463,8 +1501,10 @@ footer {
   .back-to-top {
     bottom: 20px;
     right: 20px;
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    font-size: 1.1rem;
   }
   
   .hero-title { 
@@ -1587,6 +1627,27 @@ footer {
     margin: 0;
     justify-content: flex-start;
     text-align: left;
+  }
+  
+  /* Desktop Back to Top Button Verbesserungen */
+  .back-to-top {
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    border-radius: 18px;
+    font-size: 1.4rem;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+  }
+  
+  .back-to-top:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 16px 50px rgba(255, 62, 85, 0.5);
   }
 }
 
