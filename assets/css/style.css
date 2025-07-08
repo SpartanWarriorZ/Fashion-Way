@@ -669,8 +669,9 @@ main {
 }
 
 .shop-sidebar:hover {
-  box-shadow: 0 8px 32px #ff3e5533, 0 0 0 2.5px #ff3e55;
-  border-color: #ff3e55;
+  /* Entferne orangenen Schatten und Rahmen */
+  box-shadow: 0 8px 32px #e0e7ef33, 0 0 0 2.5px #ececec;
+  border-color: #ececec;
   transition: box-shadow 0.3s, border-color 0.3s;
 }
 
@@ -2165,5 +2166,13 @@ footer {
 @media (max-width: 900px) {
   .fixed-cart-btn {
     display: none !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .shop-sidebar:hover {
+    box-shadow: 0 8px 32px #ff3e5533, 0 0 0 2.5px #ff3e55;
+    border-color: #ff3e55;
+    transition: box-shadow 0.3s, border-color 0.3s;
   }
 }
