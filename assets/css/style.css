@@ -1111,7 +1111,7 @@ footer {
     padding: 0;
     margin: 0;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: unset !important;
   }
   
   .products {
@@ -1134,7 +1134,7 @@ footer {
     display: block;
     animation: none;
     height: auto;
-    overflow-x: hidden;
+    overflow-x: unset !important;
     margin-top: 0.2rem;
   }
   
@@ -2178,5 +2178,15 @@ footer {
     box-shadow: 0 8px 32px #ff3e5533, 0 0 0 2.5px #ff3e55;
     border-color: #ff3e55;
     transition: box-shadow 0.3s, border-color 0.3s;
+  }
+}
+
+@media (max-width: 900px) {
+  .logo {
+    margin-left: 1.2rem !important;
+    margin-top: 0.3rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 1.2rem !important;
+    font-size: 2rem !important;
   }
 }

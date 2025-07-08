@@ -342,7 +342,7 @@
             selectedSub = 'alle';
           }
           filterProducts();
-          document.body.style.overflow = '';
+          // document.body.style.overflow = ''; // Entfernt, um Scroll-Fehler auf Mobil zu beheben
         });
       });
       
@@ -352,7 +352,7 @@
           btn.classList.add('active');
           selectedSub = btn.getAttribute('data-subcat');
           filterProducts();
-          document.body.style.overflow = '';
+          // document.body.style.overflow = ''; // Entfernt, um Scroll-Fehler auf Mobil zu beheben
         });
       });
 
