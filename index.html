@@ -1151,6 +1151,9 @@
           if (target) {
             scroll.scrollTo(target, { offset: 0, duration: 800, disableLerp: false });
           }
+          if (targetId === '#shop' && window.innerWidth <= 900) {
+          scroll.scrollTo(target, { offset: -100, duration: 800, disableLerp: false });
+        }
         }
       });
     });
