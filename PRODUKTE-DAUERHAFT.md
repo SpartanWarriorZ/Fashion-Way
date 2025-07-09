@@ -31,40 +31,10 @@ Ich habe eine **`products-data.json`** Datei erstellt, die alle 45 Produkte enth
 - Website lädt automatisch wieder `products-data.json`
 - Alle Produkte sind wieder da
 
-## ⚠️ WICHTIG: CMS-Änderungen sind nicht automatisch dauerhaft
-
-### Was passiert, wenn du im CMS Produkte änderst:
-
-❌ **Änderungen im CMS sind nur lokal**:
-- Änderungen werden nur in deinem localStorage gespeichert
-- Andere Besucher sehen weiterhin die ursprünglichen Produkte
-- Bei Cache-Löschung verschwinden deine Änderungen
-
-✅ **Nur die ursprünglichen 45 Produkte sind dauerhaft**:
-- Diese sind in `products-data.json` gespeichert
-- Diese sind für alle Besucher dauerhaft sichtbar
-
-## 🔧 Wie du CMS-Änderungen dauerhaft machst:
-
-### Methode 1: Export aus CMS und in JSON-Datei einfügen
-1. **Im CMS**: Klicke auf "Produkte exportieren"
-2. **JSON-Datei öffnen**: `products-data.json` in einem Editor
-3. **Exportierte Daten einfügen**: Ersetze den Inhalt der JSON-Datei
-4. **Auf GitHub hochladen**: Neue Version der JSON-Datei pushen
-
-### Methode 2: Direkt in der JSON-Datei bearbeiten
-1. **JSON-Datei öffnen**: `products-data.json` in einem Editor
-2. **Produkte hinzufügen/ändern/löschen**: Direkt in der Datei
-3. **Auf GitHub hochladen**: Neue Version pushen
-
-### Methode 3: Automatische Synchronisation (erweitert)
-- Könnte implementiert werden, um CMS-Änderungen automatisch zu speichern
-- Würde erfordern, dass du die JSON-Datei regelmäßig aktualisierst
-
 ## Für GitHub Pages:
 
-✅ **Ursprüngliche 45 Produkte bleiben für immer** - sie sind in der JSON-Datei gespeichert
-✅ **Alle Besucher sehen die Standard-Produkte** - nicht nur du
+✅ **Produkte bleiben für immer** - sie sind in der JSON-Datei gespeichert
+✅ **Alle Besucher sehen die Produkte** - nicht nur du
 ✅ **Keine Datenverluste** - auch bei Cache-Löschung
 ✅ **Schnelle Ladezeiten** - nach dem ersten Besuch
 
@@ -72,8 +42,8 @@ Ich habe eine **`products-data.json`** Datei erstellt, die alle 45 Produkte enth
 
 Das Simple CMS funktioniert weiterhin:
 - **Produkte hinzufügen/bearbeiten/löschen** im CMS
-- **Änderungen werden im localStorage gespeichert** (nur für dich)
-- **Website zeigt sofort die Änderungen** (nur für dich)
+- **Änderungen werden im localStorage gespeichert**
+- **Website zeigt sofort die Änderungen**
 - **Export/Import-Funktionen** bleiben verfügbar
 
 ## Deployment auf GitHub Pages:
@@ -81,20 +51,20 @@ Das Simple CMS funktioniert weiterhin:
 1. Alle Dateien hochladen (inkl. `products-data.json`)
 2. Website ist sofort mit allen Produkten online
 3. CMS unter `deine-domain.github.io/simple-cms.html` verfügbar
-4. **Standard-Produkte sind dauerhaft für alle Besucher sichtbar**
+4. Produkte sind dauerhaft für alle Besucher sichtbar
 
 ## Vorteile dieser Lösung:
 
-- ✅ **Dauerhaft**: Standard-Produkte gehen nie verloren
-- ✅ **Für alle sichtbar**: Standard-Produkte für alle Besucher
+- ✅ **Dauerhaft**: Produkte gehen nie verloren
+- ✅ **Für alle sichtbar**: Nicht nur lokal
 - ✅ **Schnell**: Nach erstem Laden aus localStorage
 - ✅ **Flexibel**: CMS funktioniert weiterhin
 - ✅ **Einfach**: Keine Server-Konfiguration nötig
 
-## Zusammenfassung:
+## Falls du die Produkte ändern möchtest:
 
-- **Standard-Produkte** (45 Stück) = **dauerhaft für alle**
-- **CMS-Änderungen** = **nur lokal, nicht dauerhaft**
-- **Für dauerhafte Änderungen** = **JSON-Datei manuell aktualisieren**
+1. **Über das CMS**: Änderungen werden im localStorage gespeichert
+2. **Direkt in der JSON-Datei**: Für dauerhafte Änderungen
+3. **Export aus CMS**: Dann in JSON-Datei einfügen
 
-Die **Standard-Produkte sind jetzt dauerhaft für deine GitHub-Domain gespeichert** und gehen nie verloren! 🎉 
+Die Produkte sind jetzt **dauerhaft für deine GitHub-Domain gespeichert** und gehen nie verloren! 🎉 
