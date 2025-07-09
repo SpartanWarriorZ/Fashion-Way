@@ -253,7 +253,7 @@
       });
     });
 
-    // Produktdaten aus localStorage oder JSON-Datei laden
+    // Produktdaten aus localStorage laden (Simple CMS)
     let products = {};
     
     async function loadProductsFromSimpleCMS() {
@@ -262,7 +262,7 @@
         const savedProducts = localStorage.getItem('fashionWayProducts');
         if (savedProducts) {
           const allProducts = JSON.parse(savedProducts);
-          console.log('Produkte aus localStorage geladen:', allProducts);
+          console.log('Produkte aus Simple CMS geladen:', allProducts);
           
           // Daten in das erwartete Format konvertieren
           products = {
@@ -286,43 +286,10 @@
             }))
           };
         } else {
-          // Fallback zu products-data.json
-          console.log('Keine Produkte im localStorage gefunden, lade products-data.json');
-          const response = await fetch('./products-data.json');
-          if (response.ok) {
-            const allProducts = await response.json();
-            console.log('Produkte aus products-data.json geladen:', allProducts);
-            
-            // Daten in das erwartete Format konvertieren
-            products = {
-              herren: allProducts.filter(p => p.category === 'herren').map(p => ({
-                name: p.name,
-                price: `${p.price.toFixed(2).replace('.', ',')} €`,
-                img: p.image,
-                subcat: p.subcategory
-              })),
-              damen: allProducts.filter(p => p.category === 'damen').map(p => ({
-                name: p.name,
-                price: `${p.price.toFixed(2).replace('.', ',')} €`,
-                img: p.image,
-                subcat: p.subcategory
-              })),
-              kinder: allProducts.filter(p => p.category === 'kinder').map(p => ({
-                name: p.name,
-                price: `${p.price.toFixed(2).replace('.', ',')} €`,
-                img: p.image,
-                subcat: p.subcategory
-              }))
-            };
-            
-            // In localStorage speichern für zukünftige Verwendung
-            localStorage.setItem('fashionWayProducts', JSON.stringify(allProducts));
-          } else {
-            // Fallback zu statischen Daten
-            console.log('products-data.json nicht gefunden, lade Fallback-Daten');
-            const fallbackResponse = await fetch('products.json');
-            products = await fallbackResponse.json();
-          }
+          // Fallback zu statischen Daten
+          console.log('Keine Produkte im Simple CMS gefunden, lade Fallback-Daten');
+          const response = await fetch('products.json');
+          products = await response.json();
         }
         
       } catch (error) {
@@ -946,18 +913,38 @@
       function scrollToTop() {
         console.log('scrollToTop called');
         
-        // Locomotive Scroll verwenden
-        if (typeof scroll !== 'undefined' && scroll.scrollTo) {
-          console.log('Using Locomotive Scroll');
-          scroll.scrollTo(0, { duration: 800, disableLerp: false });
-        } else {
-          // Fallback für normales Scrollen
-          console.log('Using native scroll');
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
+        // Verschiedene Methoden für Locomotive Scroll
+        if (typeof scroll !== 'undefined') {
+          console.log('Locomotive Scroll available');
+          
+          // Methode 1: Direkt scrollTo
+          if (scroll.scrollTo) {
+            console.log('Using scroll.scrollTo');
+            scroll.scrollTo(0, { duration: 800, disableLerp: false });
+            return;
+          }
+          
+          // Methode 2: Über die Instanz
+          if (scroll.instance && scroll.instance.scrollTo) {
+            console.log('Using scroll.instance.scrollTo');
+            scroll.instance.scrollTo(0, { duration: 800, disableLerp: false });
+            return;
+          }
+          
+          // Methode 3: Über die scroll property
+          if (scroll.scroll && scroll.scroll.scrollTo) {
+            console.log('Using scroll.scroll.scrollTo');
+            scroll.scroll.scrollTo(0, { duration: 800, disableLerp: false });
+            return;
+          }
         }
+        
+        // Fallback für normales Scrollen
+        console.log('Using native scroll');
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }
       
       // Event Listeners
@@ -1037,33 +1024,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         });
-      }
-    });
-
-    // Produkte beim Laden der Seite initialisieren
-    document.addEventListener('DOMContentLoaded', async function () {
-      console.log('DOMContentLoaded - Lade Produkte...');
-      await loadProductsFromSimpleCMS();
-      console.log('Produkte geladen:', products);
-      renderProducts('herren', 'alle', 'default');
-      
-      // ScrollTrigger nach dem Laden der Produkte aktualisieren
-      if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
-        ScrollTrigger.refresh();
-      }
-    });
-
-    // Zusätzliche Initialisierung beim vollständigen Laden
-    window.addEventListener('load', async function () {
-      console.log('Window loaded - Initialisiere Produkte...');
-      if (Object.keys(products).length === 0) {
-        await loadProductsFromSimpleCMS();
-        renderProducts('herren', 'alle', 'default');
-      }
-      
-      // ScrollTrigger aktualisieren
-      if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
-        ScrollTrigger.refresh();
       }
     });
   </script>
