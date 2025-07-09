@@ -1,0 +1,452 @@
+[
+  {
+    "name": "T-Shirt Basic",
+    "price": 19.99,
+    "description": "Ein klassisches Basic-T-Shirt aus Baumwolle.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80",
+    "stock": 25,
+    "id": 1
+  },
+  {
+    "name": "Sommerkleid",
+    "price": 39.95,
+    "description": "Leichtes Sommerkleid mit Blumenmuster.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=600&q=80",
+    "stock": 12,
+    "id": 2
+  },
+  {
+    "name": "Kinder Sneaker",
+    "price": 29.90,
+    "description": "Bequeme Sneaker für Kinder, ideal für den Alltag.",
+    "category": "kinder",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 18,
+    "id": 3
+  },
+  {
+    "name": "Herren Jeans",
+    "price": 49.99,
+    "description": "Moderne Slim-Fit Jeans für Herren.",
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80",
+    "stock": 10,
+    "id": 4
+  },
+  {
+    "name": "Damen Bluse",
+    "price": 34.95,
+    "description": "Elegante Bluse mit feinem Muster.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 8,
+    "id": 5
+  },
+  {
+    "name": "Kinder Mütze",
+    "price": 14.99,
+    "description": "Warme Mütze für Kinder, ideal für den Winter.",
+    "category": "kinder",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
+    "stock": 20,
+    "id": 6
+  },
+  {
+    "name": "Herren Hoodie",
+    "price": 44.99,
+    "description": "Bequemer Hoodie für Herren, perfekt für kühle Tage.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "stock": 15,
+    "id": 7
+  },
+  {
+    "name": "Damen Sneaker",
+    "price": 59.95,
+    "description": "Trendige Sneaker für Damen.",
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80",
+    "stock": 14,
+    "id": 8
+  },
+  {
+    "name": "Kinder Regenjacke",
+    "price": 39.99,
+    "description": "Wasserdichte Regenjacke für Kinder.",
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
+    "stock": 9,
+    "id": 9
+  },
+  {
+    "name": "Herren Gürtel",
+    "price": 24.99,
+    "description": "Echleder-Gürtel für Herren.",
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+    "stock": 30,
+    "id": 10
+  },
+  {
+    "name": "Damen Hose",
+    "price": 44.95,
+    "description": "Bequeme Stoffhose für Damen.",
+    "category": "damen",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 11,
+    "id": 11
+  },
+  {
+    "name": "Kinder T-Shirt",
+    "price": 12.99,
+    "description": "Buntes T-Shirt für Kinder.",
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=600&q=80",
+    "stock": 22,
+    "id": 12
+  },
+  {
+    "name": "Herren Sneaker",
+    "price": 59.99,
+    "description": "Sportliche Sneaker für Herren.",
+    "category": "herren",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 13,
+    "id": 13
+  },
+  {
+    "name": "Damen Schal",
+    "price": 19.95,
+    "description": "Weicher Schal für kühle Tage.",
+    "category": "damen",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?auto=format&fit=crop&w=600&q=80",
+    "stock": 17,
+    "id": 14
+  },
+  {
+    "name": "Kinder Hose",
+    "price": 19.99,
+    "description": "Bequeme Hose für Kinder.",
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 16,
+    "id": 15
+  },
+  {
+    "name": "Herren Poloshirt",
+    "price": 29.99,
+    "description": "Klassisches Poloshirt für Herren.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?auto=format&fit=crop&w=600&q=80",
+    "stock": 18,
+    "id": 16
+  },
+  {
+    "name": "Damen Stiefel",
+    "price": 79.95,
+    "description": "Elegante Stiefel für Damen.",
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 7,
+    "id": 17
+  },
+  {
+    "name": "Kinder Cap",
+    "price": 9.99,
+    "description": "Coole Cap für Kinder.",
+    "category": "kinder",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
+    "stock": 15,
+    "id": 18
+  },
+  {
+    "name": "Herren Shorts",
+    "price": 24.99,
+    "description": "Leichte Shorts für den Sommer.",
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 20,
+    "id": 19
+  },
+  {
+    "name": "Damen Cardigan",
+    "price": 49.95,
+    "description": "Weicher Cardigan für kühle Abende.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 10,
+    "id": 20
+  },
+  {
+    "name": "Kinder Sandalen",
+    "price": 22.99,
+    "description": "Bequeme Sandalen für Kinder.",
+    "category": "kinder",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 13,
+    "id": 21
+  },
+  {
+    "name": "Herren Mütze",
+    "price": 14.99,
+    "description": "Warme Mütze für Herren.",
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
+    "stock": 12,
+    "id": 22
+  },
+  {
+    "name": "Damen Jeans",
+    "price": 54.95,
+    "description": "Modische Jeans für Damen.",
+    "category": "damen",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 9,
+    "id": 23
+  },
+  {
+    "name": "Kinder Pullover",
+    "price": 24.99,
+    "description": "Kuscheliger Pullover für Kinder.",
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "stock": 14,
+    "id": 24
+  },
+  {
+    "name": "Herren Sakko",
+    "price": 89.99,
+    "description": "Elegantes Sakko für besondere Anlässe.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 6,
+    "id": 25
+  },
+  {
+    "name": "Damen Pumps",
+    "price": 69.95,
+    "description": "Klassische Pumps für Damen.",
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 8,
+    "id": 26
+  },
+  {
+    "name": "Kinder Leggings",
+    "price": 15.99,
+    "description": "Bequeme Leggings für Kinder.",
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 17,
+    "id": 27
+  },
+  {
+    "name": "Herren Uhr",
+    "price": 129.99,
+    "description": "Stilvolle Armbanduhr für Herren.",
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+    "stock": 5,
+    "id": 28
+  },
+  {
+    "name": "Damen T-Shirt",
+    "price": 24.95,
+    "description": "Lässiges T-Shirt für Damen.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80",
+    "stock": 13,
+    "id": 29
+  },
+  {
+    "name": "Kinder Stiefel",
+    "price": 34.99,
+    "description": "Wasserdichte Stiefel für Kinder.",
+    "category": "kinder",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 10,
+    "id": 30
+  },
+  {
+    "name": "Herren Weste",
+    "price": 39.99,
+    "description": "Leichte Weste für Herren.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 8,
+    "id": 31
+  },
+  {
+    "name": "Damen Ohrringe",
+    "price": 14.95,
+    "description": "Elegante Ohrringe für Damen.",
+    "category": "damen",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
+    "stock": 21,
+    "id": 32
+  },
+  {
+    "name": "Kinder Shorts",
+    "price": 13.99,
+    "description": "Kurze Shorts für Kinder.",
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 19,
+    "id": 33
+  },
+  {
+    "name": "Herren Boots",
+    "price": 79.99,
+    "description": "Robuste Boots für Herren.",
+    "category": "herren",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 9,
+    "id": 34
+  },
+  {
+    "name": "Damen Blazer",
+    "price": 69.95,
+    "description": "Moderner Blazer für Damen.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 7,
+    "id": 35
+  },
+  {
+    "name": "Kinder Schal",
+    "price": 8.99,
+    "description": "Weicher Schal für Kinder.",
+    "category": "kinder",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?auto=format&fit=crop&w=600&q=80",
+    "stock": 23,
+    "id": 36
+  },
+  {
+    "name": "Herren Anzughose",
+    "price": 59.99,
+    "description": "Elegante Anzughose für Herren.",
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
+    "stock": 11,
+    "id": 37
+  },
+  {
+    "name": "Damen Sandalen",
+    "price": 34.95,
+    "description": "Sommerliche Sandalen für Damen.",
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 15,
+    "id": 38
+  },
+  {
+    "name": "Kinder Kleid",
+    "price": 24.99,
+    "description": "Süßes Kleid für Kinder.",
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=600&q=80",
+    "stock": 12,
+    "id": 39
+  },
+  {
+    "name": "Herren Socken",
+    "price": 7.99,
+    "description": "Bequeme Socken für Herren.",
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c5a?auto=format&fit=crop&w=600&q=80",
+    "stock": 40,
+    "id": 40
+  },
+  {
+    "name": "Damen Pullover",
+    "price": 39.95,
+    "description": "Kuscheliger Pullover für Damen.",
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
+    "stock": 10,
+    "id": 41
+  },
+  {
+    "name": "Kinder Gürtel",
+    "price": 11.99,
+    "description": "Verstellbarer Gürtel für Kinder.",
+    "category": "kinder",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
+    "stock": 18,
+    "id": 42
+  },
+  {
+    "name": "Herren Hemd",
+    "price": 34.99,
+    "description": "Business-Hemd für Herren.",
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?auto=format&fit=crop&w=600&q=80",
+    "stock": 14,
+    "id": 43
+  },
+  {
+    "name": "Damen Boots",
+    "price": 79.95,
+    "description": "Robuste Boots für Damen.",
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
+    "stock": 6,
+    "id": 44
+  },
+  {
+    "name": "Kinder Bluse",
+    "price": 17.99,
+    "description": "Süße Bluse für Kinder.",
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
+    "stock": 13,
+    "id": 45
+  }
+] 

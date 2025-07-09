@@ -818,7 +818,7 @@ main {
   direction: ltr;
 }
 
-/* Product Cards - KORRIGIERT für einheitliche Preispositionierung */
+/* Product Cards - EINHEITLICHE GRÖSSE für perfektes Layout */
 .product-card {
   background: #fff;
   border-radius: 2rem;
@@ -826,12 +826,14 @@ main {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* Einheitliche Höhe für alle Karten */
-  height: 450px;
+  /* Feste, einheitliche Höhe für alle Karten */
+  height: 480px;
+  width: 100%;
   transition: transform 0.18s, box-shadow 0.18s, opacity 0.3s;
   opacity: 0;
   transform: translateY(40px) scale(0.97);
   border: none;
+  position: relative;
 }
 
 .product-card.visible {
@@ -858,10 +860,11 @@ main {
 
 .product-card img {
   width: 100%; 
-  height: 260px; 
+  height: 280px; 
   object-fit: cover; 
   border-radius: 2rem 2rem 0 0;
   transition: filter 0.3s;
+  flex-shrink: 0;
 }
 
 .product-content {
@@ -870,9 +873,10 @@ main {
   flex: 1 1 auto;
   padding: 0 1.2rem;
   /* Feste Höhe für einheitliche Darstellung */
-  min-height: 140px;
+  min-height: 160px;
   /* Preis und Button immer am unteren Rand */
   justify-content: space-between;
+  position: relative;
 }
 
 .product-content h3 {
@@ -886,6 +890,8 @@ main {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 2.4rem;
+  flex-shrink: 0;
 }
 
 .product-content p {
@@ -906,6 +912,7 @@ main {
   margin: 0 0 1rem 0;
   /* Preis immer am unteren Rand vor dem Button */
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .buy-btn {
@@ -921,6 +928,11 @@ main {
   /* Button immer ganz unten */
   margin-top: auto;
   margin-bottom: 1.5rem;
+  flex-shrink: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .buy-btn:hover { 
@@ -1889,11 +1901,52 @@ footer {
   }
   
   .product-card img { 
-    height: 140px; 
+    height: 160px; 
   }
   
   .product-card {
-    height: 380px;
+    height: 400px;
+  }
+  
+  .product-content {
+    min-height: 140px;
+  }
+  
+  .product-content h3 {
+    font-size: 1.1rem;
+    min-height: 2.2rem;
+  }
+  
+  .buy-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+    height: 40px;
+  }
+}
+
+/* Sehr kleine Bildschirme (unter 500px) */
+@media (max-width: 500px) {
+  .product-card {
+    height: 360px;
+  }
+  
+  .product-card img {
+    height: 140px;
+  }
+  
+  .product-content {
+    min-height: 120px;
+  }
+  
+  .product-content h3 {
+    font-size: 1rem;
+    min-height: 2rem;
+  }
+  
+  .buy-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    height: 36px;
   }
 }
 

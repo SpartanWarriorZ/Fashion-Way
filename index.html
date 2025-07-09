@@ -253,14 +253,45 @@
       });
     });
 
-    // Produktdaten aus JSON-Datei laden
+    // Produktdaten aus localStorage laden (Simple CMS)
     let products = {};
     
-    async function loadProductsFromJSON() {
+    async function loadProductsFromSimpleCMS() {
       try {
-        const response = await fetch('products.json');
-        products = await response.json();
-        console.log('Produkte erfolgreich geladen:', products);
+        // Versuche zuerst aus localStorage zu laden
+        const savedProducts = localStorage.getItem('fashionWayProducts');
+        if (savedProducts) {
+          const allProducts = JSON.parse(savedProducts);
+          console.log('Produkte aus Simple CMS geladen:', allProducts);
+          
+          // Daten in das erwartete Format konvertieren
+          products = {
+            herren: allProducts.filter(p => p.category === 'herren').map(p => ({
+              name: p.name,
+              price: `${p.price.toFixed(2).replace('.', ',')} €`,
+              img: p.image,
+              subcat: p.subcategory
+            })),
+            damen: allProducts.filter(p => p.category === 'damen').map(p => ({
+              name: p.name,
+              price: `${p.price.toFixed(2).replace('.', ',')} €`,
+              img: p.image,
+              subcat: p.subcategory
+            })),
+            kinder: allProducts.filter(p => p.category === 'kinder').map(p => ({
+              name: p.name,
+              price: `${p.price.toFixed(2).replace('.', ',')} €`,
+              img: p.image,
+              subcat: p.subcategory
+            }))
+          };
+        } else {
+          // Fallback zu statischen Daten
+          console.log('Keine Produkte im Simple CMS gefunden, lade Fallback-Daten');
+          const response = await fetch('products.json');
+          products = await response.json();
+        }
+        
       } catch (error) {
         console.error('Fehler beim Laden der Produkte:', error);
         // Fallback zu statischen Daten
@@ -376,7 +407,7 @@
       });
 
       // Produkte laden und dann Initial-Filter
-      loadProductsFromJSON().then(() => {
+      loadProductsFromSimpleCMS().then(() => {
         filterProducts();
       });
     });

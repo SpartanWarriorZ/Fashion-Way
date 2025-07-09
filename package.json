@@ -1,0 +1,19 @@
+{
+  "name": "fashion-way-directus",
+  "version": "1.0.0",
+  "description": "Fashion-Way CMS mit Directus",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx directus start",
+    "bootstrap": "npx directus bootstrap",
+    "init": "npx directus init",
+    "setup": "npm run init && npm run bootstrap"
+  },
+  "dependencies": {
+    "directus": "^10.8.0",
+    "sqlite3": "^5.1.6"
+  },
+  "keywords": ["cms", "directus", "fashion"],
+  "author": "Fashion-Way",
+  "license": "MIT"
+} 

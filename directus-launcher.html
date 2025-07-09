@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion-Way Directus Launcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info p {
+            margin: 5px 0;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛍️ Fashion-Way</h1>
+        <h2>Directus CMS Launcher</h2>
+        
+        <div id="status" class="status loading">
+            Pruefe Directus Status...
+        </div>
+        
+        <button id="startBtn" class="btn" onclick="startDirectus()">
+            🚀 Directus Starten
+        </button>
+        
+        <button id="adminBtn" class="btn" onclick="openAdmin()" disabled>
+            📱 Admin-Panel Oeffnen
+        </button>
+        
+        <button id="websiteBtn" class="btn" onclick="openWebsite()">
+            🌐 Website Oeffnen
+        </button>
+        
+        <div class="info">
+            <h3>📋 Login-Daten:</h3>
+            <p><strong>URL:</strong> http://localhost:8055</p>
+            <p><strong>Email:</strong> admin@fashion-way.de</p>
+            <p><strong>Passwort:</strong> admin123</p>
+        </div>
+        
+        <div class="info">
+            <h3>🔧 Manuelle Schritte:</h3>
+            <p>1. Klicke "Directus Starten"</p>
+            <p>2. Warte bis Status "Bereit" anzeigt</p>
+            <p>3. Klicke "Admin-Panel Oeffnen"</p>
+            <p>4. Logge dich mit den Daten oben ein</p>
+        </div>
+    </div>
+
+    <script>
+        let directusRunning = false;
+        
+        async function checkDirectusStatus() {
+            try {
+                const response = await fetch('http://localhost:8055/server/info', {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+        
+        async function startDirectus() {
+            const statusDiv = document.getElementById('status');
+            const startBtn = document.getElementById('startBtn');
+            const adminBtn = document.getElementById('adminBtn');
+            
+            statusDiv.className = 'status loading';
+            statusDiv.textContent = 'Starte Directus...';
+            startBtn.disabled = true;
+            
+            try {
+                // Hier wuerden wir normalerweise Docker starten
+                // Da das nicht direkt aus dem Browser geht, simulieren wir es
+                statusDiv.textContent = 'Directus wird gestartet...';
+                
+                // Warte und pruefe Status
+                for (let i = 0; i < 30; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    if (await checkDirectusStatus()) {
+                        directusRunning = true;
+                        statusDiv.className = 'status success';
+                        statusDiv.textContent = '✅ Directus ist bereit!';
+                        adminBtn.disabled = false;
+                        return;
+                    }
+                    
+                    statusDiv.textContent = `Starte Directus... (${i+1}/30)`;
+                }
+                
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Directus konnte nicht gestartet werden';
+                startBtn.disabled = false;
+                
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Fehler beim Starten: ' + error.message;
+                startBtn.disabled = false;
+            }
+        }
+        
+        function openAdmin() {
+            window.open('http://localhost:8055', '_blank');
+        }
+        
+        function openWebsite() {
+            window.open('http://localhost:5500', '_blank');
+        }
+        
+        // Pruefe initial den Status
+        setInterval(async () => {
+            if (!directusRunning) {
+                const isRunning = await checkDirectusStatus();
+                if (isRunning) {
+                    directusRunning = true;
+                    document.getElementById('status').className = 'status success';
+                    document.getElementById('status').textContent = '✅ Directus ist bereit!';
+                    document.getElementById('adminBtn').disabled = false;
+                }
+            }
+        }, 5000);
+    </script>
+</body>
+</html> 
