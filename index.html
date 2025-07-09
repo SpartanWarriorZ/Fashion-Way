@@ -946,38 +946,18 @@
       function scrollToTop() {
         console.log('scrollToTop called');
         
-        // Verschiedene Methoden für Locomotive Scroll
-        if (typeof scroll !== 'undefined') {
-          console.log('Locomotive Scroll available');
-          
-          // Methode 1: Direkt scrollTo
-          if (scroll.scrollTo) {
-            console.log('Using scroll.scrollTo');
-            scroll.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
-          
-          // Methode 2: Über die Instanz
-          if (scroll.instance && scroll.instance.scrollTo) {
-            console.log('Using scroll.instance.scrollTo');
-            scroll.instance.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
-          
-          // Methode 3: Über die scroll property
-          if (scroll.scroll && scroll.scroll.scrollTo) {
-            console.log('Using scroll.scroll.scrollTo');
-            scroll.scroll.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
+        // Locomotive Scroll verwenden
+        if (typeof scroll !== 'undefined' && scroll.scrollTo) {
+          console.log('Using Locomotive Scroll');
+          scroll.scrollTo(0, { duration: 800, disableLerp: false });
+        } else {
+          // Fallback für normales Scrollen
+          console.log('Using native scroll');
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         }
-        
-        // Fallback für normales Scrollen
-        console.log('Using native scroll');
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
       }
       
       // Event Listeners
@@ -1062,10 +1042,26 @@
 
     // Produkte beim Laden der Seite initialisieren
     document.addEventListener('DOMContentLoaded', async function () {
+      console.log('DOMContentLoaded - Lade Produkte...');
       await loadProductsFromSimpleCMS();
+      console.log('Produkte geladen:', products);
       renderProducts('herren', 'alle', 'default');
       
       // ScrollTrigger nach dem Laden der Produkte aktualisieren
+      if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
+        ScrollTrigger.refresh();
+      }
+    });
+
+    // Zusätzliche Initialisierung beim vollständigen Laden
+    window.addEventListener('load', async function () {
+      console.log('Window loaded - Initialisiere Produkte...');
+      if (Object.keys(products).length === 0) {
+        await loadProductsFromSimpleCMS();
+        renderProducts('herren', 'alle', 'default');
+      }
+      
+      // ScrollTrigger aktualisieren
       if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
         ScrollTrigger.refresh();
       }
