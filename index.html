@@ -17,19 +17,6 @@
 <body data-scroll-container>
   <header class="hero" data-scroll-section>
     <div class="hero-bg" data-scroll></div>
-    <script>
-      // Parallax-Effekt nur auf Mobil aktivieren
-      document.addEventListener('DOMContentLoaded', function() {
-        var heroBg = document.querySelector('.hero-bg');
-        if (heroBg) {
-          if (window.innerWidth <= 900) {
-            heroBg.setAttribute('data-scroll-speed', '-1');
-          } else {
-            heroBg.removeAttribute('data-scroll-speed');
-          }
-        }
-      });
-    </script>
     <nav class="navbar sticky" data-scroll>
       <div class="logo">FASHION<span class="minus">-</span>WAY</div>
       <button class="burger" id="burgerMenu" aria-label="Menü öffnen" style="display:none;">
@@ -160,42 +147,6 @@
   
   <script src="assets/js/main.js"></script>
   <script>
-    // Locomotive Scroll + GSAP ScrollTrigger Integration
-    const scroll = new LocomotiveScroll({
-      el: document.querySelector('[data-scroll-container]'),
-      smooth: true,
-      lerp: 0.08,
-      multiplier: 1,
-      class: 'is-inview'
-    });
-
-    scroll.on("scroll", ScrollTrigger.update);
-
-    ScrollTrigger.scrollerProxy("[data-scroll-container]", {
-      scrollTop(value) {
-        return arguments.length ? scroll.scrollTo(value, 0, 0) : scroll.scroll.instance.scroll.y;
-      },
-      getBoundingClientRect() {
-        return {top: 0, left: 0, width: window.innerWidth, height: window.innerHeight};
-      },
-      pinType: document.querySelector("[data-scroll-container]").style.transform ? "transform" : "fixed"
-    });
-
-    ScrollTrigger.addEventListener("refresh", () => scroll.update());
-    ScrollTrigger.refresh();
-
-    // Nach jedem Resize Locomotive Scroll & ScrollTrigger updaten
-    window.addEventListener('resize', () => {
-      if (window.scroll && window.scroll.update) scroll.update();
-      if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
-    });
-
-    // Nach jedem Laden Locomotive Scroll & ScrollTrigger updaten
-    window.addEventListener('load', () => {
-      if (window.scroll && window.scroll.update) scroll.update();
-      if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
-    });
-
     // ScrollTo-Fix für Locomotive Scroll bei Anker-Links
     document.querySelectorAll('[data-scroll-to]').forEach(link => {
       link.addEventListener('click', function(e) {
