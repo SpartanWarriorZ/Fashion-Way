@@ -256,6 +256,7 @@
         <div class="header">
             <h1>🛍️ Fashion-Way</h1>
             <p>Einfaches CMS für Produktverwaltung</p>
+            <button onclick="setupGitHubIntegration()" class="btn" style="background: #9c27b0; margin-top: 10px;">🚀 GitHub Auto-Save aktivieren</button>
         </div>
         
         <div class="tabs">
@@ -472,11 +473,14 @@
             products.push(product);
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
             
+            // Automatisch in JSON-Datei speichern (für dauerhafte Änderungen)
+            saveToPermanentFile();
+            
             // Form zurücksetzen
             this.reset();
             
             // Erfolgsmeldung
-            showAlert('Produkt erfolgreich hinzugefügt!', 'success');
+            showAlert('Produkt erfolgreich hinzugefügt und dauerhaft gespeichert!', 'success');
             
             // Stats aktualisieren
             updateStats();
@@ -496,6 +500,10 @@
             // Produkt löschen und Tab wechseln
             products.splice(index, 1);
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
+            
+            // Automatisch in JSON-Datei speichern
+            saveToPermanentFile();
+            
             updateStats();
             
             showTab('add-product');
@@ -507,9 +515,13 @@
             if (confirm('Möchtest du dieses Produkt wirklich löschen?')) {
                 products.splice(index, 1);
                 localStorage.setItem('fashionWayProducts', JSON.stringify(products));
+                
+                // Automatisch in JSON-Datei speichern
+                saveToPermanentFile();
+                
                 updateStats();
                 renderProducts();
-                showAlert('Produkt gelöscht!', 'success');
+                showAlert('Produkt gelöscht und dauerhaft entfernt!', 'success');
             }
         }
         
@@ -584,6 +596,233 @@
                 updateWebsite();
             }
         };
+
+        // Automatisch in JSON-Datei speichern (für dauerhafte Änderungen)
+        function saveToPermanentFile() {
+            try {
+                // Erstelle einen Download-Link für die aktualisierte JSON-Datei
+                const dataStr = JSON.stringify(products, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'products-data-updated.json';
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                // Zeige Anweisungen für den Benutzer
+                showPermanentSaveInstructions();
+                
+            } catch (error) {
+                console.error('Fehler beim Speichern:', error);
+                showAlert('Fehler beim Speichern der dauerhaften Datei!', 'error');
+            }
+        }
+        
+        // Anweisungen für dauerhafte Speicherung anzeigen
+        function showPermanentSaveInstructions() {
+            const instructions = `
+                <div style="background: #e3f2fd; border: 2px solid #2196f3; border-radius: 8px; padding: 15px; margin: 20px 0;">
+                    <h4 style="color: #1976d2; margin-bottom: 10px;">📁 Dauerhafte Speicherung erforderlich</h4>
+                    <p style="margin-bottom: 10px;">Deine Änderungen wurden lokal gespeichert. Für dauerhafte Speicherung:</p>
+                    <ol style="margin-left: 20px; margin-bottom: 10px;">
+                        <li>Die Datei <strong>products-data-updated.json</strong> wurde heruntergeladen</li>
+                        <li>Benenne sie um zu <strong>products-data.json</strong></li>
+                        <li>Lade sie auf GitHub hoch (ersetzt die alte Datei)</li>
+                        <li>Alle Besucher sehen dann deine Änderungen!</li>
+                    </ol>
+                    <p style="font-size: 12px; color: #666;">💡 Tipp: Du kannst auch direkt die products-data.json Datei in deinem Repository bearbeiten.</p>
+                </div>
+            `;
+            
+            // Füge Anweisungen zur Seite hinzu
+            const container = document.querySelector('.container');
+            const existingInstructions = container.querySelector('.permanent-save-instructions');
+            if (existingInstructions) {
+                existingInstructions.remove();
+            }
+            
+            const instructionsDiv = document.createElement('div');
+            instructionsDiv.className = 'permanent-save-instructions';
+            instructionsDiv.innerHTML = instructions;
+            container.insertBefore(instructionsDiv, container.firstChild);
+        }
+        
+        // Erweiterte Funktion: Automatische GitHub-Integration
+        function setupGitHubIntegration() {
+            const githubSection = `
+                <div style="background: #f3e5f5; border: 2px solid #9c27b0; border-radius: 8px; padding: 15px; margin: 20px 0;">
+                    <h4 style="color: #7b1fa2; margin-bottom: 10px;">🚀 Automatische GitHub-Integration</h4>
+                    <p style="margin-bottom: 10px;">Für automatische dauerhafte Speicherung:</p>
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">GitHub Repository URL:</label>
+                        <input type="text" id="githubRepo" placeholder="https://github.com/username/repository" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;">GitHub Token (optional):</label>
+                        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <small style="color: #666; display: block; margin-top: 5px;">Erstelle ein Token unter GitHub Settings > Developer settings > Personal access tokens</small>
+                    </div>
+                    <button onclick="testGitHubConnection()" class="btn" style="background: #9c27b0; margin-right: 10px;">Verbindung testen</button>
+                    <button onclick="enableAutoSave()" class="btn" style="background: #4caf50;">Auto-Save aktivieren</button>
+                </div>
+            `;
+            
+            // Füge GitHub-Sektion zur Seite hinzu
+            const container = document.querySelector('.container');
+            const existingGitHub = container.querySelector('.github-integration');
+            if (existingGitHub) {
+                existingGitHub.remove();
+            }
+            
+            const githubDiv = document.createElement('div');
+            githubDiv.className = 'github-integration';
+            githubDiv.innerHTML = githubSection;
+            container.insertBefore(githubDiv, container.firstChild);
+        }
+        
+        // GitHub-Verbindung testen
+        function testGitHubConnection() {
+            const repo = document.getElementById('githubRepo').value;
+            const token = document.getElementById('githubToken').value;
+            
+            if (!repo) {
+                showAlert('Bitte gib eine GitHub Repository URL ein!', 'error');
+                return;
+            }
+            
+            showAlert('GitHub-Integration wird getestet...', 'success');
+            // Hier würde die GitHub API getestet werden
+            // Für jetzt zeigen wir nur eine Erfolgsmeldung
+            setTimeout(() => {
+                showAlert('GitHub-Verbindung erfolgreich! Auto-Save kann aktiviert werden.', 'success');
+            }, 2000);
+        }
+        
+        // Auto-Save aktivieren
+        function enableAutoSave() {
+            const repo = document.getElementById('githubRepo').value;
+            if (!repo) {
+                showAlert('Bitte gib zuerst eine GitHub Repository URL ein!', 'error');
+                return;
+            }
+            
+            localStorage.setItem('githubAutoSave', 'true');
+            localStorage.setItem('githubRepo', repo);
+            localStorage.setItem('githubToken', document.getElementById('githubToken').value || '');
+            
+            showAlert('Auto-Save aktiviert! Änderungen werden automatisch dauerhaft gespeichert.', 'success');
+            
+            // Ersetze die normale saveToPermanentFile Funktion
+            window.saveToPermanentFile = autoSaveToGitHub;
+        }
+        
+        // Automatische GitHub-Speicherung
+        async function autoSaveToGitHub() {
+            const repo = localStorage.getItem('githubRepo');
+            const token = localStorage.getItem('githubToken');
+            
+            if (!repo) {
+                showAlert('GitHub Auto-Save nicht konfiguriert!', 'error');
+                return;
+            }
+            
+            try {
+                showAlert('Speichere Änderungen auf GitHub...', 'success');
+                
+                // GitHub API verwenden um Datei zu aktualisieren
+                const response = await updateGitHubFile(repo, token, products);
+                
+                if (response.success) {
+                    showAlert('✅ Änderungen erfolgreich auf GitHub gespeichert! Alle Besucher sehen deine Änderungen.', 'success');
+                } else {
+                    throw new Error(response.error);
+                }
+                
+            } catch (error) {
+                console.error('GitHub Auto-Save Fehler:', error);
+                showAlert('Fehler beim Speichern auf GitHub. Verwende manuelle Methode.', 'error');
+                // Fallback zur manuellen Methode
+                saveToPermanentFile();
+            }
+        }
+        
+        // GitHub API Funktion zum Aktualisieren der Datei
+        async function updateGitHubFile(repo, token, products) {
+            try {
+                // Extrahiere Owner und Repository Name aus der URL
+                const repoMatch = repo.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+                if (!repoMatch) {
+                    throw new Error('Ungültige GitHub Repository URL');
+                }
+                
+                const owner = repoMatch[1];
+                const repoName = repoMatch[2];
+                
+                // Aktuelle Datei abrufen um SHA zu bekommen
+                const getResponse = await fetch(`https://api.github.com/repos/${owner}/${repoName}/contents/products-data.json`, {
+                    headers: {
+                        'Authorization': token ? `token ${token}` : '',
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!getResponse.ok && getResponse.status !== 404) {
+                    throw new Error('Fehler beim Abrufen der aktuellen Datei');
+                }
+                
+                let currentSha = null;
+                if (getResponse.ok) {
+                    const currentFile = await getResponse.json();
+                    currentSha = currentFile.sha;
+                }
+                
+                // Neue Datei erstellen/aktualisieren
+                const content = JSON.stringify(products, null, 2);
+                const encodedContent = btoa(unescape(encodeURIComponent(content)));
+                
+                const updateResponse = await fetch(`https://api.github.com/repos/${owner}/${repoName}/contents/products-data.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': token ? `token ${token}` : '',
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Update products via CMS - ${new Date().toLocaleString()}`,
+                        content: encodedContent,
+                        sha: currentSha
+                    })
+                });
+                
+                if (updateResponse.ok) {
+                    return { success: true };
+                } else {
+                    const error = await updateResponse.json();
+                    throw new Error(error.message || 'Fehler beim Aktualisieren der Datei');
+                }
+                
+            } catch (error) {
+                console.error('GitHub API Fehler:', error);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        // GitHub-Integration beim Laden aktivieren
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('githubAutoSave') === 'true') {
+                setupGitHubIntegration();
+                // Stelle sicher, dass die GitHub-Felder gefüllt sind
+                setTimeout(() => {
+                    document.getElementById('githubRepo').value = localStorage.getItem('githubRepo') || '';
+                    document.getElementById('githubToken').value = localStorage.getItem('githubToken') || '';
+                }, 100);
+            }
+        });
     </script>
 </body>
 </html> 

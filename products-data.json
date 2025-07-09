@@ -1,0 +1,407 @@
+[
+  {
+    "id": 1,
+    "name": "Elegantes Damenkleid",
+    "price": 89.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
+    "description": "Elegantes Damenkleid für besondere Anlässe"
+  },
+  {
+    "id": 2,
+    "name": "Klassisches Herrenhemd",
+    "price": 49.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Klassisches Herrenhemd aus hochwertiger Baumwolle"
+  },
+  {
+    "id": 3,
+    "name": "Kinder-Jeans",
+    "price": 29.99,
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Bequeme Kinder-Jeans in verschiedenen Größen"
+  },
+  {
+    "id": 4,
+    "name": "Damen Bluse",
+    "price": 39.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Elegante Damenbluse für den Alltag"
+  },
+  {
+    "id": 5,
+    "name": "Herren Jeans",
+    "price": 69.99,
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Klassische Herren-Jeans in verschiedenen Schnitten"
+  },
+  {
+    "id": 6,
+    "name": "Kinder T-Shirt",
+    "price": 19.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Bequemes Kinder-T-Shirt aus Bio-Baumwolle"
+  },
+  {
+    "id": 7,
+    "name": "Damen Hose",
+    "price": 59.99,
+    "category": "damen",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
+    "description": "Elegante Damenhose für Business und Freizeit"
+  },
+  {
+    "id": 8,
+    "name": "Herren Pullover",
+    "price": 79.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400",
+    "description": "Warmer Herrenpullover für die kalte Jahreszeit"
+  },
+  {
+    "id": 9,
+    "name": "Kinder Kleid",
+    "price": 34.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Süßes Kinderkleid für besondere Anlässe"
+  },
+  {
+    "id": 10,
+    "name": "Damen Jacke",
+    "price": 129.99,
+    "category": "damen",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400",
+    "description": "Stylische Damenjacke für Herbst und Frühling"
+  },
+  {
+    "id": 11,
+    "name": "Herren Jacke",
+    "price": 149.99,
+    "category": "herren",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
+    "description": "Robuste Herrenjacke für Outdoor-Aktivitäten"
+  },
+  {
+    "id": 12,
+    "name": "Kinder Jacke",
+    "price": 44.99,
+    "category": "kinder",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Warme Kinderjacke mit praktischen Taschen"
+  },
+  {
+    "id": 13,
+    "name": "Damen T-Shirt",
+    "price": 24.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Bequemes Damen-T-Shirt aus Bio-Baumwolle"
+  },
+  {
+    "id": 14,
+    "name": "Herren T-Shirt",
+    "price": 29.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Klassisches Herren-T-Shirt in verschiedenen Farben"
+  },
+  {
+    "id": 15,
+    "name": "Kinder Hose",
+    "price": 24.99,
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Bequeme Kinderhose für Spiel und Sport"
+  },
+  {
+    "id": 16,
+    "name": "Damen Pullover",
+    "price": 69.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
+    "description": "Stylischer Damenpullover für den Alltag"
+  },
+  {
+    "id": 17,
+    "name": "Herren Hose",
+    "price": 89.99,
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Elegante Herrenhose für Business und Freizeit"
+  },
+  {
+    "id": 18,
+    "name": "Kinder Pullover",
+    "price": 34.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Warmer Kinderpullover für die kalte Jahreszeit"
+  },
+  {
+    "id": 19,
+    "name": "Damen Hemd",
+    "price": 54.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Elegantes Damenhemd für Business und Freizeit"
+  },
+  {
+    "id": 20,
+    "name": "Herren Bluse",
+    "price": 44.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Klassische Herrenbluse für formelle Anlässe"
+  },
+  {
+    "id": 21,
+    "name": "Kinder Bluse",
+    "price": 19.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Süße Kinderbluse für besondere Anlässe"
+  },
+  {
+    "id": 22,
+    "name": "Damen Hemdbluse",
+    "price": 49.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
+    "description": "Elegante Damenhemdbluse für Business"
+  },
+  {
+    "id": 23,
+    "name": "Herren Hemdbluse",
+    "price": 59.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Klassische Herrenhemdbluse für formelle Anlässe"
+  },
+  {
+    "id": 24,
+    "name": "Kinder Hemd",
+    "price": 24.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Süßes Kinderhemd für besondere Anlässe"
+  },
+  {
+    "id": 25,
+    "name": "Damen Top",
+    "price": 29.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Stylisches Damen-Top für den Sommer"
+  },
+  {
+    "id": 26,
+    "name": "Herren Tanktop",
+    "price": 19.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Bequemes Herren-Tanktop für Sport und Freizeit"
+  },
+  {
+    "id": 27,
+    "name": "Kinder Top",
+    "price": 14.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Bequemes Kinder-Top für Spiel und Sport"
+  },
+  {
+    "id": 28,
+    "name": "Damen Cardigan",
+    "price": 79.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
+    "description": "Eleganter Damen-Cardigan für Übergangszeiten"
+  },
+  {
+    "id": 29,
+    "name": "Herren Weste",
+    "price": 89.99,
+    "category": "herren",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Stylische Herren-Weste für formelle Anlässe"
+  },
+  {
+    "id": 30,
+    "name": "Kinder Cardigan",
+    "price": 39.99,
+    "category": "kinder",
+    "subcategory": "oberteile",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Süßer Kinder-Cardigan für die Übergangszeit"
+  },
+  {
+    "id": 31,
+    "name": "Damen Jeans",
+    "price": 79.99,
+    "category": "damen",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
+    "description": "Stylische Damen-Jeans in verschiedenen Schnitten"
+  },
+  {
+    "id": 32,
+    "name": "Herren Chino",
+    "price": 69.99,
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Elegante Herren-Chino für Business und Freizeit"
+  },
+  {
+    "id": 33,
+    "name": "Kinder Shorts",
+    "price": 19.99,
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Bequeme Kinder-Shorts für den Sommer"
+  },
+  {
+    "id": 34,
+    "name": "Damen Leggings",
+    "price": 34.99,
+    "category": "damen",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Bequeme Damen-Leggings für Sport und Freizeit"
+  },
+  {
+    "id": 35,
+    "name": "Herren Shorts",
+    "price": 39.99,
+    "category": "herren",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Bequeme Herren-Shorts für Sport und Freizeit"
+  },
+  {
+    "id": 36,
+    "name": "Kinder Leggings",
+    "price": 19.99,
+    "category": "kinder",
+    "subcategory": "hosen",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Bequeme Kinder-Leggings für Sport und Spiel"
+  },
+  {
+    "id": 37,
+    "name": "Damen Blazer",
+    "price": 149.99,
+    "category": "damen",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
+    "description": "Eleganter Damen-Blazer für Business"
+  },
+  {
+    "id": 38,
+    "name": "Herren Blazer",
+    "price": 169.99,
+    "category": "herren",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Klassischer Herren-Blazer für formelle Anlässe"
+  },
+  {
+    "id": 39,
+    "name": "Kinder Blazer",
+    "price": 49.99,
+    "category": "kinder",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Süßer Kinder-Blazer für besondere Anlässe"
+  },
+  {
+    "id": 40,
+    "name": "Damen Mantel",
+    "price": 199.99,
+    "category": "damen",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
+    "description": "Warmer Damen-Mantel für den Winter"
+  },
+  {
+    "id": 41,
+    "name": "Herren Mantel",
+    "price": 229.99,
+    "category": "herren",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
+    "description": "Robuster Herren-Mantel für den Winter"
+  },
+  {
+    "id": 42,
+    "name": "Kinder Mantel",
+    "price": 69.99,
+    "category": "kinder",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
+    "description": "Warmer Kinder-Mantel für den Winter"
+  },
+  {
+    "id": 43,
+    "name": "Damen Weste",
+    "price": 89.99,
+    "category": "damen",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
+    "description": "Stylische Damen-Weste für Übergangszeiten"
+  },
+  {
+    "id": 44,
+    "name": "Herren Cardigan",
+    "price": 99.99,
+    "category": "herren",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
+    "description": "Eleganter Herren-Cardigan für formelle Anlässe"
+  },
+  {
+    "id": 45,
+    "name": "Kinder Weste",
+    "price": 39.99,
+    "category": "kinder",
+    "subcategory": "jacken",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "description": "Süße Kinder-Weste für Übergangszeiten"
+  }
+] 
