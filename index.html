@@ -253,7 +253,7 @@
       });
     });
 
-    // Produktdaten aus localStorage laden (Simple CMS)
+    // Produktdaten aus localStorage oder JSON-Datei laden
     let products = {};
     
     async function loadProductsFromSimpleCMS() {
@@ -262,7 +262,7 @@
         const savedProducts = localStorage.getItem('fashionWayProducts');
         if (savedProducts) {
           const allProducts = JSON.parse(savedProducts);
-          console.log('Produkte aus Simple CMS geladen:', allProducts);
+          console.log('Produkte aus localStorage geladen:', allProducts);
           
           // Daten in das erwartete Format konvertieren
           products = {
@@ -286,10 +286,43 @@
             }))
           };
         } else {
-          // Fallback zu statischen Daten
-          console.log('Keine Produkte im Simple CMS gefunden, lade Fallback-Daten');
-          const response = await fetch('products.json');
-          products = await response.json();
+          // Fallback zu products-data.json
+          console.log('Keine Produkte im localStorage gefunden, lade products-data.json');
+          const response = await fetch('./products-data.json');
+          if (response.ok) {
+            const allProducts = await response.json();
+            console.log('Produkte aus products-data.json geladen:', allProducts);
+            
+            // Daten in das erwartete Format konvertieren
+            products = {
+              herren: allProducts.filter(p => p.category === 'herren').map(p => ({
+                name: p.name,
+                price: `${p.price.toFixed(2).replace('.', ',')} €`,
+                img: p.image,
+                subcat: p.subcategory
+              })),
+              damen: allProducts.filter(p => p.category === 'damen').map(p => ({
+                name: p.name,
+                price: `${p.price.toFixed(2).replace('.', ',')} €`,
+                img: p.image,
+                subcat: p.subcategory
+              })),
+              kinder: allProducts.filter(p => p.category === 'kinder').map(p => ({
+                name: p.name,
+                price: `${p.price.toFixed(2).replace('.', ',')} €`,
+                img: p.image,
+                subcat: p.subcategory
+              }))
+            };
+            
+            // In localStorage speichern für zukünftige Verwendung
+            localStorage.setItem('fashionWayProducts', JSON.stringify(allProducts));
+          } else {
+            // Fallback zu statischen Daten
+            console.log('products-data.json nicht gefunden, lade Fallback-Daten');
+            const fallbackResponse = await fetch('products.json');
+            products = await fallbackResponse.json();
+          }
         }
         
       } catch (error) {
@@ -1024,6 +1057,17 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
         });
+      }
+    });
+
+    // Produkte beim Laden der Seite initialisieren
+    document.addEventListener('DOMContentLoaded', async function () {
+      await loadProductsFromSimpleCMS();
+      renderProducts('herren', 'alle', 'default');
+      
+      // ScrollTrigger nach dem Laden der Produkte aktualisieren
+      if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
+        ScrollTrigger.refresh();
       }
     });
   </script>
