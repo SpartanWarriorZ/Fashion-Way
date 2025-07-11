@@ -1031,18 +1031,18 @@ function setupCombinedActionButton() {
   combinedActionBtn.classList.add('visible');
   
   // Back-to-Top Klick-Event
-  backToTopBtn.addEventListener('click', () => {
-    if (scroll) {
-      // Mit Locomotive Scroll
-      scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
-    } else {
-      // Fallback ohne Locomotive Scroll
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-  });
+    backToTopBtn.addEventListener('click', () => {
+      if (scroll) {
+        // Mit Locomotive Scroll
+        scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
+      } else {
+        // Fallback ohne Locomotive Scroll
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    });
   
   // Warenkorb Klick-Event
   cartActionBtn.addEventListener('click', openCart);

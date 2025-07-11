@@ -1130,7 +1130,7 @@ footer {
   border-radius: 0 0 15px 15px;
   border: none;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .combined-action-button .cart-btn::before {
@@ -1160,8 +1160,9 @@ footer {
 /* Cart Count Badge */
 .combined-action-button .cart-btn .cart-count {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 70%;
+  right: -2px;
+  transform: translateY(-50%);
   background: #ff3e55;
   color: #fff;
   border-radius: 50%;
@@ -1174,7 +1175,7 @@ footer {
   justify-content: center;
   border: 2px solid rgba(0, 0, 0, 0.8);
   box-shadow: 0 2px 8px rgba(255, 62, 85, 0.5);
-  z-index: 2;
+  z-index: 10000;
   pointer-events: none;
 }
 
@@ -1192,12 +1193,13 @@ footer {
     height: 16px;
   }
   
-  .cart-btn .cart-count {
+  .combined-action-button .cart-btn .cart-count {
     width: 16px;
     height: 16px;
     font-size: 0.6rem;
-    top: 10px;
-    right: 6px;
+    top: 60%;
+    right: -4px;
+    transform: translateY(-50%);
   }
 }
 
