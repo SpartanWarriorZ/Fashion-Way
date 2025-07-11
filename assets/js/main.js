@@ -624,6 +624,11 @@ function openProductImageModal(imageSrc, productName, productDescription) {
   const thumbnailsContainer = document.getElementById('productImageThumbnails');
   
   if (modal && modalImg && modalTitle && modalDescription) {
+    // Zoom zurücksetzen
+    if (window.resetImageZoom) {
+      window.resetImageZoom();
+    }
+    
     // Aktuelle Produktdaten setzen
     currentProductImages = [imageSrc]; // Für zukünftige Erweiterung mit mehreren Bildern
     currentImageIndex = 0;
@@ -663,6 +668,11 @@ function openProductImageModal(imageSrc, productName, productDescription) {
 function closeProductImageModal() {
   const modal = document.getElementById('productImageModal');
   if (modal) {
+    // Zoom zurücksetzen
+    if (window.resetImageZoom) {
+      window.resetImageZoom();
+    }
+    
     modal.classList.remove('active');
     document.body.style.overflow = '';
   }
@@ -742,6 +752,277 @@ function setupProductImageModal() {
   }
 }
 
+// Zoom-Funktionalität
+function setupImageZoom() {
+  const modalImg = document.getElementById('productImageModalImg');
+  const zoomIndicator = document.getElementById('zoomIndicator');
+  
+  if (modalImg && zoomIndicator) {
+    let isZoomed = false;
+    let isDragging = false;
+    let startX, startY, translateX = 0, translateY = 0;
+    let scale = 1;
+    const ZOOM_LEVEL = 3;
+    
+    // Zoom-Indikator anzeigen/verstecken
+    function showZoomIndicator() {
+      zoomIndicator.classList.add('show');
+      setTimeout(() => {
+        if (!isZoomed) {
+          zoomIndicator.classList.remove('show');
+        }
+      }, 2000);
+    }
+    
+    // Zoom-Indikator verstecken
+    function hideZoomIndicator() {
+      zoomIndicator.classList.remove('show');
+    }
+    
+
+    
+    // Transform anwenden
+    function applyTransform() {
+      modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }
+    
+    // Zoom an bestimmter Position
+    function zoomAtPosition(clientX, clientY) {
+      const rect = modalImg.getBoundingClientRect();
+      const containerRect = modalImg.parentElement.getBoundingClientRect();
+      
+      // Relative Position im Bild berechnen
+      const relativeX = (clientX - rect.left) / rect.width;
+      const relativeY = (clientY - rect.top) / rect.height;
+      
+      // Transform-Origin setzen
+      modalImg.style.transformOrigin = `${relativeX * 100}% ${relativeY * 100}%`;
+      
+      // Zoom anwenden
+      scale = ZOOM_LEVEL;
+      translateX = 0;
+      translateY = 0;
+      
+      modalImg.classList.add('zoomed');
+      zoomIndicator.textContent = 'Ziehen zum Navigieren • Klick zum Verkleinern';
+      zoomIndicator.classList.add('zoomed');
+      showZoomIndicator();
+      
+      applyTransform();
+    }
+    
+    // Zoom zurücksetzen
+    function resetZoom() {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      modalImg.style.transformOrigin = 'center';
+      modalImg.classList.remove('zoomed');
+      modalImg.classList.remove('dragging');
+      zoomIndicator.textContent = 'Klick zum Zoomen';
+      zoomIndicator.classList.remove('zoomed');
+      hideZoomIndicator();
+      applyTransform();
+    }
+    
+    // Mouse Events
+    let clickStartX, clickStartY;
+    let hasMoved = false;
+    
+    modalImg.addEventListener('mousedown', (e) => {
+      if (isZoomed) {
+        e.preventDefault();
+        isDragging = true;
+        hasMoved = false;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        clickStartX = e.clientX;
+        clickStartY = e.clientY;
+        modalImg.classList.add('dragging');
+      } else {
+        // Für Zoom: Start-Position merken
+        clickStartX = e.clientX;
+        clickStartY = e.clientY;
+        hasMoved = false;
+      }
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (isDragging && isZoomed) {
+        e.preventDefault();
+        
+        // Prüfen ob sich die Maus bewegt hat
+        const moveDistance = Math.sqrt(
+          Math.pow(e.clientX - clickStartX, 2) + 
+          Math.pow(e.clientY - clickStartY, 2)
+        );
+        
+        if (moveDistance > 5) {
+          hasMoved = true;
+        }
+        
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        
+        // Grenzen setzen (verhindert zu weites Scrollen)
+        const rect = modalImg.getBoundingClientRect();
+        const containerRect = modalImg.parentElement.getBoundingClientRect();
+        const maxTranslateX = (rect.width * scale - containerRect.width) / 2;
+        const maxTranslateY = (rect.height * scale - containerRect.height) / 2;
+        
+        translateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, translateX));
+        translateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, translateY));
+        
+        applyTransform();
+      } else if (!isZoomed) {
+        // Prüfen ob sich die Maus bewegt hat (für Zoom-Klick)
+        const moveDistance = Math.sqrt(
+          Math.pow(e.clientX - clickStartX, 2) + 
+          Math.pow(e.clientY - clickStartY, 2)
+        );
+        
+        if (moveDistance > 5) {
+          hasMoved = true;
+        }
+      }
+    });
+    
+    modalImg.addEventListener('click', (e) => {
+      // Nur Zoom auslösen wenn sich die Maus nicht bewegt hat
+      if (!hasMoved) {
+        if (!isZoomed) {
+          // Zoom an Klick-Position
+          zoomAtPosition(e.clientX, e.clientY);
+          isZoomed = true;
+        } else {
+          // Zoom zurücksetzen
+          resetZoom();
+          isZoomed = false;
+        }
+      }
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        modalImg.classList.remove('dragging');
+      }
+      // Reset für nächsten Klick
+      hasMoved = false;
+    });
+    
+    // Zoom-Indikator bei Hover anzeigen
+    modalImg.addEventListener('mouseenter', () => {
+      if (!isZoomed) {
+        showZoomIndicator();
+      }
+    });
+    
+    modalImg.addEventListener('mouseleave', () => {
+      if (!isZoomed) {
+        hideZoomIndicator();
+      }
+    });
+    
+    // ESC-Taste zum Zurücksetzen
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isZoomed) {
+        resetZoom();
+        isZoomed = false;
+      }
+    });
+    
+    // Touch-Events für Mobile
+    let touchStartX, touchStartY, touchTranslateX = 0, touchTranslateY = 0;
+    let isTouching = false;
+    
+    modalImg.addEventListener('touchstart', (e) => {
+      if (isZoomed) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        isTouching = true;
+        touchStartX = touch.clientX - touchTranslateX;
+        touchStartY = touch.clientY - touchTranslateY;
+        modalImg.classList.add('dragging');
+      } else {
+        // Zoom an Touch-Position
+        const touch = e.touches[0];
+        zoomAtPosition(touch.clientX, touch.clientY);
+        isZoomed = true;
+      }
+    });
+    
+    // Verhindere Doppelklick auf Mobile (Zoom-Reset)
+    let lastTouchTime = 0;
+    modalImg.addEventListener('touchend', (e) => {
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - lastTouchTime;
+      
+      if (timeDiff < 300 && timeDiff > 0) {
+        // Doppelklick erkannt - Zoom zurücksetzen
+        e.preventDefault();
+        if (isZoomed) {
+          resetZoom();
+          isZoomed = false;
+        }
+      }
+      
+      lastTouchTime = currentTime;
+    });
+    
+    modalImg.addEventListener('touchmove', (e) => {
+      if (isTouching && isZoomed) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        touchTranslateX = touch.clientX - touchStartX;
+        touchTranslateY = touch.clientY - touchStartY;
+        
+        // Grenzen setzen
+        const rect = modalImg.getBoundingClientRect();
+        const containerRect = modalImg.parentElement.getBoundingClientRect();
+        const maxTranslateX = (rect.width * scale - containerRect.width) / 2;
+        const maxTranslateY = (rect.height * scale - containerRect.height) / 2;
+        
+        touchTranslateX = Math.max(-maxTranslateX, Math.min(maxTranslateX, touchTranslateX));
+        touchTranslateY = Math.max(-maxTranslateY, Math.min(maxTranslateY, touchTranslateY));
+        
+        translateX = touchTranslateX;
+        translateY = touchTranslateY;
+        applyTransform();
+      }
+    });
+    
+    modalImg.addEventListener('touchend', () => {
+      if (isTouching) {
+        isTouching = false;
+        modalImg.classList.remove('dragging');
+      }
+    });
+    
+    // Zoom-Indikator als Reset-Button
+    zoomIndicator.addEventListener('click', () => {
+      if (isZoomed) {
+        resetZoom();
+        isZoomed = false;
+      }
+    });
+    
+    // Doppelklick zum Zurücksetzen
+    modalImg.addEventListener('dblclick', () => {
+      if (isZoomed) {
+        resetZoom();
+        isZoomed = false;
+      }
+    });
+    
+    // Zoom zurücksetzen beim Schließen des Modals
+    window.resetImageZoom = () => {
+      resetZoom();
+      isZoomed = false;
+    };
+  }
+}
+
 // Kombinierter Action Button Setup
 function setupCombinedActionButton() {
   if (!combinedActionBtn || !backToTopBtn || !cartActionBtn) return;
@@ -797,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSorting();
   setupMobileNavigation();
   setupProductImageModal(); // Produktbild Modal Setup
+  setupImageZoom(); // Zoom-Funktionalität Setup
   setupCombinedActionButton(); // Kombinierter Action Button
   setupCartButtons(); // Event-Listener für Warenkorb-Buttons setzen
   updateCartDisplay(); // Aktualisiere Cart-Anzeige nach Initialisierung
