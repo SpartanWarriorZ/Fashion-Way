@@ -23,9 +23,10 @@ let sortSelect;
 let cartCountElements;
 let cartBtn;
 let mobileCartBtn;
-let fixedCartBtn;
-let backToTopCartCount;
-let backToTopCartHint;
+let combinedActionBtn;
+let backToTopBtn;
+let cartActionBtn;
+let combinedCartCount;
 
 // DOM-Elemente initialisieren
 function initializeDOMElements() {
@@ -36,9 +37,10 @@ function initializeDOMElements() {
   cartCountElements = document.querySelectorAll('.cart-count');
   cartBtn = document.getElementById('cartBtn');
   mobileCartBtn = document.getElementById('mobileCartBtn');
-  fixedCartBtn = document.getElementById('fixedCartBtn');
-  backToTopCartCount = document.getElementById('backToTopCartCount');
-  backToTopCartHint = document.getElementById('backToTopCartHint');
+  combinedActionBtn = document.getElementById('combinedActionBtn');
+  backToTopBtn = document.getElementById('backToTopBtn');
+  cartActionBtn = document.getElementById('cartActionBtn');
+  combinedCartCount = document.getElementById('combinedCartCount');
 }
 
 // Produkte aus JSON-Datei laden
@@ -214,7 +216,7 @@ function createProductCard(product) {
 
   card.innerHTML = `
     <div class="product-image">
-      <img src="${product.image}" alt="${product.name}" loading="lazy">
+      <img src="${product.image}" alt="${product.name}" loading="lazy" onclick="openProductImageModal('${product.image}', '${product.name}', '${product.description}')" style="cursor: pointer;">
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
@@ -294,19 +296,9 @@ function updateCartDisplay() {
     element.textContent = totalItems;
   });
   
-  // Back to Top Button Cart Anzeige
-  if (totalItems > 0) {
-    backToTopCartCount.textContent = totalItems;
-    backToTopCartHint.style.display = 'flex';
-  } else {
-    backToTopCartHint.style.display = 'none';
-  }
-  
-  // Fixed Cart Button anzeigen/verstecken
-  if (totalItems > 0 && window.innerWidth > 768) {
-    fixedCartBtn.style.display = 'flex';
-  } else {
-    fixedCartBtn.style.display = 'none';
+  // Kombinierter Button Cart Count aktualisieren
+  if (combinedCartCount) {
+    combinedCartCount.textContent = totalItems;
   }
 }
 
@@ -427,9 +419,33 @@ function setupMobileNavigation() {
       mobileNav.classList.remove('active');
     });
     
-    // Schließen bei Klick auf Links
+    // Schließen bei Klick auf Links und spezielle Shop-Navigation
     mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        
+        // Spezielle Behandlung für Shop-Link auf Mobile
+        if (href === '#shop' && window.innerWidth <= 900) {
+          e.preventDefault();
+          const shopSection = document.querySelector('#shop');
+          if (shopSection && scroll) {
+            // Scroll zum Shop mit Offset von 30px nach oben
+            scroll.scrollTo(shopSection, { 
+              offset: -30, 
+              duration: 1000, 
+              disableLerp: false 
+            });
+          } else if (shopSection) {
+            // Fallback ohne Locomotive Scroll
+            const offsetTop = shopSection.offsetTop - 30;
+            window.scrollTo({
+              top: offsetTop,
+              behavior: 'smooth'
+            });
+          }
+        }
+        
+        // Mobile Navigation schließen
         mobileNav.classList.remove('active');
       });
     });
@@ -595,34 +611,160 @@ function checkout() {
   closeCart();
 }
 
-// Back to Top Button reparieren
-function setupBackToTop() {
-  const backToTopBtn = document.getElementById('backToTop');
+// Produktbild Modal Variablen
+let currentProductImages = [];
+let currentImageIndex = 0;
+
+// Produktbild Modal öffnen
+function openProductImageModal(imageSrc, productName, productDescription) {
+  const modal = document.getElementById('productImageModal');
+  const modalImg = document.getElementById('productImageModalImg');
+  const modalTitle = document.getElementById('productImageTitle');
+  const modalDescription = document.getElementById('productImageDescription');
+  const thumbnailsContainer = document.getElementById('productImageThumbnails');
   
-  if (backToTopBtn) {
-    // Scroll-Event für Button-Sichtbarkeit
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 300) {
-        backToTopBtn.style.display = 'flex';
-      } else {
-        backToTopBtn.style.display = 'none';
-      }
-    });
+  if (modal && modalImg && modalTitle && modalDescription) {
+    // Aktuelle Produktdaten setzen
+    currentProductImages = [imageSrc]; // Für zukünftige Erweiterung mit mehreren Bildern
+    currentImageIndex = 0;
     
-    // Klick-Event für Scroll nach oben
-    backToTopBtn.addEventListener('click', () => {
-      if (scroll) {
-        // Mit Locomotive Scroll
-        scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
-      } else {
-        // Fallback ohne Locomotive Scroll
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+    // Modal-Inhalt setzen
+    modalImg.src = imageSrc;
+    modalImg.alt = productName;
+    modalTitle.textContent = productName;
+    modalDescription.textContent = productDescription;
+    
+    // Thumbnails erstellen (aktuell nur ein Bild)
+    thumbnailsContainer.innerHTML = `
+      <div class="product-image-thumbnail active" onclick="showImage(0)">
+        <img src="${imageSrc}" alt="${productName}">
+      </div>
+    `;
+    
+    // Navigation-Buttons verstecken (da nur ein Bild)
+    const prevBtn = document.getElementById('productImagePrev');
+    const nextBtn = document.getElementById('productImageNext');
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+    
+    // Modal öffnen
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+    // Focus auf Close-Button setzen
+    setTimeout(() => {
+      const closeBtn = document.getElementById('productImageModalClose');
+      if (closeBtn) closeBtn.focus();
+    }, 100);
+  }
+}
+
+// Produktbild Modal schließen
+function closeProductImageModal() {
+  const modal = document.getElementById('productImageModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+// Bestimmtes Bild anzeigen (für zukünftige Bildergalerie)
+function showImage(index) {
+  if (index >= 0 && index < currentProductImages.length) {
+    currentImageIndex = index;
+    const modalImg = document.getElementById('productImageModalImg');
+    const thumbnails = document.querySelectorAll('.product-image-thumbnail');
+    
+    if (modalImg) {
+      modalImg.src = currentProductImages[index];
+    }
+    
+    // Thumbnail-Aktivität aktualisieren
+    thumbnails.forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === index);
+    });
+  }
+}
+
+// Nächstes Bild (für zukünftige Bildergalerie)
+function nextImage() {
+  if (currentImageIndex < currentProductImages.length - 1) {
+    showImage(currentImageIndex + 1);
+  }
+}
+
+// Vorheriges Bild (für zukünftige Bildergalerie)
+function prevImage() {
+  if (currentImageIndex > 0) {
+    showImage(currentImageIndex - 1);
+  }
+}
+
+// Produktbild Modal Setup
+function setupProductImageModal() {
+  const modal = document.getElementById('productImageModal');
+  const overlay = document.getElementById('productImageModalOverlay');
+  const closeBtn = document.getElementById('productImageModalClose');
+  const prevBtn = document.getElementById('productImagePrev');
+  const nextBtn = document.getElementById('productImageNext');
+  
+  if (modal && overlay && closeBtn) {
+    // Modal schließen bei Klick auf Overlay
+    overlay.addEventListener('click', closeProductImageModal);
+    
+    // Modal schließen bei Klick auf Close-Button
+    closeBtn.addEventListener('click', closeProductImageModal);
+    
+    // Navigation-Buttons (für zukünftige Bildergalerie)
+    if (prevBtn) {
+      prevBtn.addEventListener('click', prevImage);
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', nextImage);
+    }
+    
+    // ESC-Taste schließt Modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeProductImageModal();
+      }
+      
+      // Pfeiltasten für Navigation (für zukünftige Bildergalerie)
+      if (modal.classList.contains('active')) {
+        if (e.key === 'ArrowLeft') {
+          prevImage();
+        } else if (e.key === 'ArrowRight') {
+          nextImage();
+        }
       }
     });
   }
+}
+
+// Kombinierter Action Button Setup
+function setupCombinedActionButton() {
+  if (!combinedActionBtn || !backToTopBtn || !cartActionBtn) return;
+  
+  // Button immer sichtbar machen
+  combinedActionBtn.classList.add('visible');
+  
+  // Back-to-Top Klick-Event
+  backToTopBtn.addEventListener('click', () => {
+    if (scroll) {
+      // Mit Locomotive Scroll
+      scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
+    } else {
+      // Fallback ohne Locomotive Scroll
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  });
+  
+  // Warenkorb Klick-Event
+  cartActionBtn.addEventListener('click', openCart);
 }
 
 // Parallax-Effekt für Hero-Bild wie im alten Inline-Script
@@ -639,7 +781,7 @@ function setupHeroParallax() {
 
 // Event Listeners für Warenkorb-Buttons
 function setupCartButtons() {
-  [cartBtn, mobileCartBtn, fixedCartBtn].forEach(btn => {
+  [cartBtn, mobileCartBtn].forEach(btn => {
     if (btn) {
       btn.addEventListener('click', openCart);
     }
@@ -654,10 +796,16 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCategoryFilters();
   setupSorting();
   setupMobileNavigation();
-  setupBackToTop();
+  setupProductImageModal(); // Produktbild Modal Setup
+  setupCombinedActionButton(); // Kombinierter Action Button
   setupCartButtons(); // Event-Listener für Warenkorb-Buttons setzen
   updateCartDisplay(); // Aktualisiere Cart-Anzeige nach Initialisierung
-  window.addEventListener('resize', setupHeroParallax);
+  
+  // Resize Event Listener für Button-Management
+  window.addEventListener('resize', () => {
+    setupHeroParallax();
+    updateCartDisplay(); // Aktualisiere Button-Anzeige bei Resize
+  });
   
   // Locomotive Scroll nach der Initialisierung aktualisieren
   if (window.scroll && window.scroll.update) {
@@ -674,3 +822,8 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.updateCartQuantity = updateCartQuantity;
+window.openProductImageModal = openProductImageModal;
+window.closeProductImageModal = closeProductImageModal;
+window.showImage = showImage;
+window.nextImage = nextImage;
+window.prevImage = prevImage;

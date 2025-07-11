@@ -4,7 +4,6 @@ html, body {
   font-family: 'Roboto', Arial, sans-serif;
   background: linear-gradient(120deg, #f8fafc 0%, #e0e7ef 100%);
   color: #18181b;
-  scroll-behavior: smooth;
   min-height: 100vh;
   box-sizing: border-box;
   width: 100%;
@@ -448,11 +447,11 @@ body[data-scroll-container] {
   padding: 1.1rem 2.8rem; 
   font-size: 1.2rem; 
   font-weight: 700;
-  background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+  background: rgba(0, 0, 0, 0.8);
   color: #fff; 
-  border: none; 
+  border: 3px solid transparent;
   border-radius: 40px; 
-  box-shadow: 0 4px 24px #ff3e5530;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
   cursor: pointer; 
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
@@ -463,6 +462,19 @@ body[data-scroll-container] {
   z-index: 10;
   opacity: 1 !important;
   visibility: visible !important;
+  background-clip: padding-box;
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+  border-radius: 40px;
+  z-index: -1;
 }
 
 @keyframes ctaPulseGlow {
@@ -480,13 +492,13 @@ body[data-scroll-container] {
 .cta-btn::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(90deg, #ff3e55 0%, #ff8c3e 100%);
+  border-radius: 40px;
+  z-index: -1;
 }
 
 .cta-btn::after {
@@ -504,12 +516,12 @@ body[data-scroll-container] {
 
 .cta-btn:hover { 
   transform: translateY(-6px) scale(1.05) rotateX(5deg); 
-  box-shadow: 0 12px 40px rgba(255, 62, 85, 0.4), 0 0 20px rgba(255, 140, 62, 0.3);
-  background: linear-gradient(90deg, #ff8c3e 0%, #ff3e55 100%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 140, 62, 0.3);
+  background: rgba(0, 0, 0, 0.9);
 }
 
 .cta-btn:hover::before {
-  left: 100%;
+  background: linear-gradient(90deg, #ff8c3e 0%, #ff3e55 100%);
 }
 
 .cta-btn:hover::after {
@@ -524,12 +536,12 @@ body[data-scroll-container] {
 
 .cta-btn:focus {
   outline: none;
-  box-shadow: 0 4px 24px #ff3e5530, 0 0 0 3px rgba(255, 62, 85, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(255, 62, 85, 0.3);
 }
 
 .cta-btn:focus-visible {
   outline: none;
-  box-shadow: 0 4px 24px #ff3e5530, 0 0 0 3px rgba(255, 62, 85, 0.5);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(255, 62, 85, 0.5);
 }
 
 .cta-btn span {
@@ -537,12 +549,12 @@ body[data-scroll-container] {
   z-index: 2;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-block;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  text-shadow: none;
 }
 
 .cta-btn:hover span {
   transform: translateX(3px);
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  text-shadow: none;
 }
 
 /* Ripple Effect für Klick-Animation */
@@ -646,6 +658,7 @@ main {
   margin: 4rem 0 2.5rem 0; 
   text-align: left; 
   color: #18181b;
+  transform: translateY(30px);
 }
 
 /* Shop Layout */
@@ -1010,75 +1023,192 @@ footer {
   color: #ff3e55; 
 }
 
-/* Back to Top Button */
-.back-to-top {
+/* Kombinierter Action Button (Back-to-Top + Warenkorb) */
+.combined-action-button {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 55px;
-  height: 55px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid #e0e7ef;
-  border-radius: 15px;
-  color: #18181b;
+  width: 60px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.action-btn {
+  width: 100%;
+  height: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  font-size: 1.2rem;
-  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  outline: none;
+  overflow: hidden;
 }
 
-.back-to-top.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  z-index: 9999 !important;
+/* Alle Pseudo-Elemente und Animationen für Action Buttons deaktivieren */
+.combined-action-button .action-btn::before,
+.combined-action-button .action-btn::after {
+  display: none !important;
+  content: none !important;
 }
 
-.back-to-top:hover {
+.combined-action-button .action-btn:hover::before,
+.combined-action-button .action-btn:hover::after {
+  display: none !important;
+  content: none !important;
+}
+
+.combined-action-button .action-btn:active::before,
+.combined-action-button .action-btn:active::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Container komplett transparent machen */
+.combined-action-button::before,
+.combined-action-button::after {
+  display: none !important;
+  content: none !important;
+}
+
+.combined-action-button:hover::before,
+.combined-action-button:hover::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Back-to-Top Button (oberer Teil) */
+.combined-action-button .back-to-top-btn {
+  border-radius: 15px 15px 0 0;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.combined-action-button .back-to-top-btn::before {
+  display: none;
+}
+
+.combined-action-button .back-to-top-btn::after {
+  display: none;
+}
+
+.combined-action-button .back-to-top-btn:hover {
   background: #ff3e55;
   color: white;
-  border-color: #ff3e55;
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 12px 40px rgba(255, 62, 85, 0.4);
+  border: none;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 62, 85, 0.4);
 }
 
-.back-to-top:active {
-  transform: translateY(-1px);
-  transition: all 0.1s ease;
+.combined-action-button .back-to-top-btn:hover::before {
+  display: none;
 }
 
-/* Sicherstellen, dass der Button immer im Vordergrund steht */
-.back-to-top {
-  position: fixed !important;
-  z-index: 9999 !important;
+.combined-action-button .back-to-top-btn:hover::after {
+  display: none;
+}
+
+/* Warenkorb Button (unterer Teil) */
+.combined-action-button .cart-btn {
+  border-radius: 0 0 15px 15px;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.combined-action-button .cart-btn::before {
+  display: none;
+}
+
+.combined-action-button .cart-btn::after {
+  display: none;
+}
+
+.combined-action-button .cart-btn:hover {
+  background: #ff3e55;
+  color: white;
+  border: none;
+  transform: translateY(2px);
+  box-shadow: 0 8px 30px rgba(255, 62, 85, 0.4);
+}
+
+.combined-action-button .cart-btn:hover::before {
+  display: none;
+}
+
+.combined-action-button .cart-btn:hover::after {
+  display: none;
+}
+
+/* Cart Count Badge */
+.combined-action-button .cart-btn .cart-count {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff3e55;
+  color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 8px rgba(255, 62, 85, 0.5);
+  z-index: 2;
   pointer-events: none;
 }
 
-.back-to-top.visible {
-  pointer-events: auto !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: translateY(0) !important;
+/* Responsive Design */
+@media (max-width: 900px) {
+  .combined-action-button {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 100px;
+  }
+  
+  .action-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .cart-btn .cart-count {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+    top: 6px;
+    right: 6px;
+  }
 }
 
-/* Desktop: Button immer sichtbar */
-@media (min-width: 901px) {
-  .back-to-top {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
-  }
+/* Alte Back-to-Top Button Styles (werden nicht mehr verwendet) */
+.back-to-top {
+  display: none !important;
+}
+
+/* Alte Back-to-Top Button Styles (werden nicht mehr verwendet) */
+.back-to-top {
+  display: none !important;
 }
 
 /* Mobile Navigation */
@@ -1097,14 +1227,12 @@ footer {
     gap: 1.5rem;
   }
   
-  /* Mittlere Bildschirmgrößen Back to Top Button */
-  .back-to-top {
-    width: 52px;
-    height: 52px;
+  /* Mittlere Bildschirmgrößen Combined Action Button */
+  .combined-action-button {
     bottom: 25px;
     right: 25px;
-    border-radius: 14px;
-    font-size: 1.15rem;
+    width: 55px;
+    height: 110px;
   }
 }
 
@@ -1720,6 +1848,7 @@ footer {
     text-shadow: 0 3px 12px rgba(255, 62, 85, 0.3);
     animation: shopTitleGlow 3s ease-in-out infinite;
     position: relative;
+    transform: translateY(30px);
   }
   
   .shop-products .section-title::before {
@@ -1781,13 +1910,11 @@ footer {
 }
 
 @media (max-width: 700px) {
-  .back-to-top {
+  .combined-action-button {
     bottom: 20px;
     right: 20px;
     width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    font-size: 1.1rem;
+    height: 100px;
   }
   
   .hero-title { 
@@ -1852,6 +1979,7 @@ footer {
     color: #18181b;
     text-shadow: 0 2px 8px rgba(255, 62, 85, 0.2);
     animation: shopTitleGlow 3s ease-in-out infinite;
+    transform: translateY(30px);
   }
   
   @keyframes shopTitleGlow {
@@ -1980,6 +2108,7 @@ footer {
     letter-spacing: 2px;
     color: #18181b;
     animation: none;
+    transform: translateY(60px);
   }
   
   /* Desktop Navigation Modernisierung */
@@ -2028,31 +2157,26 @@ footer {
     letter-spacing: 2px;
     color: #18181b;
     animation: none;
+    transform: translateY(60px);
   }
   
   .shop-products .section-title::before {
     display: none;
   }
   
-  /* Desktop Back to Top Button Verbesserungen */
-  .back-to-top {
-    width: 60px;
-    height: 60px;
+  /* Desktop Combined Action Button Verbesserungen */
+  .combined-action-button {
+    width: 65px;
+    height: 130px;
     bottom: 40px;
     right: 40px;
-    border-radius: 18px;
-    font-size: 1.4rem;
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
     z-index: 9999;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
   }
   
-  .back-to-top:hover {
-    transform: translateY(-8px) scale(1.1);
-    box-shadow: 0 16px 50px rgba(255, 62, 85, 0.5);
+  .combined-action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 50px rgba(255, 62, 85, 0.3);
   }
 }
 
@@ -2133,6 +2257,17 @@ footer {
   .cta-btn {
     font-size: 1rem !important;
     padding: 0.8rem 1.5rem !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    border: 2px solid transparent !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .cta-btn::before {
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    border-radius: 40px !important;
   }
   
   .hero-bg {
@@ -2188,51 +2323,9 @@ footer {
   }
 }
 
+/* Alte Fixed Cart Button Styles (werden nicht mehr verwendet) */
 .fixed-cart-btn {
-  position: fixed;
-  bottom: 2.5rem;
-  right: 2.5rem;
-  z-index: 9998;
-  background: #fff;
-  border: 2px solid #ececec;
-  border-radius: 50%;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  padding: 0.7rem 0.8rem 0.7rem 0.8rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
-}
-.fixed-cart-btn:hover {
-  background: #ff3e55;
-  border-color: #ff3e55;
-  color: #fff;
-  box-shadow: 0 8px 32px rgba(255,62,85,0.18), 0 2px 16px rgba(0,0,0,0.10);
-}
-.fixed-cart-btn svg {
-  display: block;
-  color: inherit;
-}
-.fixed-cart-btn .cart-count {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  background: #ff3e55;
-  color: #fff;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 0.8rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 8px rgba(255,62,85,0.3);
-  z-index: 2;
-  pointer-events: none;
+  display: none !important;
 }
 @media (max-width: 900px) {
   .fixed-cart-btn {
@@ -2948,6 +3041,276 @@ footer {
   
   .cart-checkout-btn {
     width: 100%;
+  }
+}
+
+/* Produktbild Modal Styles */
+.product-image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10001;
+  backdrop-filter: blur(12px);
+}
+
+.product-image-modal.active {
+  display: flex;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.product-image-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.product-image-modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: scale(0.8) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.product-image-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.product-image-modal-close:hover {
+  background: rgba(255, 62, 85, 0.9);
+  transform: scale(1.1);
+}
+
+.product-image-modal-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+  min-height: 0;
+}
+
+.product-image-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.product-image-nav-btn:hover {
+  background: rgba(255, 62, 85, 0.9);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.product-image-prev {
+  left: 20px;
+}
+
+.product-image-next {
+  right: 20px;
+}
+
+.product-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.product-image-modal-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.product-image-modal-img:hover {
+  transform: scale(1.02);
+}
+
+.product-image-thumbnails {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ff3e55 #f8f9fa;
+}
+
+.product-image-thumbnails::-webkit-scrollbar {
+  height: 6px;
+}
+
+.product-image-thumbnails::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 3px;
+}
+
+.product-image-thumbnails::-webkit-scrollbar-thumb {
+  background: #ff3e55;
+  border-radius: 3px;
+}
+
+.product-image-thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+.product-image-thumbnail:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.product-image-thumbnail.active {
+  border-color: #ff3e55;
+  opacity: 1;
+}
+
+.product-image-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-image-info {
+  padding: 20px;
+  background: #fff;
+  border-top: 1px solid #e9ecef;
+}
+
+.product-image-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.product-image-info p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Responsive Design für Modal */
+@media (max-width: 768px) {
+  .product-image-modal-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    border-radius: 15px;
+  }
+  
+  .product-image-modal-close {
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .product-image-nav-btn {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .product-image-prev {
+    left: 15px;
+  }
+  
+  .product-image-next {
+    right: 15px;
+  }
+  
+  .product-image-thumbnails {
+    padding: 15px;
+  }
+  
+  .product-image-thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .product-image-info {
+    padding: 15px;
+  }
+  
+  .product-image-info h3 {
+    font-size: 1.3rem;
   }
 }
 
