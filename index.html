@@ -83,15 +83,43 @@
           </nav>
         </aside>
         <div class="shop-products">
-          <h2 class="section-title" data-scroll data-scroll-speed="1">Shop</h2>
-          <div class="shop-sort-bar" style="display:flex;justify-content:flex-end;align-items:center;gap:1rem;margin-bottom:1.5rem;width:100%;">
-            <label for="sortPrice" style="font-size:1rem;color:#555;">Sortieren nach:</label>
-            <select id="sortPrice" style="padding:0.4rem 1rem;border-radius:0.5rem;border:1px solid #ececec;font-size:1rem;">
+          <div class="shop-header" style="text-align:left;margin-bottom:0.25rem;padding:0.1rem 0;margin-left:20px;">
+            <h2 class="shop-title" style="
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 900;
+              font-size: 2.5rem;
+              color: #18181b;
+              margin: 0 0 0.5rem 0;
+              text-transform: uppercase;
+              letter-spacing: 0.05em;
+              background: linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              cursor: pointer;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              display: inline-block;
+              transform: scale(1);
+            " onmouseover="this.style.transform='scale(1.05)'; this.style.letterSpacing='0.1em'; this.style.background='linear-gradient(135deg, #ff8c3e 0%, #ff3e55 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';" onmouseout="this.style.transform='scale(1)'; this.style.letterSpacing='0.05em'; this.style.background='linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';">Shop</h2>
+            <div class="shop-subtitle" style="
+              font-family: 'Roboto', sans-serif;
+              font-size: 1rem;
+              color: #6b7280;
+              font-weight: 400;
+              margin: 0;
+              line-height: 1.4;
+            ">Entdecke unsere exklusive Kollektion</div>
+          </div>
+          
+          <div class="shop-sort-bar" style="display:flex;justify-content:flex-end;align-items:center;gap:1rem;margin-bottom:2rem;width:100%;padding:0 20px;">
+            <label for="sortPrice" style="font-size:1rem;color:#555;font-weight:500;">Sortieren nach:</label>
+            <select id="sortPrice" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #ececec;font-size:1rem;background:white;cursor:pointer;">
               <option value="default">Standard</option>
               <option value="price-asc">Preis: aufsteigend</option>
               <option value="price-desc">Preis: absteigend</option>
             </select>
           </div>
+          
           <div class="shop-grid" id="shopGrid">
             <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
           </div>
@@ -339,7 +367,10 @@
         el.setAttribute('data-maincat', maincat);
         el.setAttribute('data-subcat', p.subcat);
         el.innerHTML = `
-          <img src="${p.img}" alt="${p.name}">
+          <div class="product-images">
+            <img src="${p.img}" alt="${p.name}" class="product-main-img">
+            <img src="${p.img}" alt="${p.name}" class="product-hover-img">
+          </div>
           <div class="product-content">
             <h3>${p.name}</h3>
             <span class="price">${p.price}</span>
@@ -499,7 +530,6 @@
       const existingCart = document.getElementById('cartOverlay');
       if (existingCart) {
         existingCart.remove();
-        return;
       }
       
       // Erstelle Warenkorb-Overlay
@@ -614,12 +644,14 @@
           total += itemTotal;
           
           const itemDiv = document.createElement('div');
+          itemDiv.className = 'cart-item-div';
           itemDiv.style.cssText = `
             display: flex;
             align-items: center;
             padding: 1rem 0;
             border-bottom: 1px solid #f1f5f9;
             gap: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           `;
           
           const itemImg = document.createElement('img');
@@ -647,12 +679,108 @@
           `;
           
           const itemPrice = document.createElement('p');
-          itemPrice.textContent = `${item.price} x ${item.quantity}`;
+          itemPrice.textContent = `${item.price}`;
           itemPrice.style.cssText = `
             margin: 0;
             color: #6b7280;
             font-size: 0.9rem;
           `;
+          
+          // Mengensteuerung hinzufügen
+          const quantityControls = document.createElement('div');
+          quantityControls.style.cssText = `
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+          `;
+          
+          const minusBtn = document.createElement('button');
+          minusBtn.innerHTML = '−';
+          minusBtn.style.cssText = `
+            background: #f1f5f9;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+          `;
+          
+          const quantityDisplay = document.createElement('span');
+          quantityDisplay.textContent = item.quantity;
+          quantityDisplay.style.cssText = `
+            font-weight: 600;
+            color: #18181b;
+            min-width: 20px;
+            text-align: center;
+          `;
+          
+          const plusBtn = document.createElement('button');
+          plusBtn.innerHTML = '+';
+          plusBtn.style.cssText = `
+            background: #f1f5f9;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+          `;
+          
+          // Hover-Effekte für Plus/Minus Buttons
+          minusBtn.onmouseover = () => {
+            minusBtn.style.background = '#ff3e55';
+            minusBtn.style.color = 'white';
+          };
+          minusBtn.onmouseout = () => {
+            minusBtn.style.background = '#f1f5f9';
+            minusBtn.style.color = '#6b7280';
+          };
+          
+          plusBtn.onmouseover = () => {
+            plusBtn.style.background = '#ff3e55';
+            plusBtn.style.color = 'white';
+          };
+          plusBtn.onmouseout = () => {
+            plusBtn.style.background = '#f1f5f9';
+            plusBtn.style.color = '#6b7280';
+          };
+          
+          // Plus/Minus Funktionalität
+          minusBtn.onclick = () => {
+            if (item.quantity > 1) {
+              item.quantity--;
+              quantityDisplay.textContent = item.quantity;
+              itemTotalEl.textContent = `${(parseFloat(item.price.replace(',', '.').replace('€', '')) * item.quantity).toFixed(2).replace('.', ',')}€`;
+              localStorage.setItem('fashionWayCart', JSON.stringify(cart));
+              updateCartCount();
+              updateCartTotalInModal(cartContent);
+            }
+          };
+          
+          plusBtn.onclick = () => {
+            item.quantity++;
+            quantityDisplay.textContent = item.quantity;
+            itemTotalEl.textContent = `${(parseFloat(item.price.replace(',', '.').replace('€', '')) * item.quantity).toFixed(2).replace('.', ',')}€`;
+            localStorage.setItem('fashionWayCart', JSON.stringify(cart));
+            updateCartCount();
+            updateCartTotalInModal(cartContent);
+          };
+          
+          quantityControls.appendChild(minusBtn);
+          quantityControls.appendChild(quantityDisplay);
+          quantityControls.appendChild(plusBtn);
           
           const itemTotalEl = document.createElement('div');
           itemTotalEl.textContent = `${itemTotal.toFixed(2).replace('.', ',')}€`;
@@ -689,16 +817,29 @@
             removeBtn.style.color = '#6b7280';
           };
           
-          removeBtn.onclick = () => {
-            cart.splice(index, 1);
+          removeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Produkt komplett aus dem Warenkorb entfernen (nicht nur Menge reduzieren)
+            const productIndex = cart.findIndex(cartItem => cartItem.name === item.name);
+            if (productIndex !== -1) {
+              cart.splice(productIndex, 1); // Entfernt das gesamte Produkt aus dem Array
+            }
+            
+            // localStorage aktualisieren
             localStorage.setItem('fashionWayCart', JSON.stringify(cart));
+            
+            // Warenkorb-Counter aktualisieren
             updateCartCount();
+            
+            // Modal komplett schließen
             cartOverlay.remove();
-            showCart(); // Warenkorb neu anzeigen
-          };
+          });
           
           itemInfo.appendChild(itemName);
           itemInfo.appendChild(itemPrice);
+          itemInfo.appendChild(quantityControls);
           
           itemDiv.appendChild(itemImg);
           itemDiv.appendChild(itemInfo);
@@ -710,6 +851,7 @@
         
         // Gesamtsumme
         const totalDiv = document.createElement('div');
+        totalDiv.className = 'cart-total-div';
         totalDiv.style.cssText = `
           display: flex;
           justify-content: space-between;
@@ -725,6 +867,7 @@
         totalLabel.style.color = '#18181b';
         
         const totalAmount = document.createElement('span');
+        totalAmount.className = 'cart-total-amount';
         totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
         totalAmount.style.color = '#ff3e55';
         
@@ -734,6 +877,7 @@
         
         // Checkout Button
         const checkoutBtn = document.createElement('button');
+        checkoutBtn.className = 'cart-checkout-btn';
         checkoutBtn.textContent = 'Zur Kasse';
         checkoutBtn.style.cssText = `
           width: 100%;
@@ -805,9 +949,66 @@
       }
     }
     
+    // Total im Warenkorb neu berechnen und aktualisieren
+    function updateCartTotal() {
+      const totalDiv = document.querySelector('.cart-total-div');
+      if (totalDiv) {
+        let total = 0;
+        cart.forEach(item => {
+          const price = parseFloat(item.price.replace(',', '.').replace('€', ''));
+          total += price * item.quantity;
+        });
+        
+        const totalAmount = totalDiv.querySelector('.cart-total-amount');
+        if (totalAmount) {
+          totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
+        }
+      }
+    }
+    
+    // Total im spezifischen Modal neu berechnen und aktualisieren
+    function updateCartTotalInModal(modalContent) {
+      const totalDiv = modalContent.querySelector('.cart-total-div');
+      if (totalDiv) {
+        let total = 0;
+        cart.forEach(item => {
+          const price = parseFloat(item.price.replace(',', '.').replace('€', ''));
+          total += price * item.quantity;
+        });
+        
+        const totalAmount = totalDiv.querySelector('.cart-total-amount');
+        if (totalAmount) {
+          totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
+        }
+      }
+    }
+    
+    // CSS für Warenkorb-Animationen hinzufügen
+    function addCartAnimationStyles() {
+      if (!document.getElementById('cart-animation-styles')) {
+        const style = document.createElement('style');
+        style.id = 'cart-animation-styles';
+        style.textContent = `
+          .cart-item-div {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+          }
+          .cart-item-div.removing {
+            opacity: 0 !important;
+            transform: translateX(-100%) !important;
+            max-height: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+    
     // Warenkorb Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
       loadCart();
+      addCartAnimationStyles(); // CSS-Animationen hinzufügen
       
       const cartBtn = document.getElementById('cartBtn');
       const mobileCartBtn = document.getElementById('mobileCartBtn');

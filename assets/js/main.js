@@ -214,9 +214,15 @@ function createProductCard(product) {
   const cartItem = cart.find(item => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
+  // Sammle alle Bilder (image, image2, ...)
+  const images = [product.image];
+  if (product.image2) images.push(product.image2);
+  if (product.image3) images.push(product.image3);
+  if (product.image4) images.push(product.image4);
+
   card.innerHTML = `
-    <div class="product-image">
-      <img src="${product.image}" alt="${product.name}" loading="lazy" onclick="openProductImageModal('${product.image}', '${product.name}', '${product.description}')" style="cursor: pointer;">
+    <div class="product-image" onclick="openProductImageModalFromProduct(${product.id})" style="cursor:pointer;">
+      <img src="${product.image}" alt="${product.name}" loading="lazy">
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
@@ -654,7 +660,14 @@ function openProductImageModal(imageSrc, productName, productDescription) {
     
     // Modal öffnen
     modal.classList.add('active');
+    
+    // Scrollen auf der Hauptseite deaktivieren
     document.body.style.overflow = 'hidden';
+    
+    // Locomotive Scroll pausieren falls vorhanden
+    if (scroll && scroll.stop) {
+      scroll.stop();
+    }
     
     // Focus auf Close-Button setzen
     setTimeout(() => {
@@ -662,6 +675,80 @@ function openProductImageModal(imageSrc, productName, productDescription) {
       if (closeBtn) closeBtn.focus();
     }, 100);
   }
+}
+
+// Produktbild Modal mit mehreren Bildern öffnen
+function openProductImageModalWithImages(images, productName, productDescription) {
+  const modal = document.getElementById('productImageModal');
+  const modalImg = document.getElementById('productImageModalImg');
+  const modalTitle = document.getElementById('productImageTitle');
+  const modalDescription = document.getElementById('productImageDescription');
+  const thumbnailsContainer = document.getElementById('productImageThumbnails');
+  const prevBtn = document.getElementById('productImagePrev');
+  const nextBtn = document.getElementById('productImageNext');
+  
+  if (modal && modalImg && modalTitle && modalDescription) {
+    // Zoom zurücksetzen
+    if (window.resetImageZoom) {
+      window.resetImageZoom();
+    }
+    
+    // Aktuelle Produktdaten setzen
+    currentProductImages = images;
+    currentImageIndex = 0;
+    
+    // Modal-Inhalt setzen
+    modalImg.src = images[0];
+    modalImg.alt = productName;
+    modalTitle.textContent = productName;
+    modalDescription.textContent = productDescription;
+    
+    // Thumbnails erstellen
+    thumbnailsContainer.innerHTML = '';
+    images.forEach((image, index) => {
+      const thumbnail = document.createElement('div');
+      thumbnail.className = `product-image-thumbnail ${index === 0 ? 'active' : ''}`;
+      thumbnail.onclick = () => showImage(index);
+      thumbnail.innerHTML = `<img src="${image}" alt="${productName}">`;
+      thumbnailsContainer.appendChild(thumbnail);
+    });
+    
+    // Navigation-Buttons anzeigen/verstecken
+    if (prevBtn) prevBtn.style.display = images.length > 1 ? 'flex' : 'none';
+    if (nextBtn) nextBtn.style.display = images.length > 1 ? 'flex' : 'none';
+    
+    // Modal öffnen
+    modal.classList.add('active');
+    
+    // Scrollen auf der Hauptseite deaktivieren
+    document.body.style.overflow = 'hidden';
+    
+    // Locomotive Scroll pausieren falls vorhanden
+    if (scroll && scroll.stop) {
+      scroll.stop();
+    }
+    
+    // Focus auf Close-Button setzen
+    setTimeout(() => {
+      const closeBtn = document.getElementById('productImageModalClose');
+      if (closeBtn) closeBtn.focus();
+    }, 100);
+  }
+}
+
+// Produktbild Modal von Produkt-ID öffnen
+function openProductImageModalFromProduct(productId) {
+  const product = allProducts.find(p => p.id === productId);
+  if (!product) return;
+  
+  // Sammle alle Bilder des Produkts
+  const images = [product.image];
+  if (product.image2) images.push(product.image2);
+  if (product.image3) images.push(product.image3);
+  if (product.image4) images.push(product.image4);
+  
+  // Öffne Modal mit allen Bildern
+  openProductImageModalWithImages(images, product.name, product.description);
 }
 
 // Produktbild Modal schließen
@@ -674,7 +761,14 @@ function closeProductImageModal() {
     }
     
     modal.classList.remove('active');
+    
+    // Scrollen auf der Hauptseite wieder aktivieren
     document.body.style.overflow = '';
+    
+    // Locomotive Scroll wieder starten falls vorhanden
+    if (scroll && scroll.start) {
+      scroll.start();
+    }
   }
 }
 
@@ -684,6 +778,8 @@ function showImage(index) {
     currentImageIndex = index;
     const modalImg = document.getElementById('productImageModalImg');
     const thumbnails = document.querySelectorAll('.product-image-thumbnail');
+    const prevBtn = document.getElementById('productImagePrev');
+    const nextBtn = document.getElementById('productImageNext');
     
     if (modalImg) {
       modalImg.src = currentProductImages[index];
@@ -693,6 +789,14 @@ function showImage(index) {
     thumbnails.forEach((thumb, i) => {
       thumb.classList.toggle('active', i === index);
     });
+    
+    // Navigation-Buttons Status aktualisieren
+    if (prevBtn) {
+      prevBtn.style.display = index > 0 ? 'flex' : 'none';
+    }
+    if (nextBtn) {
+      nextBtn.style.display = index < currentProductImages.length - 1 ? 'flex' : 'none';
+    }
   }
 }
 
@@ -733,6 +837,21 @@ function setupProductImageModal() {
     if (nextBtn) {
       nextBtn.addEventListener('click', nextImage);
     }
+    
+    // Mausrad-Scrolling für Bildnavigation
+    modal.addEventListener('wheel', function(e) {
+      e.preventDefault(); // Verhindert Scrollen auf der Hauptseite
+      
+      if (currentProductImages.length <= 1) return; // Nur wenn mehrere Bilder vorhanden
+      
+      if (e.deltaY > 0) {
+        // Nach unten scrollen = nächstes Bild
+        nextImage();
+      } else if (e.deltaY < 0) {
+        // Nach oben scrollen = vorheriges Bild
+        prevImage();
+      }
+    }, { passive: false }); // Wichtig für preventDefault()
     
     // ESC-Taste schließt Modal
     document.addEventListener('keydown', function(e) {
@@ -1105,6 +1224,8 @@ window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.updateCartQuantity = updateCartQuantity;
 window.openProductImageModal = openProductImageModal;
+window.openProductImageModalWithImages = openProductImageModalWithImages;
+window.openProductImageModalFromProduct = openProductImageModalFromProduct;
 window.closeProductImageModal = closeProductImageModal;
 window.showImage = showImage;
 window.nextImage = nextImage;
