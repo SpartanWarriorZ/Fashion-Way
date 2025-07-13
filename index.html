@@ -298,20 +298,21 @@
           console.log('Produkte aus Simple CMS geladen:', allProducts);
           
           // Daten in das erwartete Format konvertieren
+          // Nur Produkte mit Bestand > 0 werden auf der Website angezeigt
           products = {
-            herren: allProducts.filter(p => p.category === 'herren').map(p => ({
+            herren: allProducts.filter(p => p.category === 'herren' && p.stock > 0).map(p => ({
               name: p.name,
               price: `${p.price.toFixed(2).replace('.', ',')} €`,
               img: p.image,
               subcat: p.subcategory
             })),
-            damen: allProducts.filter(p => p.category === 'damen').map(p => ({
+            damen: allProducts.filter(p => p.category === 'damen' && p.stock > 0).map(p => ({
               name: p.name,
               price: `${p.price.toFixed(2).replace('.', ',')} €`,
               img: p.image,
               subcat: p.subcategory
             })),
-            kinder: allProducts.filter(p => p.category === 'kinder').map(p => ({
+            kinder: allProducts.filter(p => p.category === 'kinder' && p.stock > 0).map(p => ({
               name: p.name,
               price: `${p.price.toFixed(2).replace('.', ',')} €`,
               img: p.image,

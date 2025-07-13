@@ -467,6 +467,10 @@
                 </div>
             </div>
             
+            <div id="statsInfo">
+                <!-- Verfügbarkeits-Info wird hier dynamisch eingefügt -->
+            </div>
+            
             <div class="alert alert-success">
                 <strong>✅ CMS bereit!</strong> Du kannst jetzt Produkte hinzufügen und verwalten.
                 Die Website lädt automatisch die Produkte von dieser Verwaltung.
@@ -522,7 +526,7 @@
                 <div class="form-group">
                     <label for="productStock">Lagerbestand *</label>
                     <input type="number" id="productStock" min="0" value="10" required>
-                    <small>Anzahl der verfügbaren Artikel</small>
+                    <small>Anzahl der verfügbaren Artikel. <strong>Produkte mit Bestand 0 werden auf der Website nicht angezeigt</strong> (für zukünftige Produkte).</small>
                 </div>
                 
                 <div class="form-group">
@@ -710,10 +714,26 @@
         
         // Statistiken aktualisieren
         function updateStats() {
-            document.getElementById('totalProducts').textContent = products.length;
+            const totalProducts = products.length;
+            const availableProducts = products.filter(p => p.stock > 0).length;
+            const hiddenProducts = products.filter(p => p.stock === 0).length;
+            
+            document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('herrenProducts').textContent = products.filter(p => p.category === 'herren').length;
             document.getElementById('damenProducts').textContent = products.filter(p => p.category === 'damen').length;
             document.getElementById('kinderProducts').textContent = products.filter(p => p.category === 'kinder').length;
+            
+            // Zusätzliche Info über verfügbare/versteckte Produkte
+            const statsInfo = document.getElementById('statsInfo');
+            if (statsInfo) {
+                statsInfo.innerHTML = `
+                    <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 14px;">
+                        <strong>📊 Verfügbarkeit:</strong><br>
+                        ✅ ${availableProducts} Produkte verfügbar (auf Website sichtbar)<br>
+                        🔒 ${hiddenProducts} Produkte versteckt (Bestand 0)
+                    </div>
+                `;
+            }
         }
         
         // Produkte anzeigen
