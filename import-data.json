@@ -503,5 +503,15 @@
     "stock": 10,
     "description": "GGWP",
     "id": 1752424067720
+  },
+  {
+    "name": "Herren Plug",
+    "price": 99.99,
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "stock": 10,
+    "description": "GGWP",
+    "id": 1752425775492
   }
 ]
