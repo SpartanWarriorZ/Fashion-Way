@@ -513,5 +513,15 @@
     "stock": 10,
     "description": "GGWP",
     "id": 1752425775492
+  },
+  {
+    "name": "Herren Handschuhe",
+    "price": 45.99,
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    "stock": 5,
+    "description": "Handschuhe für Auftragsmorde",
+    "id": 1752427282542
   }
 ]
