@@ -23,10 +23,7 @@ let sortSelect;
 let cartCountElements;
 let cartBtn;
 let mobileCartBtn;
-let combinedActionBtn;
 let backToTopBtn;
-let cartActionBtn;
-let combinedCartCount;
 
 // DOM-Elemente initialisieren
 function initializeDOMElements() {
@@ -34,13 +31,10 @@ function initializeDOMElements() {
   mainCatButtons = document.querySelectorAll('.main-cat-btn');
   subCatButtons = document.querySelectorAll('.sub-cat-btn');
   sortSelect = document.getElementById('sortPrice');
-  cartCountElements = document.querySelectorAll('.cart-count');
+  cartCountElements = document.querySelectorAll('.cart-count, .mobile-cart-count, .desktop-cart-count');
   cartBtn = document.getElementById('cartBtn');
   mobileCartBtn = document.getElementById('mobileCartBtn');
-  combinedActionBtn = document.getElementById('combinedActionBtn');
   backToTopBtn = document.getElementById('backToTopBtn');
-  cartActionBtn = document.getElementById('cartActionBtn');
-  combinedCartCount = document.getElementById('combinedCartCount');
 }
 
 // Produkte aus JSON-Datei laden
@@ -211,6 +205,7 @@ function createProductCard(product) {
   card.setAttribute('data-scroll', '');
   card.setAttribute('data-scroll-speed', '0.5');
 
+  // Warenkorb-Menge für dieses Produkt ermitteln
   const cartItem = cart.find(item => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
 
@@ -226,23 +221,67 @@ function createProductCard(product) {
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
-      <p class="product-description">${product.description}</p>
       <div class="product-price">€${product.price.toFixed(2)}</div>
       <div class="product-stock">${product.stock > 0 ? `${product.stock} verfügbar` : 'Ausverkauft'}</div>
-      <button class="add-to-cart-btn" onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled' : ''}>
-        ${product.stock === 0 ? 'Ausverkauft' : 'In den Warenkorb'}
-      </button>
       ${quantity > 0 ? `
         <div class="cart-quantity-controls">
           <button onclick="removeFromCart(${product.id})" class="quantity-btn">-</button>
           <span class="quantity-display">${quantity}</span>
           <button onclick="addToCart(${product.id})" class="quantity-btn" ${product.stock <= quantity ? 'disabled' : ''}>+</button>
         </div>
-      ` : ''}
+      ` : `
+        <button class="add-to-cart-btn" onclick="addToCart(${product.id})" ${product.stock === 0 ? 'disabled' : ''}>
+          ${product.stock === 0 ? 'Ausverkauft' : 'In den Warenkorb'}
+        </button>
+      `}
     </div>
   `;
 
   return card;
+}
+
+// Notification System
+function showNotification(message, type = 'info') {
+  // Entferne bestehende Notifications
+  const existingNotifications = document.querySelectorAll('.notification');
+  existingNotifications.forEach(notification => notification.remove());
+  
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <div class="notification-content">
+      <span>${message}</span>
+      <button class="notification-close">&times;</button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Animation
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 100);
+  
+  // Auto-remove nach 3 Sekunden
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 300);
+  }, 3000);
+  
+  // Close button
+  const closeBtn = notification.querySelector('.notification-close');
+  closeBtn.addEventListener('click', () => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 300);
+  });
 }
 
 // Warenkorb-Funktionen
@@ -301,10 +340,243 @@ function updateCartDisplay() {
   cartCountElements.forEach(element => {
     element.textContent = totalItems;
   });
+}
+
+// Warenkorb Modal erstellen
+function createCartModal() {
+  const modal = document.createElement('div');
+  modal.id = 'cartModal';
+  modal.className = 'cart-modal';
+  modal.innerHTML = `
+    <div class="cart-modal-overlay" id="cartModalOverlay"></div>
+    <div class="cart-modal-content">
+      <div class="cart-modal-header">
+        <h3>Warenkorb</h3>
+        <button class="cart-modal-close" id="cartModalClose">&times;</button>
+      </div>
+      <div class="cart-modal-body" id="cartModalBody">
+        <!-- Warenkorb-Inhalt wird hier dynamisch eingefügt -->
+      </div>
+      <div class="cart-modal-footer">
+        <div class="cart-total">
+          <span>Gesamt:</span>
+          <span id="cartTotalPrice">€0.00</span>
+        </div>
+        <button class="cart-checkout-btn" id="cartCheckoutBtn" disabled>
+          Zur Kasse
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
   
-  // Kombinierter Button Cart Count aktualisieren
-  if (combinedCartCount) {
-    combinedCartCount.textContent = totalItems;
+  // Event Listeners für Modal
+  document.getElementById('cartModalClose').addEventListener('click', closeCart);
+  document.getElementById('cartModalOverlay').addEventListener('click', closeCart);
+  document.getElementById('cartCheckoutBtn').addEventListener('click', checkout);
+}
+
+// Warenkorb öffnen
+function openCart(event) {
+  // Event stoppen, um unerwünschte Scroll-Events zu verhindern
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  
+  const modal = document.getElementById('cartModal');
+  if (!modal) {
+    createCartModal();
+  }
+  
+  updateCartModal();
+  document.getElementById('cartModal').classList.add('active');
+  
+  // Body-Scroll verhindern
+  document.body.style.overflow = 'hidden';
+}
+
+// Warenkorb schließen
+function closeCart() {
+  const modal = document.getElementById('cartModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+  
+  // Body-Scroll wiederherstellen
+  document.body.style.overflow = '';
+}
+
+// Warenkorb Modal aktualisieren
+function updateCartModal() {
+  const cartBody = document.getElementById('cartModalBody');
+  const totalPriceElement = document.getElementById('cartTotalPrice');
+  const checkoutBtn = document.getElementById('cartCheckoutBtn');
+  
+  if (cart.length === 0) {
+    cartBody.innerHTML = `
+      <div class="cart-empty">
+        <p>Ihr Warenkorb ist leer</p>
+        <button onclick="closeCart()" class="continue-shopping-btn">Weiter einkaufen</button>
+      </div>
+    `;
+    totalPriceElement.textContent = '€0.00';
+    checkoutBtn.disabled = true;
+    return;
+  }
+  
+  let totalPrice = 0;
+  let cartHTML = '';
+  
+  cart.forEach(item => {
+    const product = allProducts.find(p => p.id === item.id);
+    if (product) {
+      const itemTotal = product.price * item.quantity;
+      totalPrice += itemTotal;
+      
+      cartHTML += `
+        <div class="cart-item">
+          <div class="cart-item-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="cart-item-info">
+            <h4>${product.name}</h4>
+            <p class="cart-item-price">€${product.price.toFixed(2)}</p>
+          </div>
+          <div class="cart-item-quantity">
+            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+            <span>${item.quantity}</span>
+            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
+          </div>
+          <div class="cart-item-total">
+            €${itemTotal.toFixed(2)}
+          </div>
+          <button class="cart-item-remove" onclick="removeProductFromCart(${item.id})">&times;</button>
+        </div>
+      `;
+    }
+  });
+  
+  cartBody.innerHTML = cartHTML;
+  totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
+  checkoutBtn.disabled = false;
+}
+
+// Warenkorb-Menge aktualisieren
+function updateCartQuantity(productId, newQuantity) {
+  if (newQuantity <= 0) {
+    removeProductFromCart(productId);
+    return;
+  }
+  
+  const product = allProducts.find(p => p.id === productId);
+  if (newQuantity > product.stock) {
+    showNotification('Maximale Anzahl erreicht', 'error');
+    return;
+  }
+  
+  const cartItem = cart.find(item => item.id === productId);
+  if (cartItem) {
+    cartItem.quantity = newQuantity;
+    saveCart();
+    updateCartDisplay();
+    updateCartModal();
+    displayProducts(); // Aktualisiere Produktkarten
+  }
+}
+
+// Produkt komplett aus Warenkorb entfernen
+function removeProductFromCart(productId) {
+  cart = cart.filter(item => item.id !== productId);
+  saveCart();
+  updateCartDisplay();
+  updateCartModal();
+  displayProducts(); // Aktualisiere Produktkarten
+  showNotification('Produkt aus Warenkorb entfernt', 'info');
+}
+
+// Zur Kasse
+function checkout() {
+  showNotification('Checkout-Funktion wird noch implementiert', 'info');
+  closeCart();
+}
+
+// Event Listeners für Warenkorb-Buttons
+function setupCartButtons() {
+  [cartBtn, mobileCartBtn].forEach(btn => {
+    if (btn) {
+      btn.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        openCart(event);
+      });
+    }
+  });
+  
+  // Mobile Cart Action Button
+  const mobileCartActionBtn = document.getElementById('mobileCartActionBtn');
+  if (mobileCartActionBtn) {
+    mobileCartActionBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      openCart(event);
+    });
+  }
+  
+  // Desktop Cart Action Button
+  const desktopCartActionBtn = document.getElementById('desktopCartActionBtn');
+  if (desktopCartActionBtn) {
+    desktopCartActionBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      openCart(event);
+    });
+  }
+}
+
+// Mobile Back to Top Button Setup
+function setupMobileBackToTopButton() {
+  const mobileBackToTopBtn = document.getElementById('mobileBackToTopBtn');
+  
+  if (mobileBackToTopBtn) {
+    mobileBackToTopBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log('Mobile Back to Top Button clicked!');
+      
+      // Smooth Scroll nach oben
+      if (typeof scroll !== 'undefined' && scroll.scrollTo) {
+        scroll.scrollTo(0, { duration: 800, disableLerp: false });
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    });
+  }
+}
+
+// Desktop Back to Top Button Setup
+function setupDesktopBackToTopButton() {
+  const desktopBackToTopBtn = document.getElementById('desktopBackToTopBtn');
+  
+  if (desktopBackToTopBtn) {
+    desktopBackToTopBtn.addEventListener('click', function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log('Desktop Back to Top Button clicked!');
+      
+      // Smooth Scroll nach oben
+      if (typeof scroll !== 'undefined' && scroll.scrollTo) {
+        scroll.scrollTo(0, { duration: 800, disableLerp: false });
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    });
   }
 }
 
@@ -343,59 +615,6 @@ function setupSorting() {
 }
 
 // Benachrichtigungen
-function showNotification(message, type = 'info') {
-  const notification = document.createElement('div');
-  notification.className = `notification notification-${type}`;
-  notification.textContent = message;
-  
-  // Styling für Benachrichtigungen
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    color: white;
-    font-weight: 500;
-    z-index: 10000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    max-width: 300px;
-  `;
-  
-  // Farben je nach Typ
-  switch (type) {
-    case 'success':
-      notification.style.backgroundColor = '#10b981';
-      break;
-    case 'error':
-      notification.style.backgroundColor = '#ef4444';
-      break;
-    case 'warning':
-      notification.style.backgroundColor = '#f59e0b';
-      break;
-    default:
-      notification.style.backgroundColor = '#3b82f6';
-  }
-  
-  document.body.appendChild(notification);
-  
-  // Animation
-  setTimeout(() => {
-    notification.style.transform = 'translateX(0)';
-  }, 100);
-  
-  // Entfernen nach 3 Sekunden
-  setTimeout(() => {
-    notification.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
-      }
-    }, 300);
-  }, 3000);
-}
-
 function showErrorMessage(message) {
   if (shopGrid) {
     shopGrid.innerHTML = `
@@ -458,164 +677,7 @@ function setupMobileNavigation() {
   }
 }
 
-// Warenkorb Modal erstellen
-function createCartModal() {
-  const modal = document.createElement('div');
-  modal.id = 'cartModal';
-  modal.className = 'cart-modal';
-  modal.innerHTML = `
-    <div class="cart-modal-overlay" id="cartModalOverlay"></div>
-    <div class="cart-modal-content">
-      <div class="cart-modal-header">
-        <h3>Warenkorb</h3>
-        <button class="cart-modal-close" id="cartModalClose">&times;</button>
-      </div>
-      <div class="cart-modal-body" id="cartModalBody">
-        <!-- Warenkorb-Inhalt wird hier dynamisch eingefügt -->
-      </div>
-      <div class="cart-modal-footer">
-        <div class="cart-total">
-          <span>Gesamt:</span>
-          <span id="cartTotalPrice">€0.00</span>
-        </div>
-        <button class="cart-checkout-btn" id="cartCheckoutBtn" disabled>
-          Zur Kasse
-        </button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  
-  // Event Listeners für Modal
-  document.getElementById('cartModalClose').addEventListener('click', closeCart);
-  document.getElementById('cartModalOverlay').addEventListener('click', closeCart);
-  document.getElementById('cartCheckoutBtn').addEventListener('click', checkout);
-}
 
-// Warenkorb öffnen
-function openCart() {
-  const modal = document.getElementById('cartModal');
-  if (!modal) {
-    createCartModal();
-  }
-  
-  updateCartModal();
-  document.getElementById('cartModal').classList.add('active');
-  
-  // Performance-Optimierung: Locomotive Scroll pausieren
-  if (scroll) {
-    scroll.stop();
-  }
-  
-  // Body-Scroll verhindern (besser als overflow: hidden)
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${window.scrollY}px`;
-  document.body.style.width = '100%';
-}
-
-// Warenkorb schließen
-function closeCart() {
-  const modal = document.getElementById('cartModal');
-  if (modal) {
-    modal.classList.remove('active');
-  }
-  
-  // Performance-Optimierung: Locomotive Scroll wieder starten
-  if (scroll) {
-    scroll.start();
-  }
-  
-  // Body-Scroll wiederherstellen
-  const scrollY = document.body.style.top;
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  window.scrollTo(0, parseInt(scrollY || '0') * -1);
-}
-
-// Warenkorb Modal aktualisieren
-function updateCartModal() {
-  const cartBody = document.getElementById('cartModalBody');
-  const totalPriceElement = document.getElementById('cartTotalPrice');
-  const checkoutBtn = document.getElementById('cartCheckoutBtn');
-  
-  if (cart.length === 0) {
-    cartBody.innerHTML = `
-      <div class="cart-empty">
-        <p>Ihr Warenkorb ist leer</p>
-        <button onclick="closeCart()" class="continue-shopping-btn">Weiter einkaufen</button>
-      </div>
-    `;
-    totalPriceElement.textContent = '€0.00';
-    checkoutBtn.disabled = true;
-    return;
-  }
-  
-  let totalPrice = 0;
-  let cartHTML = '';
-  
-  cart.forEach(item => {
-    const product = allProducts.find(p => p.id === item.id);
-    if (product) {
-      const itemTotal = product.price * item.quantity;
-      totalPrice += itemTotal;
-      
-      cartHTML += `
-        <div class="cart-item">
-          <div class="cart-item-image">
-            <img src="${product.image}" alt="${product.name}">
-          </div>
-          <div class="cart-item-info">
-            <h4>${product.name}</h4>
-            <p class="cart-item-price">€${product.price.toFixed(2)}</p>
-          </div>
-          <div class="cart-item-quantity">
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-            <span>${item.quantity}</span>
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
-          </div>
-          <div class="cart-item-total">
-            €${itemTotal.toFixed(2)}
-          </div>
-          <button class="cart-item-remove" onclick="removeFromCart(${item.id})">&times;</button>
-        </div>
-      `;
-    }
-  });
-  
-  cartBody.innerHTML = cartHTML;
-  totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
-  checkoutBtn.disabled = false;
-}
-
-// Warenkorb-Menge aktualisieren
-function updateCartQuantity(productId, newQuantity) {
-  if (newQuantity <= 0) {
-    removeFromCart(productId);
-    return;
-  }
-  
-  const product = allProducts.find(p => p.id === productId);
-  if (newQuantity > product.stock) {
-    showNotification('Maximale Anzahl erreicht', 'error');
-    return;
-  }
-  
-  const cartItem = cart.find(item => item.id === productId);
-  if (cartItem) {
-    cartItem.quantity = newQuantity;
-    saveCart();
-    updateCartDisplay();
-    updateCartModal();
-    displayProducts(); // Aktualisiere Produktkarten
-  }
-}
-
-// Zur Kasse
-function checkout() {
-  showNotification('Checkout-Funktion wird noch implementiert', 'info');
-  closeCart();
-}
 
 // Produktbild Modal Variablen
 let currentProductImages = [];
@@ -1142,29 +1204,29 @@ function setupImageZoom() {
   }
 }
 
-// Kombinierter Action Button Setup
-function setupCombinedActionButton() {
-  if (!combinedActionBtn || !backToTopBtn || !cartActionBtn) return;
+// Back to Top Button Setup
+function setupBackToTopButton() {
+  if (!backToTopBtn) return;
   
   // Button immer sichtbar machen
-  combinedActionBtn.classList.add('visible');
+  backToTopBtn.classList.add('visible');
   
   // Back-to-Top Klick-Event
-    backToTopBtn.addEventListener('click', () => {
-      if (scroll) {
-        // Mit Locomotive Scroll
-        scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
-      } else {
-        // Fallback ohne Locomotive Scroll
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }
-    });
-  
-  // Warenkorb Klick-Event
-  cartActionBtn.addEventListener('click', openCart);
+  backToTopBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    if (scroll) {
+      // Mit Locomotive Scroll
+      scroll.scrollTo(0, { duration: 1.5, easing: [0.25, 0.46, 0.45, 0.94] });
+    } else {
+      // Fallback ohne Locomotive Scroll
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  });
 }
 
 // Parallax-Effekt für Hero-Bild wie im alten Inline-Script
@@ -1179,14 +1241,7 @@ function setupHeroParallax() {
   }
 }
 
-// Event Listeners für Warenkorb-Buttons
-function setupCartButtons() {
-  [cartBtn, mobileCartBtn].forEach(btn => {
-    if (btn) {
-      btn.addEventListener('click', openCart);
-    }
-  });
-}
+
 
 // Initialisierung
 document.addEventListener('DOMContentLoaded', () => {
@@ -1198,8 +1253,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMobileNavigation();
   setupProductImageModal(); // Produktbild Modal Setup
   setupImageZoom(); // Zoom-Funktionalität Setup
-  setupCombinedActionButton(); // Kombinierter Action Button
-  setupCartButtons(); // Event-Listener für Warenkorb-Buttons setzen
+  setupBackToTopButton(); // Back to Top Button
+  setupMobileBackToTopButton(); // Mobile Back to Top Button
+  setupDesktopBackToTopButton(); // Desktop Back to Top Button
+  setupCartButtons(); // Warenkorb Button Setup
   updateCartDisplay(); // Aktualisiere Cart-Anzeige nach Initialisierung
   
   // Resize Event Listener für Button-Management
@@ -1222,6 +1279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Globale Funktionen für onclick-Handler
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
+window.removeProductFromCart = removeProductFromCart;
 window.updateCartQuantity = updateCartQuantity;
 window.openProductImageModal = openProductImageModal;
 window.openProductImageModalWithImages = openProductImageModalWithImages;

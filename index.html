@@ -19,7 +19,6 @@
     <div class="hero-bg" data-scroll></div>
     <nav class="navbar sticky" data-scroll>
       <div class="logo">
-        <span class="patrizias">PATRIZIAS</span>
         <span class="logo-row">
           <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
         </span>
@@ -60,7 +59,7 @@
     </nav>
     <div class="hero-content" data-scroll data-scroll-speed="1.5">
       <h1 class="hero-title">
-        <span class="patrizias">PATRIZIAS</span><br><span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
+        <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
       </h1>
       <p class="hero-subtitle">Dein Weg zu exklusiven Styles, Trends und Inspiration.<br>Erlebe Fashion neu gedacht.</p>
       <a href="#shop" class="cta-btn" data-scroll-to><span>Jetzt shoppen</span></a>
@@ -181,26 +180,39 @@
     </div>
   </div>
 
-  <!-- Kombinierter Back-to-Top und Warenkorb Button -->
-  <div class="combined-action-button" id="combinedActionBtn">
-    <!-- Back to Top Teil (oben) -->
-    <button class="action-btn back-to-top-btn" id="backToTopBtn" aria-label="Nach oben scrollen">
-      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+  <!-- Desktop Combined Action Button -->
+  <div class="desktop-combined-action-button" id="desktopCombinedActionBtn">
+    <button class="desktop-back-to-top-btn" id="desktopBackToTopBtn" aria-label="Nach oben scrollen">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
         <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
       </svg>
     </button>
-    <!-- Warenkorb Teil (unten) -->
-    <button class="action-btn cart-btn" id="cartActionBtn" aria-label="Warenkorb öffnen">
-      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+    <button class="desktop-cart-action-btn" id="desktopCartActionBtn" aria-label="Warenkorb öffnen">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
         <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
       </svg>
-      <span class="cart-count" id="combinedCartCount">0</span>
+      <span class="desktop-cart-count" id="desktopCartActionCount">0</span>
+    </button>
+  </div>
+
+    <!-- Mobile Combined Action Button -->
+  <div class="mobile-combined-action-button" id="mobileCombinedActionBtn">
+    <button class="mobile-back-to-top-btn" id="mobileBackToTopBtn" aria-label="Nach oben scrollen">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+      </svg>
+    </button>
+    <button class="mobile-cart-action-btn" id="mobileCartActionBtn" aria-label="Warenkorb öffnen">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+      <span class="mobile-cart-count" id="mobileCartActionCount">0</span>
     </button>
   </div>
 
   <footer data-scroll-section>
     <div class="footer-content">
-      <div class="footer-logo">PATRIZIAS<br>FASHION<span class="minus">-</span>WAY</div>
+      <div class="footer-logo">FASHION<span class="minus">-</span>WAY</div>
       <ul class="footer-links">
         <li><a href="#shop" data-scroll-to>Shop</a></li>
         <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
@@ -211,7 +223,7 @@
         <a href="#" aria-label="Facebook"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg#icon"></use></svg></a>
         <a href="#" aria-label="TikTok"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg#icon"></use></svg></a>
       </div>
-      <p style="margin-top:1.5rem;">&copy; 2025 PATRIZIAS FASHION-WAY. All rights reserved.</p>
+      <p style="margin-top:1.5rem;">&copy; 2025 FASHION-WAY. All rights reserved.</p>
     </div>
   </footer>
   
@@ -379,7 +391,7 @@
           <div class="product-content">
             <h3>${p.name}</h3>
             <span class="price">${p.price}</span>
-            <button class="buy-btn" onclick="addToCart(${JSON.stringify(p).replace(/"/g, '&quot;')})">In den Warenkorb</button>
+            <button class="buy-btn">Details anzeigen</button>
           </div>
         `;
         grid.appendChild(el);
@@ -445,582 +457,7 @@
       });
     }
 
-    // Warenkorb System
-    let cart = [];
-    
-    // Globale Funktionen für Warenkorb
-    window.addToCart = function(product) {
-      const existingItem = cart.find(item => item.name === product.name);
-      
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({
-          name: product.name,
-          price: product.price,
-          img: product.img,
-          quantity: 1
-        });
-      }
-      
-      updateCartCount();
-      
-      // Speichern im localStorage
-      localStorage.setItem('fashionWayCart', JSON.stringify(cart));
-      
-      // Feedback für den Benutzer
-      showAddToCartFeedback(product.name);
-    };
-    
-    function updateCartCount() {
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      const cartCount = document.getElementById('cartCount');
-      const mobileCartCount = document.getElementById('mobileCartCount');
-      
-      if (cartCount) cartCount.textContent = totalItems;
-      if (mobileCartCount) mobileCartCount.textContent = totalItems;
-      
-      // Animation beim Hinzufügen
-      if (totalItems > 0) {
-        cartCount?.classList.add('animate');
-        mobileCartCount?.classList.add('animate');
-        setTimeout(() => {
-          cartCount?.classList.remove('animate');
-          mobileCartCount?.classList.remove('animate');
-        }, 600);
-      }
-    }
-    
 
-    
-    function showAddToCartFeedback(productName) {
-      // Erstelle ein temporäres Feedback-Element
-      const feedback = document.createElement('div');
-      feedback.className = 'cart-feedback';
-      feedback.textContent = `${productName} wurde zum Warenkorb hinzugefügt!`;
-      feedback.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: #ff3e55;
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 20px rgba(255, 62, 85, 0.3);
-        z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        font-weight: 500;
-        max-width: 300px;
-      `;
-      
-      document.body.appendChild(feedback);
-      
-      // Animation einblenden
-      setTimeout(() => {
-        feedback.style.transform = 'translateX(0)';
-      }, 100);
-      
-      // Nach 3 Sekunden ausblenden
-      setTimeout(() => {
-        feedback.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-          document.body.removeChild(feedback);
-        }, 300);
-      }, 3000);
-    }
-    
-    function showCart() {
-      // Entferne existierende Warenkorb-Ansicht falls vorhanden
-      const existingCart = document.getElementById('cartOverlay');
-      if (existingCart) {
-        existingCart.remove();
-      }
-      
-      // Erstelle Warenkorb-Overlay
-      const cartOverlay = document.createElement('div');
-      cartOverlay.id = 'cartOverlay';
-      cartOverlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      `;
-      
-      // Warenkorb-Inhalt
-      const cartContent = document.createElement('div');
-      cartContent.style.cssText = `
-        background: white;
-        border-radius: 1rem;
-        padding: 2rem;
-        max-width: 500px;
-        width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
-      `;
-      
-      // Header
-      const header = document.createElement('div');
-      header.style.cssText = `
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #f1f5f9;
-      `;
-      
-      const title = document.createElement('h2');
-      title.textContent = 'Warenkorb';
-      title.style.cssText = `
-        margin: 0;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
-        color: #18181b;
-        font-size: 1.5rem;
-      `;
-      
-      const closeBtn = document.createElement('button');
-      closeBtn.innerHTML = '&times;';
-      closeBtn.style.cssText = `
-        background: none;
-        border: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #6b7280;
-        padding: 0;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: all 0.2s ease;
-      `;
-      
-      closeBtn.onmouseover = () => {
-        closeBtn.style.background = '#f1f5f9';
-        closeBtn.style.color = '#18181b';
-      };
-      
-      closeBtn.onmouseout = () => {
-        closeBtn.style.background = 'none';
-        closeBtn.style.color = '#6b7280';
-      };
-      
-      closeBtn.onclick = () => cartOverlay.remove();
-      
-      header.appendChild(title);
-      header.appendChild(closeBtn);
-      
-      // Warenkorb-Items
-      const itemsContainer = document.createElement('div');
-      itemsContainer.style.cssText = `
-        margin-bottom: 1.5rem;
-      `;
-      
-      if (cart.length === 0) {
-        const emptyMessage = document.createElement('p');
-        emptyMessage.textContent = 'Ihr Warenkorb ist leer.';
-        emptyMessage.style.cssText = `
-          text-align: center;
-          color: #6b7280;
-          font-size: 1.1rem;
-          margin: 2rem 0;
-        `;
-        itemsContainer.appendChild(emptyMessage);
-      } else {
-        let total = 0;
-        
-        cart.forEach((item, index) => {
-          const price = parseFloat(item.price.replace(',', '.').replace('€', ''));
-          const itemTotal = price * item.quantity;
-          total += itemTotal;
-          
-          const itemDiv = document.createElement('div');
-          itemDiv.className = 'cart-item-div';
-          itemDiv.style.cssText = `
-            display: flex;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid #f1f5f9;
-            gap: 1rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          `;
-          
-          const itemImg = document.createElement('img');
-          itemImg.src = item.img;
-          itemImg.alt = item.name;
-          itemImg.style.cssText = `
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 0.5rem;
-          `;
-          
-          const itemInfo = document.createElement('div');
-          itemInfo.style.cssText = `
-            flex: 1;
-          `;
-          
-          const itemName = document.createElement('h3');
-          itemName.textContent = item.name;
-          itemName.style.cssText = `
-            margin: 0 0 0.25rem 0;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #18181b;
-          `;
-          
-          const itemPrice = document.createElement('p');
-          itemPrice.textContent = `${item.price}`;
-          itemPrice.style.cssText = `
-            margin: 0;
-            color: #6b7280;
-            font-size: 0.9rem;
-          `;
-          
-          // Mengensteuerung hinzufügen
-          const quantityControls = document.createElement('div');
-          quantityControls.style.cssText = `
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-          `;
-          
-          const minusBtn = document.createElement('button');
-          minusBtn.innerHTML = '−';
-          minusBtn.style.cssText = `
-            background: #f1f5f9;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: #6b7280;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-          `;
-          
-          const quantityDisplay = document.createElement('span');
-          quantityDisplay.textContent = item.quantity;
-          quantityDisplay.style.cssText = `
-            font-weight: 600;
-            color: #18181b;
-            min-width: 20px;
-            text-align: center;
-          `;
-          
-          const plusBtn = document.createElement('button');
-          plusBtn.innerHTML = '+';
-          plusBtn.style.cssText = `
-            background: #f1f5f9;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: #6b7280;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-          `;
-          
-          // Hover-Effekte für Plus/Minus Buttons
-          minusBtn.onmouseover = () => {
-            minusBtn.style.background = '#ff3e55';
-            minusBtn.style.color = 'white';
-          };
-          minusBtn.onmouseout = () => {
-            minusBtn.style.background = '#f1f5f9';
-            minusBtn.style.color = '#6b7280';
-          };
-          
-          plusBtn.onmouseover = () => {
-            plusBtn.style.background = '#ff3e55';
-            plusBtn.style.color = 'white';
-          };
-          plusBtn.onmouseout = () => {
-            plusBtn.style.background = '#f1f5f9';
-            plusBtn.style.color = '#6b7280';
-          };
-          
-          // Plus/Minus Funktionalität
-          minusBtn.onclick = () => {
-            if (item.quantity > 1) {
-              item.quantity--;
-              quantityDisplay.textContent = item.quantity;
-              itemTotalEl.textContent = `${(parseFloat(item.price.replace(',', '.').replace('€', '')) * item.quantity).toFixed(2).replace('.', ',')}€`;
-              localStorage.setItem('fashionWayCart', JSON.stringify(cart));
-              updateCartCount();
-              updateCartTotalInModal(cartContent);
-            }
-          };
-          
-          plusBtn.onclick = () => {
-            item.quantity++;
-            quantityDisplay.textContent = item.quantity;
-            itemTotalEl.textContent = `${(parseFloat(item.price.replace(',', '.').replace('€', '')) * item.quantity).toFixed(2).replace('.', ',')}€`;
-            localStorage.setItem('fashionWayCart', JSON.stringify(cart));
-            updateCartCount();
-            updateCartTotalInModal(cartContent);
-          };
-          
-          quantityControls.appendChild(minusBtn);
-          quantityControls.appendChild(quantityDisplay);
-          quantityControls.appendChild(plusBtn);
-          
-          const itemTotalEl = document.createElement('div');
-          itemTotalEl.textContent = `${itemTotal.toFixed(2).replace('.', ',')}€`;
-          itemTotalEl.style.cssText = `
-            font-weight: 700;
-            color: #ff3e55;
-            font-size: 1.1rem;
-          `;
-          
-          const removeBtn = document.createElement('button');
-          removeBtn.innerHTML = '&times;';
-          removeBtn.style.cssText = `
-            background: #f1f5f9;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: #6b7280;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-          `;
-          
-          removeBtn.onmouseover = () => {
-            removeBtn.style.background = '#ff3e55';
-            removeBtn.style.color = 'white';
-          };
-          
-          removeBtn.onmouseout = () => {
-            removeBtn.style.background = '#f1f5f9';
-            removeBtn.style.color = '#6b7280';
-          };
-          
-          removeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Produkt komplett aus dem Warenkorb entfernen (nicht nur Menge reduzieren)
-            const productIndex = cart.findIndex(cartItem => cartItem.name === item.name);
-            if (productIndex !== -1) {
-              cart.splice(productIndex, 1); // Entfernt das gesamte Produkt aus dem Array
-            }
-            
-            // localStorage aktualisieren
-            localStorage.setItem('fashionWayCart', JSON.stringify(cart));
-            
-            // Warenkorb-Counter aktualisieren
-            updateCartCount();
-            
-            // Modal komplett schließen
-            cartOverlay.remove();
-          });
-          
-          itemInfo.appendChild(itemName);
-          itemInfo.appendChild(itemPrice);
-          itemInfo.appendChild(quantityControls);
-          
-          itemDiv.appendChild(itemImg);
-          itemDiv.appendChild(itemInfo);
-          itemDiv.appendChild(itemTotalEl);
-          itemDiv.appendChild(removeBtn);
-          
-          itemsContainer.appendChild(itemDiv);
-        });
-        
-        // Gesamtsumme
-        const totalDiv = document.createElement('div');
-        totalDiv.className = 'cart-total-div';
-        totalDiv.style.cssText = `
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 0;
-          border-top: 2px solid #f1f5f9;
-          font-weight: 700;
-          font-size: 1.2rem;
-        `;
-        
-        const totalLabel = document.createElement('span');
-        totalLabel.textContent = 'Gesamt:';
-        totalLabel.style.color = '#18181b';
-        
-        const totalAmount = document.createElement('span');
-        totalAmount.className = 'cart-total-amount';
-        totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
-        totalAmount.style.color = '#ff3e55';
-        
-        totalDiv.appendChild(totalLabel);
-        totalDiv.appendChild(totalAmount);
-        itemsContainer.appendChild(totalDiv);
-        
-        // Checkout Button
-        const checkoutBtn = document.createElement('button');
-        checkoutBtn.className = 'cart-checkout-btn';
-        checkoutBtn.textContent = 'Zur Kasse';
-        checkoutBtn.style.cssText = `
-          width: 100%;
-          background: #ff3e55;
-          color: white;
-          border: none;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          font-size: 1.1rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background 0.2s ease;
-          margin-top: 1rem;
-        `;
-        
-        checkoutBtn.onmouseover = () => {
-          checkoutBtn.style.background = '#ff8c3e';
-        };
-        
-        checkoutBtn.onmouseout = () => {
-          checkoutBtn.style.background = '#ff3e55';
-        };
-        
-        checkoutBtn.onclick = () => {
-          alert('Vielen Dank für Ihren Einkauf! Diese Funktion ist noch in Entwicklung.');
-          cart = [];
-          localStorage.removeItem('fashionWayCart');
-          updateCartCount();
-          cartOverlay.remove();
-        };
-        
-        itemsContainer.appendChild(checkoutBtn);
-      }
-      
-      cartContent.appendChild(header);
-      cartContent.appendChild(itemsContainer);
-      cartOverlay.appendChild(cartContent);
-      document.body.appendChild(cartOverlay);
-      
-      // Animation einblenden
-      setTimeout(() => {
-        cartOverlay.style.opacity = '1';
-        cartContent.style.transform = 'scale(1)';
-      }, 10);
-      
-      // Schließen bei Klick außerhalb
-      cartOverlay.addEventListener('click', (e) => {
-        if (e.target === cartOverlay) {
-          cartOverlay.remove();
-        }
-      });
-      
-      // ESC-Taste schließt Warenkorb
-      const handleEsc = (e) => {
-        if (e.key === 'Escape') {
-          cartOverlay.remove();
-          document.removeEventListener('keydown', handleEsc);
-        }
-      };
-      document.addEventListener('keydown', handleEsc);
-    }
-    
-    // Warenkorb aus localStorage laden
-    function loadCart() {
-      const savedCart = localStorage.getItem('fashionWayCart');
-      if (savedCart) {
-        cart = JSON.parse(savedCart);
-        updateCartCount();
-      }
-    }
-    
-    // Total im Warenkorb neu berechnen und aktualisieren
-    function updateCartTotal() {
-      const totalDiv = document.querySelector('.cart-total-div');
-      if (totalDiv) {
-        let total = 0;
-        cart.forEach(item => {
-          const price = parseFloat(item.price.replace(',', '.').replace('€', ''));
-          total += price * item.quantity;
-        });
-        
-        const totalAmount = totalDiv.querySelector('.cart-total-amount');
-        if (totalAmount) {
-          totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
-        }
-      }
-    }
-    
-    // Total im spezifischen Modal neu berechnen und aktualisieren
-    function updateCartTotalInModal(modalContent) {
-      const totalDiv = modalContent.querySelector('.cart-total-div');
-      if (totalDiv) {
-        let total = 0;
-        cart.forEach(item => {
-          const price = parseFloat(item.price.replace(',', '.').replace('€', ''));
-          total += price * item.quantity;
-        });
-        
-        const totalAmount = totalDiv.querySelector('.cart-total-amount');
-        if (totalAmount) {
-          totalAmount.textContent = `${total.toFixed(2).replace('.', ',')}€`;
-        }
-      }
-    }
-    
-    // CSS für Warenkorb-Animationen hinzufügen
-    function addCartAnimationStyles() {
-      if (!document.getElementById('cart-animation-styles')) {
-        const style = document.createElement('style');
-        style.id = 'cart-animation-styles';
-        style.textContent = `
-          .cart-item-div {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-          }
-          .cart-item-div.removing {
-            opacity: 0 !important;
-            transform: translateX(-100%) !important;
-            max-height: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            overflow: hidden !important;
-          }
-        `;
-        document.head.appendChild(style);
-      }
-    }
-    
-    // Warenkorb Event Listeners
-    document.addEventListener('DOMContentLoaded', function() {
-      loadCart();
-      addCartAnimationStyles(); // CSS-Animationen hinzufügen
-      
-      const cartBtn = document.getElementById('cartBtn');
-      const mobileCartBtn = document.getElementById('mobileCartBtn');
-      
-      if (cartBtn) cartBtn.addEventListener('click', showCart);
-      if (mobileCartBtn) mobileCartBtn.addEventListener('click', showCart);
-    });
 
     // Hamburger Menü für Mobil
     document.addEventListener('DOMContentLoaded', function () {
@@ -1092,7 +529,7 @@
 
     // Back to Top Button Funktionalität
     document.addEventListener('DOMContentLoaded', function() {
-      const backToTopBtn = document.getElementById('backToTop');
+      const backToTopBtn = document.getElementById('backToTopBtn');
       
       // Button anzeigen/verstecken basierend auf Scroll-Position
       function toggleBackToTop() {
@@ -1142,7 +579,9 @@
       }
       
       // Event Listeners
-      backToTopBtn.addEventListener('click', function() {
+      backToTopBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
         console.log('Back to Top Button clicked!');
         scrollToTop();
       });
@@ -1159,50 +598,31 @@
       toggleBackToTop();
     });
 
-    function updateBackToTopCartHint() {
-      const hint = document.getElementById('backToTopCartHint');
-      const count = document.getElementById('backToTopCartCount');
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      if (hint && count) {
-        if (totalItems > 0) {
-          hint.style.display = 'inline-flex';
-          count.textContent = totalItems;
-          count.classList.add('animate');
-          setTimeout(() => count.classList.remove('animate'), 600);
-        } else {
-          hint.style.display = 'none';
-        }
-      }
-    }
-    const origUpdateCartCount2 = updateCartCount;
-    updateCartCount = function() {
-      origUpdateCartCount2();
-      updateBackToTopCartHint();
-    };
-    document.addEventListener('DOMContentLoaded', updateBackToTopCartHint);
 
-    window.addEventListener('beforeunload', function () {
-      window.scrollTo(0, 0);
-    });
 
-    window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(function() {
-        if (window.scroll && window.scroll.scrollTo) {
-          window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
-        } else {
-          window.scrollTo(0, 0);
-        }
-      }, 10);
-    });
-    window.addEventListener('load', function () {
-      setTimeout(function() {
-        if (window.scroll && window.scroll.scrollTo) {
-          window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
-        } else {
-          window.scrollTo(0, 0);
-        }
-      }, 10);
-    });
+    // Diese Event-Handler wurden entfernt, da sie unerwünschte Scroll-Events verursachten
+    // window.addEventListener('beforeunload', function () {
+    //   window.scrollTo(0, 0);
+    // });
+
+    // window.addEventListener('DOMContentLoaded', function () {
+    //   setTimeout(function() {
+    //     if (window.scroll && window.scroll.scrollTo) {
+    //       window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
+    //     } else {
+    //       window.scrollTo(0, 0);
+    //     }
+    //   }, 10);
+    // });
+    // window.addEventListener('load', function () {
+    //   setTimeout(function() {
+    //     if (window.scroll && window.scroll.scrollTo) {
+    //       window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
+    //     } else {
+    //       window.scrollTo(0, 0);
+    //     }
+    //   }, 10);
+    // });
 
     // Logo-Klick scrollt nach oben (nur auf Mobil)
     document.addEventListener('DOMContentLoaded', function () {
