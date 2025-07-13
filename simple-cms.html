@@ -722,7 +722,11 @@
             // Mobile-optimierte Anzeige
             const isMobileDevice = isMobile();
             
-            grid.innerHTML = filteredProducts.map((product, index) => `
+            grid.innerHTML = filteredProducts.map((product) => {
+                // Finde den korrekten Index im ursprünglichen products Array
+                const originalIndex = products.findIndex(p => p.id === product.id);
+                
+                return `
                 <div class="product-card">
                     <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Kein+Bild'">
                     <div class="product-name">${product.name}</div>
@@ -732,11 +736,12 @@
                         ${product.stock > 0 ? `📦 ${product.stock} verfügbar` : '❌ Ausverkauft'}
                     </div>
                     <div class="product-actions">
-                        <button class="btn btn-small" onclick="editProduct(${index})" style="${isMobileDevice ? 'width: 100%; margin-bottom: 5px;' : ''}">Bearbeiten</button>
-                        <button class="btn btn-small btn-secondary" onclick="deleteProduct(${index})" style="${isMobileDevice ? 'width: 100%;' : ''}">Löschen</button>
+                        <button class="btn btn-small" onclick="editProduct(${originalIndex})" style="${isMobileDevice ? 'width: 100%; margin-bottom: 5px;' : ''}">Bearbeiten</button>
+                        <button class="btn btn-small btn-secondary" onclick="deleteProduct(${originalIndex})" style="${isMobileDevice ? 'width: 100%;' : ''}">Löschen</button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
             
             // Mobile-spezifische Verbesserungen
             if (isMobileDevice) {
