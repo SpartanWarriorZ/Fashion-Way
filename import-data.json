@@ -24,7 +24,7 @@
   {
     "name": "Kinder Sneaker",
     "price": 29.9,
-    "description": "Bequeme Sneaker fÃ¼r Kinder, ideal fÃ¼r den Alltag.",
+    "description": "Bequeme Sneaker fÃÂ¼r Kinder, ideal fÃÂ¼r den Alltag.",
     "category": "kinder",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -35,7 +35,7 @@
   {
     "name": "Herren Jeans",
     "price": 49.99,
-    "description": "Moderne Slim-Fit Jeans fÃ¼r Herren.",
+    "description": "Moderne Slim-Fit Jeans fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=600&q=80",
@@ -55,9 +55,9 @@
     "id": 5
   },
   {
-    "name": "Kinder MÃ¼tze",
+    "name": "Kinder MÃÂ¼tze",
     "price": 14.99,
-    "description": "Warme MÃ¼tze fÃ¼r Kinder, ideal fÃ¼r den Winter.",
+    "description": "Warme MÃÂ¼tze fÃÂ¼r Kinder, ideal fÃÂ¼r den Winter.",
     "category": "kinder",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
@@ -68,7 +68,7 @@
   {
     "name": "Herren Hoodie",
     "price": 44.99,
-    "description": "Bequemer Hoodie fÃ¼r Herren, perfekt fÃ¼r kÃ¼hle Tage.",
+    "description": "Bequemer Hoodie fÃÂ¼r Herren, perfekt fÃÂ¼r kÃÂ¼hle Tage.",
     "category": "herren",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
@@ -79,7 +79,7 @@
   {
     "name": "Damen Sneaker",
     "price": 59.95,
-    "description": "Trendige Sneaker fÃ¼r Damen.",
+    "description": "Trendige Sneaker fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80",
@@ -90,7 +90,7 @@
   {
     "name": "Kinder Regenjacke",
     "price": 39.99,
-    "description": "Wasserdichte Regenjacke fÃ¼r Kinder.",
+    "description": "Wasserdichte Regenjacke fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
@@ -99,9 +99,9 @@
     "id": 9
   },
   {
-    "name": "Herren GÃ¼rtel",
+    "name": "Herren GÃÂ¼rtel",
     "price": 24.99,
-    "description": "Echleder-GÃ¼rtel fÃ¼r Herren.",
+    "description": "Echleder-GÃÂ¼rtel fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
@@ -112,7 +112,7 @@
   {
     "name": "Damen Hose",
     "price": 44.95,
-    "description": "Bequeme Stoffhose fÃ¼r Damen.",
+    "description": "Bequeme Stoffhose fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -123,7 +123,7 @@
   {
     "name": "Kinder T-Shirt",
     "price": 12.99,
-    "description": "Buntes T-Shirt fÃ¼r Kinder.",
+    "description": "Buntes T-Shirt fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=600&q=80",
@@ -134,7 +134,7 @@
   {
     "name": "Herren Sneaker",
     "price": 59.99,
-    "description": "Sportliche Sneaker fÃ¼r Herren.",
+    "description": "Sportliche Sneaker fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -145,7 +145,7 @@
   {
     "name": "Damen Schal",
     "price": 19.95,
-    "description": "Weicher Schal fÃ¼r kÃ¼hle Tage.",
+    "description": "Weicher Schal fÃÂ¼r kÃÂ¼hle Tage.",
     "category": "damen",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?auto=format&fit=crop&w=600&q=80",
@@ -156,7 +156,7 @@
   {
     "name": "Kinder Cap",
     "price": 9.99,
-    "description": "Coole Cap fÃ¼r Kinder.",
+    "description": "Coole Cap fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
@@ -167,7 +167,7 @@
   {
     "name": "Herren Shorts",
     "price": 24.99,
-    "description": "Leichte Shorts fÃ¼r den Sommer.",
+    "description": "Leichte Shorts fÃÂ¼r den Sommer.",
     "category": "herren",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -178,7 +178,7 @@
   {
     "name": "Damen Cardigan",
     "price": 49.95,
-    "description": "Weicher Cardigan fÃ¼r kÃ¼hle Abende.",
+    "description": "Weicher Cardigan fÃÂ¼r kÃÂ¼hle Abende.",
     "category": "damen",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
@@ -189,7 +189,7 @@
   {
     "name": "Kinder Sandalen",
     "price": 22.99,
-    "description": "Bequeme Sandalen fÃ¼r Kinder.",
+    "description": "Bequeme Sandalen fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -198,9 +198,9 @@
     "id": 21
   },
   {
-    "name": "Herren MÃ¼tze",
+    "name": "Herren MÃÂ¼tze",
     "price": 14.99,
-    "description": "Warme MÃ¼tze fÃ¼r Herren.",
+    "description": "Warme MÃÂ¼tze fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80",
@@ -211,7 +211,7 @@
   {
     "name": "Damen Jeans",
     "price": 54.95,
-    "description": "Modische Jeans fÃ¼r Damen.",
+    "description": "Modische Jeans fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -222,7 +222,7 @@
   {
     "name": "Kinder Pullover",
     "price": 24.99,
-    "description": "Kuscheliger Pullover fÃ¼r Kinder.",
+    "description": "Kuscheliger Pullover fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
@@ -233,7 +233,7 @@
   {
     "name": "Herren Sakko",
     "price": 89.99,
-    "description": "Elegantes Sakko fÃ¼r besondere AnlÃ¤sse.",
+    "description": "Elegantes Sakko fÃÂ¼r besondere AnlÃÂ¤sse.",
     "category": "herren",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
@@ -244,7 +244,7 @@
   {
     "name": "Damen Pumps",
     "price": 69.95,
-    "description": "Klassische Pumps fÃ¼r Damen.",
+    "description": "Klassische Pumps fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -255,7 +255,7 @@
   {
     "name": "Kinder Leggings",
     "price": 15.99,
-    "description": "Bequeme Leggings fÃ¼r Kinder.",
+    "description": "Bequeme Leggings fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -266,7 +266,7 @@
   {
     "name": "Herren Uhr",
     "price": 129.99,
-    "description": "Stilvolle Armbanduhr fÃ¼r Herren.",
+    "description": "Stilvolle Armbanduhr fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
@@ -277,7 +277,7 @@
   {
     "name": "Damen T-Shirt",
     "price": 24.95,
-    "description": "LÃ¤ssiges T-Shirt fÃ¼r Damen.",
+    "description": "LÃÂ¤ssiges T-Shirt fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80",
@@ -288,7 +288,7 @@
   {
     "name": "Kinder Stiefel",
     "price": 34.99,
-    "description": "Wasserdichte Stiefel fÃ¼r Kinder.",
+    "description": "Wasserdichte Stiefel fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -299,7 +299,7 @@
   {
     "name": "Herren Weste",
     "price": 39.99,
-    "description": "Leichte Weste fÃ¼r Herren.",
+    "description": "Leichte Weste fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
@@ -310,7 +310,7 @@
   {
     "name": "Damen Ohrringe",
     "price": 14.95,
-    "description": "Elegante Ohrringe fÃ¼r Damen.",
+    "description": "Elegante Ohrringe fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
@@ -321,7 +321,7 @@
   {
     "name": "Kinder Shorts",
     "price": 13.99,
-    "description": "Kurze Shorts fÃ¼r Kinder.",
+    "description": "Kurze Shorts fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -332,7 +332,7 @@
   {
     "name": "Herren Boots",
     "price": 79.99,
-    "description": "Robuste Boots fÃ¼r Herren.",
+    "description": "Robuste Boots fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -343,7 +343,7 @@
   {
     "name": "Damen Blazer",
     "price": 69.95,
-    "description": "Moderner Blazer fÃ¼r Damen.",
+    "description": "Moderner Blazer fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
@@ -354,7 +354,7 @@
   {
     "name": "Kinder Schal",
     "price": 8.99,
-    "description": "Weicher Schal fÃ¼r Kinder.",
+    "description": "Weicher Schal fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1520903920243-00d872a2d1c9?auto=format&fit=crop&w=600&q=80",
@@ -365,7 +365,7 @@
   {
     "name": "Herren Anzughose",
     "price": 59.99,
-    "description": "Elegante Anzughose fÃ¼r Herren.",
+    "description": "Elegante Anzughose fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=600&q=80",
@@ -376,7 +376,7 @@
   {
     "name": "Damen Sandalen",
     "price": 34.95,
-    "description": "Sommerliche Sandalen fÃ¼r Damen.",
+    "description": "Sommerliche Sandalen fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -387,7 +387,7 @@
   {
     "name": "Kinder Kleid",
     "price": 24.99,
-    "description": "SÃ¼Ães Kleid fÃ¼r Kinder.",
+    "description": "SÃÂ¼ÃÂes Kleid fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=600&q=80",
@@ -398,7 +398,7 @@
   {
     "name": "Herren Socken",
     "price": 7.99,
-    "description": "Bequeme Socken fÃ¼r Herren.",
+    "description": "Bequeme Socken fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c5a?auto=format&fit=crop&w=600&q=80",
@@ -409,7 +409,7 @@
   {
     "name": "Damen Pullover",
     "price": 39.95,
-    "description": "Kuscheliger Pullover fÃ¼r Damen.",
+    "description": "Kuscheliger Pullover fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=600&q=80",
@@ -418,9 +418,9 @@
     "id": 41
   },
   {
-    "name": "Kinder GÃ¼rtel",
+    "name": "Kinder GÃÂ¼rtel",
     "price": 11.99,
-    "description": "Verstellbarer GÃ¼rtel fÃ¼r Kinder.",
+    "description": "Verstellbarer GÃÂ¼rtel fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
@@ -431,7 +431,7 @@
   {
     "name": "Herren Hemd",
     "price": 34.99,
-    "description": "Business-Hemd fÃ¼r Herren.",
+    "description": "Business-Hemd fÃÂ¼r Herren.",
     "category": "herren",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?auto=format&fit=crop&w=600&q=80",
@@ -442,7 +442,7 @@
   {
     "name": "Damen Boots",
     "price": 79.95,
-    "description": "Robuste Boots fÃ¼r Damen.",
+    "description": "Robuste Boots fÃÂ¼r Damen.",
     "category": "damen",
     "subcategory": "schuhe",
     "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
@@ -453,7 +453,7 @@
   {
     "name": "Kinder Bluse",
     "price": 17.99,
-    "description": "SÃ¼Ãe Bluse fÃ¼r Kinder.",
+    "description": "SÃÂ¼ÃÂe Bluse fÃÂ¼r Kinder.",
     "category": "kinder",
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=600&q=80",
@@ -468,7 +468,7 @@
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "stock": 5,
-    "description": "Handschuhe fÃ¼r Auftragsmorde",
+    "description": "Handschuhe fÃÂ¼r Auftragsmorde",
     "id": 1752427282542
   }
 ]
