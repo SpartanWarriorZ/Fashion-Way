@@ -5613,3 +5613,116 @@ footer {
     display: none;
   }
 }
+
+/* Neue stylische Größenauswahl mit Warenkorb-Badges */
+.size-option-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0.5rem 1.5rem 0.5rem;
+}
+
+.size-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  color: #374151;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  outline: none;
+}
+
+.size-option:hover {
+  border-color: #ff3e55;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 62, 85, 0.15);
+}
+
+.size-option.selected {
+  border-color: #ff3e55;
+  background: linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 62, 85, 0.3);
+}
+
+.size-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stock-info {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.cart-quantity-badge {
+  margin-top: 0.4rem;
+  background: linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(255, 62, 85, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 45px;
+  z-index: 10;
+  animation: badgePulse 2s infinite;
+  border: 2px solid white;
+  white-space: nowrap;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.cart-quantity-number {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cart-quantity-text {
+  font-size: 0.6rem;
+  opacity: 0.9;
+  line-height: 1;
+  margin-top: 0.1rem;
+}
+
+/* Hover-Effekt für Badge */
+.size-option-container:hover .cart-quantity-badge {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(255, 62, 85, 0.4);
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+  .size-option-container {
+    margin: 0.25rem 0.25rem 1.2rem 0.25rem;
+  }
+  .cart-quantity-badge {
+    margin-top: 0.3rem;
+    min-width: 38px;
+    font-size: 0.65rem;
+    padding: 0.22rem 0.4rem;
+  }
+}

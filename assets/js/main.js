@@ -1186,23 +1186,51 @@ function openProductDetailModal(product) {
         sizesHTML = product.sizes.map(sizeObj => {
           const isAvailable = sizeObj.stock > 0;
           const stockText = isAvailable ? `(${sizeObj.stock})` : '(ausverkauft)';
-          return `
-            <button class="size-option ${!isAvailable ? 'disabled' : ''}" 
-                    data-size="${sizeObj.size}" 
-                    onclick="${isAvailable ? `selectSize('${sizeObj.size}')` : ''}"
-                    ${!isAvailable ? 'disabled' : ''}>
-              ${sizeObj.size} ${stockText}
-            </button>
-          `;
+          
+                // Warenkorb-Menge für diese Größe ermitteln
+      const cartItem = cart.find(item => item.id === product.id && item.size === sizeObj.size);
+      const cartQuantity = cartItem ? cartItem.quantity : 0;
+      
+      return `
+        <div class="size-option-container">
+          <button class="size-option ${!isAvailable ? 'disabled' : ''}" 
+                  data-size="${sizeObj.size}" 
+                  onclick="${isAvailable ? `selectSize('${sizeObj.size}')` : ''}"
+                  ${!isAvailable ? 'disabled' : ''}>
+            <span class="size-label">${sizeObj.size}</span>
+            <span class="stock-info">${stockText}</span>
+          </button>
+          ${cartQuantity > 0 ? `
+            <div class="cart-quantity-badge">
+              <span class="cart-quantity-number">${cartQuantity}</span>
+              <span class="cart-quantity-text">im Warenkorb</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
         }).join('');
       } else {
         // Fallback für alte Struktur
         const sizes = getSizesForCategory(product.subcat);
-        sizesHTML = sizes.map(size => `
-          <button class="size-option" data-size="${size}" onclick="selectSize('${size}')">
-            ${size}
-          </button>
-        `).join('');
+        sizesHTML = sizes.map(size => {
+          // Warenkorb-Menge für diese Größe ermitteln
+          const cartItem = cart.find(item => item.id === product.id && item.size === size);
+          const cartQuantity = cartItem ? cartItem.quantity : 0;
+          
+          return `
+            <div class="size-option-container">
+              <button class="size-option" data-size="${size}" onclick="selectSize('${size}')">
+                <span class="size-label">${size}</span>
+              </button>
+              ${cartQuantity > 0 ? `
+                <div class="cart-quantity-badge">
+                  <span class="cart-quantity-number">${cartQuantity}</span>
+                  <span class="cart-quantity-text">im Warenkorb</span>
+                </div>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
       }
       
       sizeOptions.innerHTML = sizesHTML;
@@ -1299,20 +1327,29 @@ function selectSize(size) {
     selectedBtn.classList.add('selected');
   }
   
-  // Menge basierend auf verfügbarem Lagerbestand setzen
+  // Menge basierend auf verfügbarem Lagerbestand und Warenkorb setzen
   if (currentProduct && currentProduct.sizes) {
     const sizeObj = currentProduct.sizes.find(s => s.size === size);
     if (sizeObj) {
-      // Starte immer mit 1, aber nicht mehr als verfügbar
-      selectedQuantity = Math.min(1, sizeObj.stock);
+      // Prüfe ob das Produkt bereits im Warenkorb ist (gleiche Größe)
+      const productId = currentProduct.id || Date.now();
+      const cartItem = cart.find(item => item.id === productId && item.size === size);
+      
+      if (cartItem) {
+        // Verwende die Warenkorb-Menge, aber nicht mehr als verfügbar
+        selectedQuantity = Math.min(cartItem.quantity, sizeObj.stock);
+        console.log(`Größe ${size} ausgewählt, Warenkorb-Menge: ${cartItem.quantity}, gesetzt auf: ${selectedQuantity}`);
+      } else {
+        // Starte mit 1, aber nicht mehr als verfügbar
+        selectedQuantity = Math.min(1, sizeObj.stock);
+        console.log(`Größe ${size} ausgewählt, neue Größe, Menge auf ${selectedQuantity} gesetzt (Lagerbestand: ${sizeObj.stock})`);
+      }
       
       // Aktualisiere die Anzeige
       const quantityDisplay = document.getElementById('productDetailQuantity');
       if (quantityDisplay) {
         quantityDisplay.textContent = selectedQuantity;
       }
-      
-      console.log(`Größe ${size} ausgewählt, Menge auf ${selectedQuantity} gesetzt (Lagerbestand: ${sizeObj.stock})`);
     }
   }
 }
@@ -1391,6 +1428,9 @@ function updateCartFromModal(productId, newQuantity) {
   saveCart();
   updateCartDisplay();
   displayProducts(); // Aktualisiere Produktkarten
+  
+  // Größenauswahl im Modal aktualisieren
+  updateSizeOptionsInModal();
 }
 
 // Produkt zum Warenkorb hinzufügen (aus Modal)
@@ -1437,8 +1477,79 @@ function addProductToCartFromModal() {
   updateCartDisplay();
   displayProducts(); // Aktualisiere Produktkarten
   
+  // Größenauswahl im Modal aktualisieren
+  updateSizeOptionsInModal();
+  
   // Modal schließen
   closeProductDetailModal();
+}
+
+// Größenauswahl im Modal aktualisieren
+function updateSizeOptionsInModal() {
+  if (!currentProduct) return;
+  
+  const sizeOptions = document.getElementById('sizeOptions');
+  if (!sizeOptions) return;
+  
+  let sizesHTML = '';
+  
+  if (currentProduct.sizes) {
+    // Neue Struktur mit individuellem Lagerbestand
+    sizesHTML = currentProduct.sizes.map(sizeObj => {
+      const isAvailable = sizeObj.stock > 0;
+      const stockText = isAvailable ? `(${sizeObj.stock})` : '(ausverkauft)';
+      
+      // Warenkorb-Menge für diese Größe ermitteln
+      const cartItem = cart.find(item => item.id === currentProduct.id && item.size === sizeObj.size);
+      const cartQuantity = cartItem ? cartItem.quantity : 0;
+      
+      const isSelected = selectedSize === sizeObj.size;
+      
+      return `
+        <div class="size-option-container">
+          <button class="size-option ${!isAvailable ? 'disabled' : ''} ${isSelected ? 'selected' : ''}" 
+                  data-size="${sizeObj.size}" 
+                  onclick="${isAvailable ? `selectSize('${sizeObj.size}')` : ''}"
+                  ${!isAvailable ? 'disabled' : ''}>
+            <span class="size-label">${sizeObj.size}</span>
+            <span class="stock-info">${stockText}</span>
+          </button>
+          ${cartQuantity > 0 ? `
+            <div class="cart-quantity-badge">
+              <span class="cart-quantity-number">${cartQuantity}</span>
+              <span class="cart-quantity-text">im Warenkorb</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  } else {
+    // Fallback für alte Struktur
+    const sizes = getSizesForCategory(currentProduct.subcat);
+    sizesHTML = sizes.map(size => {
+      // Warenkorb-Menge für diese Größe ermitteln
+      const cartItem = cart.find(item => item.id === currentProduct.id && item.size === size);
+      const cartQuantity = cartItem ? cartItem.quantity : 0;
+      
+      const isSelected = selectedSize === size;
+      
+      return `
+        <div class="size-option-container">
+          <button class="size-option ${isSelected ? 'selected' : ''}" data-size="${size}" onclick="selectSize('${size}')">
+            <span class="size-label">${size}</span>
+          </button>
+          ${cartQuantity > 0 ? `
+            <div class="cart-quantity-badge">
+              <span class="cart-quantity-number">${cartQuantity}</span>
+              <span class="cart-quantity-text">im Warenkorb</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+  
+  sizeOptions.innerHTML = sizesHTML;
 }
 
 // Produkt jetzt kaufen (aus Modal)
