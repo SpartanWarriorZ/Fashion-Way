@@ -676,6 +676,13 @@
                 loadProducts();
             }
             
+            // Wenn ein anderes Tab als add-product gewählt wird, Bearbeitungsmodus zurücksetzen
+            if (tabName !== 'add-product' && window.editingProductIndex !== undefined) {
+                window.editingProductIndex = undefined;
+                document.getElementById('productForm').reset();
+                showAlert('Bearbeitung abgebrochen - Produkt wurde nicht gelöscht', 'info');
+            }
+            
             // Mobile-spezifische Verbesserungen
             if (isMobile()) {
                 // Scroll zum Anfang des Inhalts
@@ -749,7 +756,7 @@
             }
         }
         
-        // Produkt hinzufügen
+        // Produkt hinzufügen/bearbeiten
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -761,17 +768,25 @@
                 image: document.getElementById('productImage').value,
                 stock: parseInt(document.getElementById('productStock').value),
                 description: document.getElementById('productDescription').value || '',
-                id: Date.now()
+                id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : Date.now()
             };
             
-            products.push(product);
+            // Prüfen ob ein Produkt bearbeitet wird
+            if (window.editingProductIndex !== undefined) {
+                // Produkt bearbeiten - altes Produkt ersetzen
+                products[window.editingProductIndex] = product;
+                showAlert('Produkt erfolgreich bearbeitet!', 'success');
+                window.editingProductIndex = undefined; // Reset
+            } else {
+                // Neues Produkt hinzufügen
+                products.push(product);
+                showAlert('Produkt erfolgreich hinzugefügt!', 'success');
+            }
+            
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
             
             // Form zurücksetzen
             this.reset();
-            
-            // Erfolgsmeldung
-            showAlert('Produkt erfolgreich hinzugefügt!', 'success');
             
             // Stats aktualisieren
             updateStats();
@@ -781,6 +796,7 @@
         function editProduct(index) {
             const product = products[index];
             
+            // Produktdaten in das Formular laden
             document.getElementById('productName').value = product.name;
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productCategory').value = product.category;
@@ -789,11 +805,10 @@
             document.getElementById('productStock').value = product.stock;
             document.getElementById('productDescription').value = product.description;
             
-            // Produkt löschen und Tab wechseln
-            products.splice(index, 1);
-            localStorage.setItem('fashionWayProducts', JSON.stringify(products));
-            updateStats();
+            // Index des zu bearbeitenden Produkts speichern
+            window.editingProductIndex = index;
             
+            // Tab wechseln
             showTab('add-product');
             showAlert('Produkt zum Bearbeiten geladen. Klicke "Produkt hinzufügen" um zu speichern.', 'success');
         }
