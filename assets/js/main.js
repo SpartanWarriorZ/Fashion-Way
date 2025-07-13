@@ -208,9 +208,9 @@ function createProductCard(product) {
   card.setAttribute('data-scroll', '');
   card.setAttribute('data-scroll-speed', '0.5');
 
-  // Warenkorb-Menge für dieses Produkt ermitteln
-  const cartItem = cart.find(item => item.id === product.id);
-  const quantity = cartItem ? cartItem.quantity : 0;
+  // Warenkorb-Menge für dieses Produkt ermitteln (alle Größen zusammen)
+  const cartItemsForProduct = cart.filter(item => item.id === product.id);
+  const totalQuantity = cartItemsForProduct.reduce((sum, item) => sum + item.quantity, 0);
 
   // Sammle alle Bilder (image, image2, ...)
   const images = [product.image];
@@ -227,20 +227,39 @@ function createProductCard(product) {
   }
 
   card.innerHTML = `
-    <div class="product-image" onclick="openProductImageModalFromProduct(${product.id})" style="cursor:pointer;">
+    <div class="product-image" style="cursor:pointer;">
       <img src="${product.image}" alt="${product.name}" loading="lazy">
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
       <div class="product-price">€${product.price.toFixed(2)}</div>
       <div class="product-stock">${totalStock > 0 ? `${totalStock} verfügbar` : 'Ausverkauft'}</div>
-      ${quantity > 0 ? `
+      ${totalQuantity > 0 ? `
         <div class="cart-indicator">
-          <span class="cart-quantity-badge">${quantity} im Warenkorb</span>
+          <span class="cart-quantity-badge">${totalQuantity} im Warenkorb</span>
         </div>
       ` : ''}
     </div>
   `;
+
+  // Event Listener für die gesamte Produktkarte
+  card.addEventListener('click', function(event) {
+    // Verhindere Bubble-Up für spezielle Elemente
+    if (event.target.closest('.cart-indicator') || 
+        event.target.closest('.cart-quantity-badge')) {
+      return;
+    }
+    
+    // Öffne das Produktdetail-Modal
+    openProductDetailModal(product);
+  });
+
+  // Event Listener für das Bild (öffnet Bild-Modal)
+  const productImage = card.querySelector('.product-image');
+  productImage.addEventListener('click', function(event) {
+    event.stopPropagation(); // Verhindere Bubble-Up zur Karte
+    openProductImageModalFromProduct(product.id);
+  });
 
   return card;
 }
@@ -446,17 +465,18 @@ function updateCartModal() {
           </div>
           <div class="cart-item-info">
             <h4>${product.name}</h4>
+            ${item.size ? `<p class="cart-item-size">Größe: ${item.size}</p>` : ''}
             <p class="cart-item-price">€${product.price.toFixed(2)}</p>
           </div>
           <div class="cart-item-quantity">
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1}, '${item.size || ''}')" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
             <span>${item.quantity}</span>
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
+            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1}, '${item.size || ''}')" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
           </div>
           <div class="cart-item-total">
             €${itemTotal.toFixed(2)}
           </div>
-          <button class="cart-item-remove" onclick="removeProductFromCart(${item.id})">&times;</button>
+          <button class="cart-item-remove" onclick="removeProductFromCart(${item.id}, '${item.size || ''}')">&times;</button>
         </div>
       `;
     }
@@ -468,36 +488,68 @@ function updateCartModal() {
 }
 
 // Warenkorb-Menge aktualisieren
-function updateCartQuantity(productId, newQuantity) {
+function updateCartQuantity(productId, newQuantity, size = null) {
   if (newQuantity <= 0) {
-    removeProductFromCart(productId);
+    removeProductFromCart(productId, size);
     return;
   }
   
   const product = allProducts.find(p => p.id === productId);
-  if (newQuantity > product.stock) {
-    showNotification('Maximale Anzahl erreicht', 'error');
+  if (!product) return;
+  
+  // Finde das spezifische Warenkorb-Item mit der richtigen Größe
+  let cartItem;
+  if (size) {
+    cartItem = cart.find(item => item.id === productId && item.size === size);
+  } else {
+    // Fallback für alte Struktur ohne Größen
+    cartItem = cart.find(item => item.id === productId);
+  }
+  
+  if (!cartItem) {
+    console.error('Warenkorb-Item nicht gefunden:', { productId, size, newQuantity });
     return;
   }
   
-  const cartItem = cart.find(item => item.id === productId);
-  if (cartItem) {
-    cartItem.quantity = newQuantity;
-    saveCart();
-    updateCartDisplay();
-    updateCartModal();
-    displayProducts(); // Aktualisiere Produktkarten
+  // Prüfe Lagerbestand für die spezifische Größe
+  let maxStock = product.stock || 10; // Fallback
+  if (product.sizes && cartItem.size) {
+    const sizeObj = product.sizes.find(s => s.size === cartItem.size);
+    if (sizeObj) {
+      maxStock = sizeObj.stock;
+    }
   }
-}
-
-// Produkt komplett aus Warenkorb entfernen
-function removeProductFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
+  
+  if (newQuantity > maxStock) {
+    showNotification('Maximale Anzahl für diese Größe erreicht', 'error');
+    return;
+  }
+  
+  cartItem.quantity = newQuantity;
   saveCart();
   updateCartDisplay();
   updateCartModal();
   displayProducts(); // Aktualisiere Produktkarten
-  showNotification('Produkt aus Warenkorb entfernt', 'info');
+  
+  console.log('Warenkorb-Menge aktualisiert:', { productId, size, newQuantity, cartItem });
+}
+
+// Produkt komplett aus Warenkorb entfernen
+function removeProductFromCart(productId, size = null) {
+  if (size) {
+    // Entferne spezifische Größe
+    cart = cart.filter(item => !(item.id === productId && item.size === size));
+    showNotification(`Produkt (Größe ${size}) aus Warenkorb entfernt`, 'info');
+  } else {
+    // Entferne alle Größen des Produkts (Fallback für alte Struktur)
+    cart = cart.filter(item => item.id !== productId);
+    showNotification('Produkt aus Warenkorb entfernt', 'info');
+  }
+  
+  saveCart();
+  updateCartDisplay();
+  updateCartModal();
+  displayProducts(); // Aktualisiere Produktkarten
 }
 
 // Zur Kasse
@@ -1156,23 +1208,15 @@ function openProductDetailModal(product) {
       sizeOptions.innerHTML = sizesHTML;
     }
     
-    // Menge synchronisieren mit Warenkorb
+    // Menge initialisieren (nicht mit Warenkorb synchronisieren)
     if (quantityDisplay) {
-      // Prüfe ob das Produkt bereits im Warenkorb ist
-      const productId = product.id || Date.now();
-      const cartItem = cart.find(item => item.id === productId);
-      
-      if (cartItem) {
-        // Produkt ist im Warenkorb - verwende die Warenkorb-Menge
-        selectedQuantity = cartItem.quantity;
-        quantityDisplay.textContent = selectedQuantity;
-        console.log(`Produkt bereits im Warenkorb mit ${selectedQuantity} Stück`);
-      } else {
-        // Produkt ist nicht im Warenkorb - starte mit 1
+      // Starte immer mit 1, außer wenn eine Größe bereits ausgewählt ist
+      if (!selectedSize) {
         selectedQuantity = 1;
         quantityDisplay.textContent = '1';
-        console.log('Produkt nicht im Warenkorb - starte mit 1');
+        console.log('Modal geöffnet - starte mit Menge 1');
       }
+      // Wenn eine Größe ausgewählt ist, wird die Menge in selectSize() gesetzt
     }
     
     // Thumbnails erstellen
@@ -1259,23 +1303,16 @@ function selectSize(size) {
   if (currentProduct && currentProduct.sizes) {
     const sizeObj = currentProduct.sizes.find(s => s.size === size);
     if (sizeObj) {
-      // Prüfe ob das Produkt bereits im Warenkorb ist
-      const productId = currentProduct.id || Date.now();
-      const cartItem = cart.find(item => item.id === productId && item.size === size);
-      
-      if (cartItem) {
-        // Verwende die Warenkorb-Menge, aber nicht mehr als verfügbar
-        selectedQuantity = Math.min(cartItem.quantity, sizeObj.stock);
-      } else {
-        // Starte mit 1, aber nicht mehr als verfügbar
-        selectedQuantity = Math.min(1, sizeObj.stock);
-      }
+      // Starte immer mit 1, aber nicht mehr als verfügbar
+      selectedQuantity = Math.min(1, sizeObj.stock);
       
       // Aktualisiere die Anzeige
       const quantityDisplay = document.getElementById('productDetailQuantity');
       if (quantityDisplay) {
         quantityDisplay.textContent = selectedQuantity;
       }
+      
+      console.log(`Größe ${size} ausgewählt, Menge auf ${selectedQuantity} gesetzt (Lagerbestand: ${sizeObj.stock})`);
     }
   }
 }
@@ -1300,8 +1337,8 @@ function increaseQuantity() {
     selectedQuantity = Math.min(selectedQuantity + 1, maxStock);
     quantityDisplay.textContent = selectedQuantity;
     
-    // Warenkorb direkt aktualisieren
-    updateCartFromModal(productId, selectedQuantity);
+    // KEINE direkte Warenkorb-Aktualisierung - nur temporär im Modal
+    console.log(`Menge temporär auf ${selectedQuantity} erhöht (${selectedSize})`);
   }
 }
 
@@ -1314,8 +1351,8 @@ function decreaseQuantity() {
     selectedQuantity = Math.max(selectedQuantity - 1, 0); // Erlaube 0
     quantityDisplay.textContent = selectedQuantity;
     
-    // Warenkorb direkt aktualisieren
-    updateCartFromModal(productId, selectedQuantity);
+    // KEINE direkte Warenkorb-Aktualisierung - nur temporär im Modal
+    console.log(`Menge temporär auf ${selectedQuantity} verringert (${selectedSize})`);
   }
 }
 
@@ -1365,9 +1402,40 @@ function addProductToCartFromModal() {
     return;
   }
   
-  // Warenkorb mit aktueller Menge aktualisieren
+  if (selectedQuantity <= 0) {
+    showNotification('Bitte wählen Sie eine Menge größer als 0', 'warning');
+    return;
+  }
+  
+  // Produkt mit aktueller Größe und Menge zum Warenkorb hinzufügen
   const productId = currentProduct.id || Date.now();
-  updateCartFromModal(productId, selectedQuantity);
+  
+  // Prüfe ob das Produkt bereits im Warenkorb ist (gleiche Größe)
+  const existingItemIndex = cart.findIndex(item => 
+    item.id === productId && item.size === selectedSize
+  );
+  
+  if (existingItemIndex >= 0) {
+    // Menge aktualisieren
+    cart[existingItemIndex].quantity = selectedQuantity;
+    showNotification(`Menge für ${currentProduct.name} (${selectedSize}) auf ${selectedQuantity} aktualisiert`, 'success');
+  } else {
+    // Neues Produkt zum Warenkorb hinzufügen
+    const cartItem = {
+      id: productId,
+      name: currentProduct.name,
+      price: currentProduct.price,
+      img: currentProduct.img || currentProduct.image,
+      size: selectedSize,
+      quantity: selectedQuantity
+    };
+    cart.push(cartItem);
+    showNotification(`${currentProduct.name} (${selectedSize}) wurde zum Warenkorb hinzugefügt`, 'success');
+  }
+  
+  saveCart();
+  updateCartDisplay();
+  displayProducts(); // Aktualisiere Produktkarten
   
   // Modal schließen
   closeProductDetailModal();
