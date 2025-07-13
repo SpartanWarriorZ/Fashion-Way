@@ -140,42 +140,100 @@
     </section>
   </main>
 
-  <!-- Produktbild Modal -->
-  <div class="product-image-modal" id="productImageModal">
-    <div class="product-image-modal-overlay" id="productImageModalOverlay"></div>
-    <div class="product-image-modal-content">
-      <button class="product-image-modal-close" id="productImageModalClose" aria-label="Modal schließen">
+  <!-- Produktdetail Modal -->
+  <div class="product-detail-modal" id="productDetailModal">
+    <div class="product-detail-modal-overlay" id="productDetailModalOverlay"></div>
+    <div class="product-detail-modal-content">
+      <button class="product-detail-modal-close" id="productDetailModalClose" aria-label="Modal schließen">
         <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
       </button>
       
-      <div class="product-image-modal-main">
-        <button class="product-image-nav-btn product-image-prev" id="productImagePrev" aria-label="Vorheriges Bild">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-          </svg>
-        </button>
-        
-        <div class="product-image-container">
-          <div class="zoom-indicator" id="zoomIndicator">Klick zum Zoomen</div>
-          <img id="productImageModalImg" src="" alt="Produktbild" class="product-image-modal-img">
+      <div class="product-detail-container">
+        <!-- Linke Seite: Produktbild -->
+        <div class="product-detail-image-section">
+          <div class="product-detail-image-container">
+            <div class="zoom-indicator" id="productDetailZoomIndicator">Klick zum Zoomen</div>
+            <img id="productDetailImage" src="" alt="Produktbild" class="product-detail-image">
+          </div>
+          
+          <!-- Bildergalerie Thumbnails -->
+          <div class="product-detail-thumbnails" id="productDetailThumbnails">
+            <!-- Thumbnails werden dynamisch eingefügt -->
+          </div>
         </div>
         
-        <button class="product-image-nav-btn product-image-next" id="productImageNext" aria-label="Nächstes Bild">
-          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="product-image-thumbnails" id="productImageThumbnails">
-        <!-- Thumbnails werden dynamisch eingefügt -->
-      </div>
-      
-      <div class="product-image-info">
-        <h3 id="productImageTitle"></h3>
-        <p id="productImageDescription"></p>
+        <!-- Rechte Seite: Produktinformationen -->
+        <div class="product-detail-info-section">
+          <div class="product-detail-header">
+            <h2 id="productDetailTitle" class="product-detail-title"></h2>
+            <div class="product-detail-category" id="productDetailCategory"></div>
+            <div class="product-detail-price" id="productDetailPrice"></div>
+          </div>
+          
+          <div class="product-detail-description" id="productDetailDescription">
+            <!-- Beschreibung wird dynamisch eingefügt -->
+          </div>
+          
+          <!-- Größenauswahl -->
+          <div class="product-detail-sizes" id="productDetailSizes">
+            <h3>Größe wählen</h3>
+            <div class="size-options" id="sizeOptions">
+              <!-- Größen werden dynamisch eingefügt -->
+            </div>
+          </div>
+          
+          <!-- Menge -->
+          <div class="product-detail-quantity">
+            <h3>Menge</h3>
+            <div class="quantity-selector">
+              <button class="quantity-btn minus" id="productDetailQuantityMinus">-</button>
+              <span class="quantity-display" id="productDetailQuantity">1</span>
+              <button class="quantity-btn plus" id="productDetailQuantityPlus">+</button>
+            </div>
+          </div>
+          
+          <!-- Verfügbarkeit -->
+          <div class="product-detail-availability" id="productDetailAvailability">
+            <!-- Verfügbarkeitsstatus wird dynamisch eingefügt -->
+          </div>
+          
+          <!-- Aktionen -->
+          <div class="product-detail-actions">
+            <button class="product-detail-add-to-cart-btn" id="productDetailAddToCartBtn">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+              </svg>
+              In den Warenkorb
+            </button>
+            <button class="product-detail-buy-now-btn" id="productDetailBuyNowBtn">
+              Jetzt kaufen
+            </button>
+          </div>
+          
+          <!-- Zusätzliche Informationen -->
+          <div class="product-detail-additional-info">
+            <div class="info-item">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span>Kostenloser Versand ab 50€</span>
+            </div>
+            <div class="info-item">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span>30 Tage Rückgaberecht</span>
+            </div>
+            <div class="info-item">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span>Sichere Bezahlung</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -490,22 +490,19 @@
                     <label for="productName">Produktname *</label>
                     <input type="text" id="productName" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="productPrice">Preis (€) *</label>
                     <input type="number" id="productPrice" step="0.01" min="0" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="productCategory">Kategorie *</label>
-                    <select id="productCategory" required>
+                    <select id="productCategory" required onchange="updateSizeFields()">
                         <option value="">Bitte wählen...</option>
                         <option value="herren">Herren</option>
                         <option value="damen">Damen</option>
                         <option value="kinder">Kinder</option>
                     </select>
                 </div>
-                
                 <div class="form-group">
                     <label for="productSubcategory">Unterkategorie *</label>
                     <select id="productSubcategory" required>
@@ -516,24 +513,21 @@
                         <option value="accessoires">Accessoires</option>
                     </select>
                 </div>
-                
                 <div class="form-group">
                     <label for="productImage">Bild-URL *</label>
                     <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
                     <small>Füge eine URL zu einem Bild hinzu (z.B. von Unsplash)</small>
                 </div>
-                
+                <!-- Dynamische Größenfelder -->
                 <div class="form-group">
-                    <label for="productStock">Lagerbestand *</label>
-                    <input type="number" id="productStock" min="0" value="10" required>
-                    <small>Anzahl der verfügbaren Artikel. <strong>Produkte mit Bestand 0 werden auf der Website nicht angezeigt</strong> (für zukünftige Produkte).</small>
+                    <label>Größen & Bestand *</label>
+                    <div id="sizesFields"></div>
+                    <small>Für jede Größe den Bestand eintragen. Nicht benötigte Größen leer lassen oder auf 0 setzen.</small>
                 </div>
-                
                 <div class="form-group">
                     <label for="productDescription">Beschreibung</label>
                     <textarea id="productDescription" rows="3"></textarea>
                 </div>
-                
                 <button type="submit" class="btn">Produkt hinzufügen</button>
             </form>
         </div>
@@ -701,10 +695,12 @@
             const saved = localStorage.getItem('fashionWayProducts');
             products = saved ? JSON.parse(saved) : [];
             
-            // Migration: Füge Stock zu bestehenden Produkten hinzu
+            // Migration: Entferne alten stock und verwende nur sizes
             products.forEach(product => {
-                if (typeof product.stock === 'undefined') {
-                    product.stock = 10; // Standard-Stock
+                // Entferne das alte stock-Feld, da wir jetzt sizes verwenden
+                if (product.stock !== undefined && (!product.sizes || product.sizes.length === 0)) {
+                    console.log('Entferne altes stock-Feld von Produkt:', product.name);
+                    delete product.stock;
                 }
             });
             
@@ -735,8 +731,8 @@
         // Statistiken aktualisieren
         function updateStats() {
             const totalProducts = products.length;
-            const availableProducts = products.filter(p => p.stock > 0).length;
-            const hiddenProducts = products.filter(p => p.stock === 0).length;
+            const availableProducts = products.filter(p => getTotalStock(p) > 0).length;
+            const hiddenProducts = products.filter(p => getTotalStock(p) === 0).length;
             
             document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('herrenProducts').textContent = products.filter(p => p.category === 'herren').length;
@@ -779,8 +775,8 @@
                     <div class="product-name">${product.name}</div>
                     <div class="product-price">${product.price} €</div>
                     <div class="product-category">${product.category} - ${product.subcategory}</div>
-                    <div class="product-stock" style="margin: 10px 0; padding: 5px 10px; background: ${product.stock > 0 ? '#d4edda' : '#f8d7da'}; color: ${product.stock > 0 ? '#155724' : '#721c24'}; border-radius: 5px; font-size: 12px;">
-                        ${product.stock > 0 ? `📦 ${product.stock} verfügbar` : '❌ Ausverkauft'}
+                    <div class="product-stock" style="margin: 10px 0; padding: 5px 10px; background: ${getTotalStock(product) > 0 ? '#d4edda' : '#f8d7da'}; color: ${getTotalStock(product) > 0 ? '#155724' : '#721c24'}; border-radius: 5px; font-size: 12px;">
+                        ${getTotalStock(product) > 0 ? `📦 ${getTotalStock(product)} verfügbar` : '❌ Ausverkauft'}
                     </div>
                     <div class="product-actions">
                         <button class="btn btn-small" onclick="editProduct(${originalIndex})" style="${isMobileDevice ? 'width: 100%; margin-bottom: 5px;' : ''}">Bearbeiten</button>
@@ -811,44 +807,204 @@
             return maxId + 1;
         }
         
+        // Gesamten Bestand eines Produkts berechnen
+        function getTotalStock(product) {
+            if (product.sizes && product.sizes.length > 0) {
+                return product.sizes.reduce((total, size) => total + (size.stock || 0), 0);
+            }
+            // Kein Fallback mehr - nur noch sizes-basierte Bestände
+            return 0;
+        }
+        
+        // Hilfsfunktion: Größen je nach Kategorie/Subkategorie
+        function getSizesForCategory(category, subcategory) {
+            if (category === 'damen' || category === 'herren') {
+                if (subcategory === 'hosen') return ['34','36','38','40','42','44','46'];
+                if (subcategory === 'schuhe') return ['36','37','38','39','40','41','42'];
+                return ['XS','S','M','L','XL','XXL'];
+            }
+            if (category === 'kinder') {
+                if (subcategory === 'schuhe') return ['28','29','30','31','32','33','34','35'];
+                return ['110','116','122','128','134','140'];
+            }
+            return ['One Size'];
+        }
+        // Dynamische Felder für Größen generieren
+        function updateSizeFields() {
+            const category = document.getElementById('productCategory').value;
+            const subcategory = document.getElementById('productSubcategory').value;
+            const sizes = getSizesForCategory(category, subcategory);
+            const container = document.getElementById('sizesFields');
+            
+            console.log('Erstelle Größenfelder für:', category, subcategory, sizes);
+            
+            container.innerHTML = '';
+            sizes.forEach(size => {
+                const div = document.createElement('div');
+                div.style.display = 'flex';
+                div.style.alignItems = 'center';
+                div.style.gap = '10px';
+                div.style.marginBottom = '5px';
+                div.innerHTML = `<label style='min-width:50px;'>${size}</label><input type='number' min='0' id='size_${size}' style='width:80px;' placeholder='Bestand'>`;
+                container.appendChild(div);
+            });
+            
+            console.log('Größenfelder erstellt:', sizes.length, 'Felder');
+            
+            // Debug: Alle erstellten Felder anzeigen
+            setTimeout(() => {
+                const createdInputs = document.querySelectorAll('[id^="size_"]');
+                console.log('Erstellte Felder:', Array.from(createdInputs).map(input => input.id));
+            }, 50);
+        }
+        document.getElementById('productSubcategory').addEventListener('change', updateSizeFields);
+        document.getElementById('productCategory').addEventListener('change', updateSizeFields);
+        // Beim Bearbeiten: Größen und Bestände laden
+        function fillSizeFields(sizesArr) {
+            if (!sizesArr || sizesArr.length === 0) {
+                console.log('Keine Größen zum Laden vorhanden');
+                return;
+            }
+            
+            console.log('Lade Größen und Bestände:', sizesArr);
+            
+            // Alle Größenfelder zurücksetzen
+            const allSizeInputs = document.querySelectorAll('[id^="size_"]');
+            allSizeInputs.forEach(input => {
+                input.value = '';
+            });
+            
+            // Bestehende Werte laden
+            sizesArr.forEach(s => {
+                const input = document.getElementById('size_' + s.size);
+                if (input) {
+                    input.value = s.stock;
+                    console.log(`Größe ${s.size}: ${s.stock} geladen`);
+                } else {
+                    console.log(`Feld für Größe ${s.size} nicht gefunden`);
+                }
+            });
+            
+            // Debug: Alle verfügbaren Felder anzeigen
+            console.log('Verfügbare Größenfelder:', Array.from(allSizeInputs).map(input => input.id));
+            
+            // Zusätzliche Verzögerung für sichereres Laden
+            setTimeout(() => {
+                console.log('Zweiter Versuch - Lade Größen und Bestände:', sizesArr);
+                sizesArr.forEach(s => {
+                    const input = document.getElementById('size_' + s.size);
+                    if (input && input.value === '') {
+                        input.value = s.stock;
+                        console.log(`Zweiter Versuch - Größe ${s.size}: ${s.stock} geladen`);
+                    }
+                });
+            }, 100);
+        }
+        // Produkt speichern (hinzufügen/bearbeiten)
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+            const sizes = [];
+            const category = document.getElementById('productCategory').value;
+            const subcategory = document.getElementById('productSubcategory').value;
+            getSizesForCategory(category, subcategory).forEach(size => {
+                const val = parseInt(document.getElementById('size_' + size).value);
+                if (!isNaN(val) && val > 0) sizes.push({ size, stock: val });
+            });
             const product = {
                 name: cleanUTF8Text(document.getElementById('productName').value),
                 price: parseFloat(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value,
-                subcategory: document.getElementById('productSubcategory').value,
+                category,
+                subcategory,
                 image: document.getElementById('productImage').value,
-                stock: parseInt(document.getElementById('productStock').value),
                 description: cleanUTF8Text(document.getElementById('productDescription').value || ''),
+                sizes,
                 id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : generateNextId()
             };
             
-            // Prüfen ob ein Produkt bearbeitet wird
+            // Entferne das alte stock-Feld falls vorhanden
+            if (product.stock !== undefined) {
+                delete product.stock;
+            }
             if (window.editingProductIndex !== undefined) {
-                // Produkt bearbeiten - altes Produkt ersetzen
                 products[window.editingProductIndex] = product;
                 showAlert('Produkt erfolgreich bearbeitet!', 'success');
-                window.editingProductIndex = undefined; // Reset
+                window.editingProductIndex = undefined;
             } else {
-                // Neues Produkt hinzufügen
                 products.push(product);
                 showAlert('Produkt erfolgreich hinzugefügt!', 'success');
             }
-            
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
-            
-            // Form zurücksetzen
             this.reset();
-            
-            // Stats aktualisieren
             updateStats();
+            updateSizeFields();
         });
         
         // Produkt bearbeiten
         function editProduct(index) {
             const product = products[index];
+            
+            console.log('Bearbeite Produkt:', product);
+            
+            // Lade aktuelle Daten aus import-data.json für dieses Produkt
+            loadCurrentProductData(product.id).then(currentProduct => {
+                const productToEdit = currentProduct || product;
+                
+                console.log('Aktuelle Produktdaten:', productToEdit);
+                
+                // Produktdaten in das Formular laden
+                document.getElementById('productName').value = productToEdit.name;
+                document.getElementById('productPrice').value = productToEdit.price;
+                document.getElementById('productCategory').value = productToEdit.category;
+                document.getElementById('productSubcategory').value = productToEdit.subcategory;
+                document.getElementById('productImage').value = productToEdit.image;
+                document.getElementById('productDescription').value = productToEdit.description || '';
+                
+                // Größenfelder erstellen
+                updateSizeFields();
+                
+                // Index des zu bearbeitenden Produkts speichern
+                window.editingProductIndex = index;
+                
+                // Tab wechseln
+                showTab('add-product');
+                
+                // Warten bis die Felder erstellt wurden, dann Bestände laden
+                setTimeout(() => {
+                    if (productToEdit.sizes && productToEdit.sizes.length > 0) {
+                        fillSizeFields(productToEdit.sizes);
+                        console.log('Größen und Bestände aus import-data.json geladen:', productToEdit.sizes);
+                        
+                        // Zusätzliche Verzögerung für sichereres Laden
+                        setTimeout(() => {
+                            console.log('Finale Überprüfung der geladenen Bestände:');
+                            productToEdit.sizes.forEach(s => {
+                                const input = document.getElementById('size_' + s.size);
+                                if (input) {
+                                    console.log(`Final - Größe ${s.size}: Feld hat Wert "${input.value}", sollte "${s.stock}" sein`);
+                                    if (input.value !== s.stock.toString()) {
+                                        input.value = s.stock;
+                                        console.log(`Korrigiert - Größe ${s.size}: ${s.stock} gesetzt`);
+                                    }
+                                }
+                            });
+                        }, 200);
+                    } else {
+                        console.log('Keine Größen gefunden für Produkt:', productToEdit.name);
+                        console.log('Produkt hat keine Größen definiert - alle Felder bleiben leer');
+                    }
+                }, 500);
+                
+                showAlert('Produkt zum Bearbeiten geladen. Klicke "Produkt hinzufügen" um zu speichern.', 'success');
+            }).catch(error => {
+                console.error('Fehler beim Laden der aktuellen Produktdaten:', error);
+                // Fallback auf lokale Daten
+                editProductFallback(product, index);
+            });
+        }
+        
+        // Fallback-Funktion für Produktbearbeitung
+        function editProductFallback(product, index) {
+            console.log('Verwende Fallback-Daten für Produkt:', product);
             
             // Produktdaten in das Formular laden
             document.getElementById('productName').value = product.name;
@@ -856,15 +1012,67 @@
             document.getElementById('productCategory').value = product.category;
             document.getElementById('productSubcategory').value = product.subcategory;
             document.getElementById('productImage').value = product.image;
-            document.getElementById('productStock').value = product.stock;
-            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productDescription').value = product.description || '';
+            
+            // Größenfelder erstellen
+            updateSizeFields();
             
             // Index des zu bearbeitenden Produkts speichern
             window.editingProductIndex = index;
             
             // Tab wechseln
             showTab('add-product');
-            showAlert('Produkt zum Bearbeiten geladen. Klicke "Produkt hinzufügen" um zu speichern.', 'success');
+            
+            // Warten bis die Felder erstellt wurden, dann Bestände laden
+            setTimeout(() => {
+                if (product.sizes && product.sizes.length > 0) {
+                    fillSizeFields(product.sizes);
+                    console.log('Größen und Bestände geladen (Fallback):', product.sizes);
+                    
+                    // Zusätzliche Verzögerung für sichereres Laden
+                    setTimeout(() => {
+                        console.log('Finale Überprüfung der geladenen Bestände (Fallback):');
+                        product.sizes.forEach(s => {
+                            const input = document.getElementById('size_' + s.size);
+                            if (input) {
+                                console.log(`Final - Größe ${s.size}: Feld hat Wert "${input.value}", sollte "${s.stock}" sein`);
+                                if (input.value !== s.stock.toString()) {
+                                    input.value = s.stock;
+                                    console.log(`Korrigiert - Größe ${s.size}: ${s.stock} gesetzt`);
+                                }
+                            }
+                        });
+                    }, 200);
+                } else {
+                    console.log('Keine Größen gefunden für Produkt:', product.name);
+                }
+            }, 500);
+            
+            showAlert('Produkt zum Bearbeiten geladen (Fallback-Modus). Klicke "Produkt hinzufügen" um zu speichern.', 'success');
+        }
+        
+        // Lade aktuelle Produktdaten aus import-data.json
+        async function loadCurrentProductData(productId) {
+            try {
+                const response = await fetch('import-data.json');
+                if (!response.ok) {
+                    throw new Error('import-data.json nicht gefunden');
+                }
+                
+                const data = await response.json();
+                const currentProduct = data.find(p => p.id === productId);
+                
+                if (currentProduct) {
+                    console.log('Aktuelle Daten gefunden für Produkt ID:', productId);
+                    return currentProduct;
+                } else {
+                    console.log('Keine aktuellen Daten gefunden für Produkt ID:', productId);
+                    return null;
+                }
+            } catch (error) {
+                console.error('Fehler beim Laden der aktuellen Produktdaten:', error);
+                return null;
+            }
         }
         
         // Produkt löschen
