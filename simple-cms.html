@@ -514,9 +514,17 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="productImage">Bild-URL *</label>
-                    <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
-                    <small>Füge eine URL zu einem Bild hinzu (z.B. von Unsplash)</small>
+                    <label>Produktbilder *</label>
+                    <div id="imageFields">
+                        <div class="image-field">
+                            <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                            <small>Hauptbild (wird als erstes angezeigt)</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="addImageField()" style="margin-top: 10px;">
+                        ➕ Weitere Bilder hinzufügen
+                    </button>
+                    <small>Füge URLs zu Bildern hinzu (z.B. von Unsplash). Das erste Bild ist das Hauptbild.</small>
                 </div>
                 <!-- Dynamische Größenfelder -->
                 <div class="form-group">
@@ -898,16 +906,28 @@
                 const val = parseInt(document.getElementById('size_' + size).value);
                 if (!isNaN(val) && val > 0) sizes.push({ size, stock: val });
             });
+            // Sammle alle Bild-URLs
+            const imageUrls = collectImageUrls();
+            if (imageUrls.length === 0) {
+                showAlert('Bitte mindestens ein Bild hinzufügen!', 'error');
+                return;
+            }
+            
             const product = {
                 name: cleanUTF8Text(document.getElementById('productName').value),
                 price: parseFloat(document.getElementById('productPrice').value),
                 category,
                 subcategory,
-                image: document.getElementById('productImage').value,
+                image: imageUrls[0], // Hauptbild
                 description: cleanUTF8Text(document.getElementById('productDescription').value || ''),
                 sizes,
                 id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : generateNextId()
             };
+            
+            // Zusätzliche Bilder hinzufügen
+            for (let i = 1; i < imageUrls.length; i++) {
+                product[`image${i + 1}`] = imageUrls[i];
+            }
             
             // Entferne das alte stock-Feld falls vorhanden
             if (product.stock !== undefined) {
@@ -923,6 +943,16 @@
             }
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
             this.reset();
+            
+            // Bildfelder zurücksetzen
+            const imageFields = document.getElementById('imageFields');
+            imageFields.innerHTML = `
+                <div class="image-field">
+                    <input type="url" id="productImage" placeholder="https://example.com/image.jpg" required>
+                    <small>Hauptbild (wird als erstes angezeigt)</small>
+                </div>
+            `;
+            
             updateStats();
             updateSizeFields();
         });
@@ -938,8 +968,10 @@
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productCategory').value = product.category;
             document.getElementById('productSubcategory').value = product.subcategory;
-            document.getElementById('productImage').value = product.image;
             document.getElementById('productDescription').value = product.description;
+            
+            // Bildfelder mit bestehenden Bildern füllen
+            fillImageFields(product);
             
             // Größenfelder erstellen
             updateSizeFields();
@@ -1625,6 +1657,101 @@
                 updateGitHubStatus('⚠️ Auto-Sync fehlgeschlagen', 'error');
                 showAlert(`⚠️ Automatische Synchronisation fehlgeschlagen: ${error.message}`, 'error');
             }
+        }
+        
+        // Bildverwaltung - Weitere Bildfelder hinzufügen
+        function addImageField() {
+            const container = document.getElementById('imageFields');
+            const imageCount = container.children.length + 1;
+            const fieldId = `productImage${imageCount}`;
+            
+            const imageField = document.createElement('div');
+            imageField.className = 'image-field';
+            imageField.style.marginTop = '10px';
+            imageField.style.position = 'relative';
+            
+            imageField.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="url" id="${fieldId}" placeholder="https://example.com/image${imageCount}.jpg" style="flex: 1;">
+                    <button type="button" class="btn btn-secondary" onclick="removeImageField(this)" style="padding: 8px 12px; font-size: 14px;">
+                        🗑️
+                    </button>
+                </div>
+                <small>Zusätzliches Bild ${imageCount}</small>
+            `;
+            
+            container.appendChild(imageField);
+        }
+        
+        // Bildfeld entfernen
+        function removeImageField(button) {
+            const imageField = button.closest('.image-field');
+            imageField.remove();
+            
+            // IDs der verbleibenden Felder neu nummerieren
+            const remainingFields = document.querySelectorAll('#imageFields .image-field');
+            remainingFields.forEach((field, index) => {
+                const input = field.querySelector('input');
+                const small = field.querySelector('small');
+                
+                if (index === 0) {
+                    input.id = 'productImage';
+                    small.textContent = 'Hauptbild (wird als erstes angezeigt)';
+                } else {
+                    input.id = `productImage${index + 1}`;
+                    small.textContent = `Zusätzliches Bild ${index + 1}`;
+                }
+            });
+        }
+        
+        // Alle Bild-URLs sammeln
+        function collectImageUrls() {
+            const imageFields = document.querySelectorAll('#imageFields input[type="url"]');
+            const images = [];
+            
+            imageFields.forEach(field => {
+                if (field.value.trim()) {
+                    images.push(field.value.trim());
+                }
+            });
+            
+            return images;
+        }
+        
+        // Bildfelder mit bestehenden Bildern füllen (für Bearbeitung)
+        function fillImageFields(product) {
+            const container = document.getElementById('imageFields');
+            container.innerHTML = '';
+            
+            // Sammle alle verfügbaren Bilder
+            const images = [];
+            if (product.image) images.push(product.image);
+            if (product.image2) images.push(product.image2);
+            if (product.image3) images.push(product.image3);
+            if (product.image4) images.push(product.image4);
+            if (product.image5) images.push(product.image5);
+            if (product.image6) images.push(product.image6);
+            
+            // Erstelle Felder für alle Bilder
+            images.forEach((imageUrl, index) => {
+                const imageField = document.createElement('div');
+                imageField.className = 'image-field';
+                imageField.style.marginTop = index > 0 ? '10px' : '0';
+                imageField.style.position = 'relative';
+                
+                const fieldId = index === 0 ? 'productImage' : `productImage${index + 1}`;
+                const label = index === 0 ? 'Hauptbild (wird als erstes angezeigt)' : `Zusätzliches Bild ${index + 1}`;
+                
+                imageField.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="url" id="${fieldId}" value="${imageUrl}" placeholder="https://example.com/image${index + 1}.jpg" style="flex: 1;">
+                        ${index > 0 ? `<button type="button" class="btn btn-secondary" onclick="removeImageField(this)" style="padding: 8px 12px; font-size: 14px;">🗑️</button>` : ''}
+                    </div>
+                    <small>${label}</small>
+                `;
+                
+                container.appendChild(imageField);
+            });
         }
         
         // Letzte Synchronisation anzeigen

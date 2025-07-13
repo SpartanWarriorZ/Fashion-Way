@@ -1250,14 +1250,26 @@ function openProductDetailModal(product) {
       // Wenn eine Größe ausgewählt ist, wird die Menge in selectSize() gesetzt
     }
     
+    // Sammle alle verfügbaren Bilder
+    const allImages = [imageUrl]; // Hauptbild
+    if (product.image2) allImages.push(product.image2);
+    if (product.image3) allImages.push(product.image3);
+    if (product.image4) allImages.push(product.image4);
+    if (product.image5) allImages.push(product.image5);
+    if (product.image6) allImages.push(product.image6);
+    
+    // Aktuelle Bilder für das Modal setzen
+    currentProductImages = allImages;
+    currentImageIndex = 0;
+    
     // Thumbnails erstellen
     const thumbnailsContainer = document.getElementById('productDetailThumbnails');
     if (thumbnailsContainer) {
-      thumbnailsContainer.innerHTML = `
-        <div class="product-detail-thumbnail active" onclick="showProductDetailImage(0)">
-          <img src="${imageUrl}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/100x100?text=Kein+Bild'" onload="console.log('Thumbnail geladen:', '${imageUrl}')" onerror="console.log('Thumbnail Fehler:', '${imageUrl}')">
+      thumbnailsContainer.innerHTML = allImages.map((img, index) => `
+        <div class="product-detail-thumbnail ${index === 0 ? 'active' : ''}" onclick="showProductDetailImage(${index})">
+          <img src="${img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/100x100?text=Kein+Bild'" onload="console.log('Thumbnail geladen:', '${img}')" onerror="console.log('Thumbnail Fehler:', '${img}')">
         </div>
-      `;
+      `).join('');
     }
     
     // Modal öffnen
@@ -1276,6 +1288,27 @@ function openProductDetailModal(product) {
       const closeBtn = document.getElementById('productDetailModalClose');
       if (closeBtn) closeBtn.focus();
     }, 100);
+  }
+}
+
+// Produktdetail Bild anzeigen
+function showProductDetailImage(index) {
+  if (!currentProductImages || !currentProductImages[index]) return;
+  
+  const modalImg = document.getElementById('productDetailImage');
+  if (modalImg) {
+    modalImg.src = currentProductImages[index];
+    currentImageIndex = index;
+    
+    // Thumbnail-Aktivität aktualisieren
+    document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === index);
+    });
+    
+    // Zoom zurücksetzen
+    if (window.resetImageZoom) {
+      window.resetImageZoom();
+    }
   }
 }
 
@@ -2010,3 +2043,135 @@ window.closeProductImageModal = closeProductImageModal;
 window.showImage = showImage;
 window.nextImage = nextImage;
 window.prevImage = prevImage;
+window.showProductDetailImage = showProductDetailImage;
+
+// Zoom-Setup für das Produktdetail-Modal
+setupProductDetailImageZoom();
+
+// Neue Funktion für Zoom im Produktdetail-Modal
+function setupProductDetailImageZoom() {
+  const modalImg = document.getElementById('productDetailImage');
+  const zoomIndicator = document.getElementById('productDetailZoomIndicator');
+  if (!modalImg || !zoomIndicator) return;
+
+  let isZoomed = false;
+  let isDragging = false;
+  let isTouching = false;
+  let startX, startY, translateX = 0, translateY = 0;
+  let scale = 1;
+  const ZOOM_LEVEL = 3.5;
+
+  function showZoomIndicator() {
+    zoomIndicator.classList.add('show');
+    setTimeout(() => {
+      if (!isZoomed) zoomIndicator.classList.remove('show');
+    }, 2000);
+  }
+  function hideZoomIndicator() {
+    zoomIndicator.classList.remove('show');
+  }
+  function applyTransform() {
+    modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+  function zoomAtPosition(clientX, clientY) {
+    const rect = modalImg.getBoundingClientRect();
+    const relativeX = (clientX - rect.left) / rect.width;
+    const relativeY = (clientY - rect.top) / rect.height;
+    modalImg.style.transformOrigin = `${relativeX * 100}% ${relativeY * 100}%`;
+    scale = ZOOM_LEVEL;
+    translateX = 0;
+    translateY = 0;
+    isZoomed = true;
+    modalImg.classList.add('zoomed');
+    zoomIndicator.textContent = 'Ziehen zum Navigieren • Klick zum Verkleinern';
+    zoomIndicator.classList.add('zoomed');
+    showZoomIndicator();
+    modalImg.style.imageRendering = 'auto';
+    modalImg.style.imageRendering = '-webkit-optimize-contrast';
+    modalImg.style.imageRendering = 'crisp-edges';
+    applyTransform();
+  }
+  function resetZoom() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    isZoomed = false;
+    modalImg.style.transformOrigin = 'center';
+    modalImg.classList.remove('zoomed');
+    modalImg.classList.remove('dragging');
+    zoomIndicator.textContent = 'Klick zum Zoomen';
+    zoomIndicator.classList.remove('zoomed');
+    hideZoomIndicator();
+    modalImg.style.imageRendering = '';
+    applyTransform();
+  }
+
+  // Klick zum Zoomen/Zurücksetzen
+  modalImg.addEventListener('click', (e) => {
+    if (!isZoomed) {
+      zoomAtPosition(e.clientX, e.clientY);
+    } else {
+      resetZoom();
+    }
+  });
+
+  // Maus-Drag zum Verschieben
+  modalImg.addEventListener('mousedown', (e) => {
+    if (isZoomed) {
+      e.preventDefault();
+      isDragging = true;
+      startX = e.clientX - translateX;
+      startY = e.clientY - translateY;
+      modalImg.classList.add('dragging');
+    }
+  });
+  document.addEventListener('mousemove', (e) => {
+    if (isZoomed && isDragging) {
+      translateX = e.clientX - startX;
+      translateY = e.clientY - startY;
+      applyTransform();
+    }
+  });
+  document.addEventListener('mouseup', () => {
+    if (isZoomed && isDragging) {
+      isDragging = false;
+      modalImg.classList.remove('dragging');
+    }
+  });
+
+  // Touch-Events für Mobilgeräte
+  modalImg.addEventListener('touchstart', (e) => {
+    if (isZoomed) {
+      isTouching = true;
+      const touch = e.touches[0];
+      startX = touch.clientX - translateX;
+      startY = touch.clientY - translateY;
+      modalImg.classList.add('dragging');
+    }
+  });
+  modalImg.addEventListener('touchmove', (e) => {
+    if (isZoomed && isTouching) {
+      const touch = e.touches[0];
+      translateX = touch.clientX - startX;
+      translateY = touch.clientY - startY;
+      applyTransform();
+    }
+  });
+  modalImg.addEventListener('touchend', () => {
+    if (isZoomed && isTouching) {
+      isTouching = false;
+      modalImg.classList.remove('dragging');
+    }
+  });
+
+  // Zoom zurücksetzen beim Schließen des Modals
+  const modal = document.getElementById('productDetailModal');
+  if (modal) {
+    modal.addEventListener('transitionend', () => {
+      if (!modal.classList.contains('active')) resetZoom();
+    });
+  }
+
+  // Initialtext für den Zoom-Indikator
+  zoomIndicator.textContent = 'Klick zum Zoomen';
+}
