@@ -584,12 +584,9 @@
             </div>
             
             <div class="form-group">
-                <h3>Automatische Synchronisation</h3>
+                <h3>Manuelle Synchronisation</h3>
                 <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="autoSync" checked> Automatisch zu GitHub pushen
-                    </label>
-                    <small>Bei jeder Änderung automatisch zu GitHub pushen</small>
+                    <small>Produkte werden nur beim Start automatisch von GitHub geladen. Push-Operationen müssen manuell ausgeführt werden.</small>
                 </div>
                 
                 <button class="btn" onclick="pushToGitHub()">🚀 Jetzt zu GitHub pushen</button>
@@ -609,11 +606,10 @@
             </div>
             
             <div class="alert alert-success">
-                <strong>💡 Automatische Synchronisation:</strong><br>
-                • Produkte hinzufügen → Automatisch zu GitHub<br>
-                • Produkte bearbeiten → Automatisch zu GitHub<br>
-                • Produkte löschen → Automatisch zu GitHub<br>
-                • Website lädt automatisch neue Daten!
+                <strong>💡 Manuelle Synchronisation:</strong><br>
+                • Produkte werden beim Start automatisch von GitHub geladen<br>
+                • Push-Operationen müssen manuell über den "Jetzt zu GitHub pushen" Button ausgeführt werden<br>
+                • Website lädt automatisch neue Daten nach dem Push!
             </div>
         </div>
         
@@ -892,10 +888,7 @@
             originalSetItem.apply(this, arguments);
             if (key === 'fashionWayProducts') {
                 updateWebsite();
-                // Automatische GitHub Synchronisation
-                if (document.getElementById('autoSync') && document.getElementById('autoSync').checked) {
-                    setTimeout(() => pushToGitHub(), 1000); // 1 Sekunde Verzögerung
-                }
+                // Keine automatische GitHub Synchronisation - nur manuell über Buttons
             }
         };
         
@@ -1368,26 +1361,18 @@
                     
                     updateLoadingStatus('Produkte erfolgreich geladen!', 100);
                     
+                    // Automatisch schließen nach 2 Sekunden
                     setTimeout(() => {
-                        const button = document.getElementById('loadingButton');
-                        button.style.display = 'inline-block';
-                        button.textContent = `Fertig (${products.length} Produkte geladen)`;
-                        button.disabled = false;
-                        button.style.cursor = 'pointer';
-                        console.log('✅ Fertig-Button aktiviert');
-                    }, 1000);
+                        finishLoading();
+                    }, 2000);
                     
                 } else if (response.status === 404) {
                     updateLoadingStatus('Keine Produkte gefunden - bereit für neue Einträge', 100);
                     
+                    // Automatisch schließen nach 2 Sekunden
                     setTimeout(() => {
-                        const button = document.getElementById('loadingButton');
-                        button.style.display = 'inline-block';
-                        button.textContent = 'Fertig (0 Produkte)';
-                        button.disabled = false;
-                        button.style.cursor = 'pointer';
-                        console.log('✅ Fertig-Button aktiviert (0 Produkte)');
-                    }, 1000);
+                        finishLoading();
+                    }, 2000);
                     
                 } else {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -1397,14 +1382,10 @@
                 console.error('Auto-Sync Fehler:', error);
                 updateLoadingStatus(`Fehler: ${error.message}`, 100);
                 
+                // Automatisch schließen nach 2 Sekunden auch bei Fehler
                 setTimeout(() => {
-                    const button = document.getElementById('loadingButton');
-                    button.style.display = 'inline-block';
-                    button.textContent = 'Trotzdem fortfahren';
-                    button.disabled = false;
-                    button.style.cursor = 'pointer';
-                    console.log('✅ Fertig-Button aktiviert (Fehler)');
-                }, 1000);
+                    finishLoading();
+                }, 2000);
             }
         }
         
@@ -1434,10 +1415,10 @@
                     
                     console.log(`✅ ${products.length} Produkte von GitHub geladen`);
                     showAlert(`✅ ${products.length} Produkte von GitHub geladen!`, 'success');
-                    updateGitHubStatus('✅ Automatisch synchronisiert', 'success');
+                    updateGitHubStatus('✅ Automatisch geladen', 'success');
                     updateLastSync();
                 } else if (response.status === 404) {
-                    console.log('📝 Keine import-data.json gefunden - erstelle neue Datei');
+                    console.log('📝 Keine import-data.json gefunden - bereit für neue Einträge');
                     updateGitHubStatus('📝 Keine Produkte gefunden - bereit für neue Einträge', 'info');
                     showAlert('📝 Keine Produkte auf GitHub gefunden. Du kannst jetzt neue Produkte hinzufügen!', 'info');
                 } else {
