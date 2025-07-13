@@ -795,12 +795,23 @@
         
         // Produkt löschen
         function deleteProduct(index) {
-            if (confirm('Möchtest du dieses Produkt wirklich löschen?')) {
+            const product = products[index];
+            const productName = product.name || 'Unbekanntes Produkt';
+            const productCategory = product.category || '';
+            const productPrice = product.price || 0;
+            
+            const confirmMessage = `Sind Sie sich sicher, dass Sie folgendes Produkt löschen wollen?\n\n` +
+                                 `📦 Produkt: ${productName}\n` +
+                                 `🏷️ Kategorie: ${productCategory}\n` +
+                                 `💰 Preis: ${productPrice} €\n\n` +
+                                 `Diese Aktion kann nicht rückgängig gemacht werden!`;
+            
+            if (confirm(confirmMessage)) {
                 products.splice(index, 1);
                 localStorage.setItem('fashionWayProducts', JSON.stringify(products));
                 updateStats();
                 renderProducts();
-                showAlert('Produkt gelöscht!', 'success');
+                showAlert(`Produkt "${productName}" erfolgreich gelöscht!`, 'success');
             }
         }
         
