@@ -1289,7 +1289,12 @@
         // Lade-Fenster anzeigen
         function showLoadingScreen() {
             const overlay = document.getElementById('loadingOverlay');
-            const container = document.querySelector('.container');
+            const button = document.getElementById('loadingButton');
+            
+            // Button initial deaktivieren
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            button.style.display = 'none';
             
             // Lade-Fenster anzeigen
             overlay.style.display = 'flex';
@@ -1307,13 +1312,23 @@
         
         // Lade-Fenster schließen
         function finishLoading() {
+            console.log('🔄 Lade-Fenster wird geschlossen...');
+            
             const overlay = document.getElementById('loadingOverlay');
-            document.body.classList.remove('loading-active');
+            const button = document.getElementById('loadingButton');
+            
+            // Button deaktivieren während des Schließens
+            button.disabled = true;
+            button.style.cursor = 'not-allowed';
+            
+            // Lade-Fenster ausblenden
             overlay.style.display = 'none';
+            document.body.classList.remove('loading-active');
             
             // Als besucht markieren
             localStorage.setItem('fashionWayFirstVisit', 'true');
             
+            console.log('✅ Lade-Fenster geschlossen');
             showAlert('✅ CMS ist bereit!', 'success');
         }
         
@@ -1357,6 +1372,9 @@
                         const button = document.getElementById('loadingButton');
                         button.style.display = 'inline-block';
                         button.textContent = `Fertig (${products.length} Produkte geladen)`;
+                        button.disabled = false;
+                        button.style.cursor = 'pointer';
+                        console.log('✅ Fertig-Button aktiviert');
                     }, 1000);
                     
                 } else if (response.status === 404) {
@@ -1366,6 +1384,9 @@
                         const button = document.getElementById('loadingButton');
                         button.style.display = 'inline-block';
                         button.textContent = 'Fertig (0 Produkte)';
+                        button.disabled = false;
+                        button.style.cursor = 'pointer';
+                        console.log('✅ Fertig-Button aktiviert (0 Produkte)');
                     }, 1000);
                     
                 } else {
@@ -1380,6 +1401,9 @@
                     const button = document.getElementById('loadingButton');
                     button.style.display = 'inline-block';
                     button.textContent = 'Trotzdem fortfahren';
+                    button.disabled = false;
+                    button.style.cursor = 'pointer';
+                    console.log('✅ Fertig-Button aktiviert (Fehler)');
                 }, 1000);
             }
         }
