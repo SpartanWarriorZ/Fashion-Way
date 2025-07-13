@@ -35,7 +35,6 @@
     ]
   },
   {
-    "id": 2,
     "name": "Klassisches Herrenhemd",
     "price": 49.99,
     "category": "herren",
@@ -43,6 +42,10 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Klassisches Herrenhemd für Business und formelle Anlässe",
     "sizes": [
+      {
+        "size": "XS",
+        "stock": 1
+      },
       {
         "size": "S",
         "stock": 7
@@ -63,7 +66,9 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "id": 2,
+    "image2": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
   },
   {
     "id": 3,
