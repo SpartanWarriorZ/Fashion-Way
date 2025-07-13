@@ -399,6 +399,7 @@
                 
                 <button class="btn" onclick="saveGitHubSettings()">💾 Einstellungen speichern</button>
                 <button class="btn btn-secondary" onclick="testGitHubConnection()">🔗 Verbindung testen</button>
+                <button class="btn btn-secondary" onclick="findRepositories()">🔍 Repositories finden</button>
             </div>
             
             <div class="form-group">
@@ -728,23 +729,97 @@
         // GitHub Verbindung testen
         async function testGitHubConnection() {
             try {
-                const response = await fetch(`https://api.github.com/repos/${githubSettings.repo}`, {
+                updateGitHubStatus('🔄 Teste Verbindung...', 'info');
+                
+                // 1. Teste Token mit User-API
+                const userResponse = await fetch('https://api.github.com/user', {
                     headers: {
                         'Authorization': `token ${githubSettings.token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 
-                if (response.ok) {
-                    const repo = await response.json();
-                    showAlert(`✅ Verbindung erfolgreich! Repository: ${repo.name}`, 'success');
-                    updateGitHubStatus('✅ Verbunden', 'success');
-                } else {
-                    throw new Error('Repository nicht gefunden oder Token ungültig');
+                if (!userResponse.ok) {
+                    throw new Error(`Token ungültig (Status: ${userResponse.status})`);
                 }
+                
+                const user = await userResponse.json();
+                console.log('Token gültig für User:', user.login);
+                
+                // 2. Teste Repository-Zugriff
+                const repoResponse = await fetch(`https://api.github.com/repos/${githubSettings.repo}`, {
+                    headers: {
+                        'Authorization': `token ${githubSettings.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (repoResponse.ok) {
+                    const repo = await repoResponse.json();
+                    showAlert(`✅ Verbindung erfolgreich! Repository: ${repo.name} (${repo.full_name})`, 'success');
+                    updateGitHubStatus('✅ Verbunden', 'success');
+                } else if (repoResponse.status === 404) {
+                    throw new Error(`Repository nicht gefunden: ${githubSettings.repo}. Überprüfe den Repository-Namen.`);
+                } else {
+                    const errorData = await repoResponse.json();
+                    throw new Error(`Repository-Zugriff verweigert (Status: ${repoResponse.status}): ${errorData.message || 'Unbekannter Fehler'}`);
+                }
+                
             } catch (error) {
+                console.error('GitHub Test Error:', error);
                 showAlert(`❌ Verbindungsfehler: ${error.message}`, 'error');
                 updateGitHubStatus('❌ Verbindungsfehler', 'error');
+            }
+        }
+        
+        // Verfügbare Repositories finden
+        async function findRepositories() {
+            try {
+                updateGitHubStatus('🔄 Suche Repositories...', 'info');
+                
+                const response = await fetch('https://api.github.com/user/repos', {
+                    headers: {
+                        'Authorization': `token ${githubSettings.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Fehler beim Laden der Repositories (Status: ${response.status})`);
+                }
+                
+                const repos = await response.json();
+                const fashionRepos = repos.filter(repo => 
+                    repo.name.toLowerCase().includes('fashion') || 
+                    repo.name.toLowerCase().includes('way')
+                );
+                
+                let message = `Gefundene Repositories (${repos.length} total):\n`;
+                if (fashionRepos.length > 0) {
+                    message += '\n🎯 Fashion-bezogene Repositories:\n';
+                    fashionRepos.forEach(repo => {
+                        message += `• ${repo.full_name} (${repo.private ? 'privat' : 'öffentlich'})\n`;
+                    });
+                } else {
+                    message += '\nKeine Fashion-bezogenen Repositories gefunden.\n';
+                }
+                
+                message += '\nAlle Repositories:\n';
+                repos.slice(0, 10).forEach(repo => {
+                    message += `• ${repo.full_name}\n`;
+                });
+                
+                if (repos.length > 10) {
+                    message += `... und ${repos.length - 10} weitere`;
+                }
+                
+                alert(message);
+                updateGitHubStatus('✅ Repositories gefunden', 'success');
+                
+            } catch (error) {
+                console.error('Repository Search Error:', error);
+                showAlert(`❌ Fehler beim Suchen: ${error.message}`, 'error');
+                updateGitHubStatus('❌ Suchfehler', 'error');
             }
         }
         
