@@ -15,7 +15,68 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
+        }
+        
+        /* Mobile Optimierungen */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 10px;
+                margin: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 12px;
+                font-size: 14px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .product-card {
+                padding: 15px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 1.5em;
+            }
         }
         
         .container {
@@ -383,8 +444,8 @@
                     <label for="githubToken">GitHub Token</label>
                     <input type="password" id="githubToken" value="" placeholder="GitHub Personal Access Token">
                     <small>Dein GitHub Personal Access Token für automatische Synchronisation</small>
-                    <br><small style="color: #dc3545;">⚠️ Wichtig: Token wird in github-config.js gespeichert (nicht im Repository)</small>
-                    <small>Dein GitHub Personal Access Token für automatische Synchronisation</small>
+                    <br><small style="color: #dc3545;">⚠️ Wichtig: Token wird lokal gespeichert (nicht im Repository)</small>
+                    <br><small style="color: #007bff;">💡 Tipp: Für Mobile - Token einmal eingeben, dann wird er gespeichert</small>
                 </div>
                 
                 <div class="form-group">
@@ -498,6 +559,14 @@
             if (tabName === 'products') {
                 loadProducts();
             }
+            
+            // Mobile-spezifische Verbesserungen
+            if (isMobile()) {
+                // Scroll zum Anfang des Inhalts
+                setTimeout(() => {
+                    document.getElementById(tabName).scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
         }
         
         // Produkte aus localStorage laden
@@ -534,6 +603,9 @@
                 filteredProducts = products.filter(p => p.category === filter);
             }
             
+            // Mobile-optimierte Anzeige
+            const isMobileDevice = isMobile();
+            
             grid.innerHTML = filteredProducts.map((product, index) => `
                 <div class="product-card">
                     <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Kein+Bild'">
@@ -544,11 +616,16 @@
                         ${product.stock > 0 ? `📦 ${product.stock} verfügbar` : '❌ Ausverkauft'}
                     </div>
                     <div class="product-actions">
-                        <button class="btn btn-small" onclick="editProduct(${index})">Bearbeiten</button>
-                        <button class="btn btn-small btn-secondary" onclick="deleteProduct(${index})">Löschen</button>
+                        <button class="btn btn-small" onclick="editProduct(${index})" style="${isMobileDevice ? 'width: 100%; margin-bottom: 5px;' : ''}">Bearbeiten</button>
+                        <button class="btn btn-small btn-secondary" onclick="deleteProduct(${index})" style="${isMobileDevice ? 'width: 100%;' : ''}">Löschen</button>
                     </div>
                 </div>
             `).join('');
+            
+            // Mobile-spezifische Verbesserungen
+            if (isMobileDevice) {
+                console.log(`Mobile Ansicht: ${filteredProducts.length} Produkte angezeigt`);
+            }
         }
         
         // Produkt hinzufügen
@@ -702,33 +779,127 @@
             }
         };
         
+        // Mobile-spezifische Verbesserungen
+        function isMobile() {
+            return window.innerWidth <= 768;
+        }
+        
+        // Verbesserte Alert-Funktion für Mobile
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.position = 'fixed';
+            alert.style.top = '20px';
+            alert.style.left = '10px';
+            alert.style.right = '10px';
+            alert.style.zIndex = '9999';
+            alert.style.maxWidth = 'none';
+            
+            if (isMobile()) {
+                alert.style.fontSize = '14px';
+                alert.style.padding = '12px';
+            }
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.5s';
+                setTimeout(() => alert.remove(), 500);
+            }, 3000);
+        }
+        
         // GitHub API Funktionen
         let githubSettings = {
-            token: window.githubConfig ? window.githubConfig.token : '',
-            repo: window.githubConfig ? window.githubConfig.repo : 'SpartanWarriorZ/Fashion-Way',
-            branch: window.githubConfig ? window.githubConfig.branch : 'main'
+            token: '',
+            repo: 'SpartanWarriorZ/Fashion-Way',
+            branch: 'main'
         };
+        
+        // Token aus verschiedenen Quellen laden
+        function loadGitHubToken() {
+            // 1. Versuche aus github-config.js zu laden (falls vorhanden)
+            if (window.githubConfig && window.githubConfig.token) {
+                githubSettings.token = window.githubConfig.token;
+                console.log('Token aus github-config.js geladen');
+                return;
+            }
+            
+            // 2. Versuche aus localStorage zu laden
+            const savedToken = localStorage.getItem('fashionWayGitHubToken');
+            if (savedToken) {
+                githubSettings.token = savedToken;
+                console.log('Token aus localStorage geladen');
+                return;
+            }
+            
+            // 3. Versuche aus URL-Parameter zu laden (für mobile Nutzung)
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenParam = urlParams.get('token');
+            if (tokenParam) {
+                githubSettings.token = tokenParam;
+                localStorage.setItem('fashionWayGitHubToken', tokenParam);
+                console.log('Token aus URL-Parameter geladen');
+                return;
+            }
+            
+            console.log('Kein Token gefunden - bitte konfigurieren');
+        }
         
         // GitHub Einstellungen laden
         function loadGitHubSettings() {
+            // Token laden
+            loadGitHubToken();
+            
+            // Andere Einstellungen aus localStorage
             const saved = localStorage.getItem('fashionWayGitHubSettings');
             if (saved) {
-                githubSettings = { ...githubSettings, ...JSON.parse(saved) };
+                const savedSettings = JSON.parse(saved);
+                githubSettings.repo = savedSettings.repo || githubSettings.repo;
+                githubSettings.branch = savedSettings.branch || githubSettings.branch;
             }
             
+            // UI aktualisieren
             document.getElementById('githubToken').value = githubSettings.token;
             document.getElementById('githubRepo').value = githubSettings.repo;
             document.getElementById('githubBranch').value = githubSettings.branch;
+            
+            // Status anzeigen
+            if (githubSettings.token) {
+                updateGitHubStatus('✅ Token konfiguriert', 'success');
+            } else {
+                updateGitHubStatus('⚠️ Token nicht konfiguriert', 'error');
+            }
         }
         
         // GitHub Einstellungen speichern
         function saveGitHubSettings() {
-            githubSettings.token = document.getElementById('githubToken').value;
-            githubSettings.repo = document.getElementById('githubRepo').value;
-            githubSettings.branch = document.getElementById('githubBranch').value;
+            const newToken = document.getElementById('githubToken').value;
+            const newRepo = document.getElementById('githubRepo').value;
+            const newBranch = document.getElementById('githubBranch').value;
             
-            localStorage.setItem('fashionWayGitHubSettings', JSON.stringify(githubSettings));
+            // Token speichern
+            if (newToken) {
+                githubSettings.token = newToken;
+                localStorage.setItem('fashionWayGitHubToken', newToken);
+            }
+            
+            // Andere Einstellungen speichern
+            githubSettings.repo = newRepo;
+            githubSettings.branch = newBranch;
+            
+            localStorage.setItem('fashionWayGitHubSettings', JSON.stringify({
+                repo: githubSettings.repo,
+                branch: githubSettings.branch
+            }));
+            
             showAlert('GitHub Einstellungen gespeichert!', 'success');
+            
+            // Status aktualisieren
+            if (githubSettings.token) {
+                updateGitHubStatus('✅ Token konfiguriert', 'success');
+            }
         }
         
         // GitHub Verbindung testen
@@ -831,6 +1002,11 @@
         // Zu GitHub pushen
         async function pushToGitHub() {
             try {
+                // Prüfe Token
+                if (!githubSettings.token) {
+                    throw new Error('GitHub Token nicht konfiguriert. Bitte in github-config.js eintragen.');
+                }
+                
                 updateGitHubStatus('🔄 Pushe zu GitHub...', 'info');
                 
                 // 1. Aktuelle Datei abrufen
