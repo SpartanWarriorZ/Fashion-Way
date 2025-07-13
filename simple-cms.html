@@ -340,6 +340,12 @@
                 </div>
                 
                 <div class="form-group">
+                    <label for="productStock">Lagerbestand *</label>
+                    <input type="number" id="productStock" min="0" value="10" required>
+                    <small>Anzahl der verfügbaren Artikel</small>
+                </div>
+                
+                <div class="form-group">
                     <label for="productDescription">Beschreibung</label>
                     <textarea id="productDescription" rows="3"></textarea>
                 </div>
@@ -371,21 +377,31 @@
             <h2>Export & Import</h2>
             
             <div class="form-group">
-                <h3>Produkte exportieren</h3>
-                <p>Lade alle Produkte als JSON-Datei herunter:</p>
-                <button class="btn" onclick="exportProducts()">📥 Produkte exportieren</button>
+                <h3>📥 Für Website exportieren</h3>
+                <p>Exportiere alle Produkte im korrekten Format für die Website (import-data.json):</p>
+                <button class="btn" onclick="exportForWebsite()">🚀 Als import-data.json exportieren</button>
+                <small>Diese Datei kann direkt in dein Projekt kopiert werden und die Website lädt sie automatisch.</small>
             </div>
             
             <div class="form-group">
-                <h3>Produkte importieren</h3>
+                <h3>📦 Backup exportieren</h3>
+                <p>Lade alle Produkte als Backup-JSON-Datei herunter:</p>
+                <button class="btn btn-secondary" onclick="exportProducts()">💾 Backup exportieren</button>
+            </div>
+            
+            <div class="form-group">
+                <h3>📤 Produkte importieren</h3>
                 <p>Lade eine JSON-Datei mit Produkten hoch:</p>
                 <input type="file" id="importFile" accept=".json" onchange="importProducts()">
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📤 Datei auswählen</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📂 Datei auswählen</button>
             </div>
             
             <div class="alert alert-success">
-                <strong>💡 Tipp:</strong> Du kannst die exportierte Datei bearbeiten und wieder importieren.
-                Das ist nützlich für Massenänderungen oder Backups.
+                <strong>💡 Workflow:</strong><br>
+                1. Füge Produkte im CMS hinzu<br>
+                2. Exportiere als "import-data.json"<br>
+                3. Kopiere die Datei in dein Projekt<br>
+                4. Die Website lädt automatisch die neuen Produkte!
             </div>
         </div>
     </div>
@@ -419,6 +435,14 @@
         function loadProducts() {
             const saved = localStorage.getItem('fashionWayProducts');
             products = saved ? JSON.parse(saved) : [];
+            
+            // Migration: Füge Stock zu bestehenden Produkten hinzu
+            products.forEach(product => {
+                if (typeof product.stock === 'undefined') {
+                    product.stock = 10; // Standard-Stock
+                }
+            });
+            
             updateStats();
             renderProducts();
         }
@@ -447,6 +471,9 @@
                     <div class="product-name">${product.name}</div>
                     <div class="product-price">${product.price} €</div>
                     <div class="product-category">${product.category} - ${product.subcategory}</div>
+                    <div class="product-stock" style="margin: 10px 0; padding: 5px 10px; background: ${product.stock > 0 ? '#d4edda' : '#f8d7da'}; color: ${product.stock > 0 ? '#155724' : '#721c24'}; border-radius: 5px; font-size: 12px;">
+                        ${product.stock > 0 ? `📦 ${product.stock} verfügbar` : '❌ Ausverkauft'}
+                    </div>
                     <div class="product-actions">
                         <button class="btn btn-small" onclick="editProduct(${index})">Bearbeiten</button>
                         <button class="btn btn-small btn-secondary" onclick="deleteProduct(${index})">Löschen</button>
@@ -465,6 +492,7 @@
                 category: document.getElementById('productCategory').value,
                 subcategory: document.getElementById('productSubcategory').value,
                 image: document.getElementById('productImage').value,
+                stock: parseInt(document.getElementById('productStock').value),
                 description: document.getElementById('productDescription').value || '',
                 id: Date.now()
             };
@@ -491,6 +519,7 @@
             document.getElementById('productCategory').value = product.category;
             document.getElementById('productSubcategory').value = product.subcategory;
             document.getElementById('productImage').value = product.image;
+            document.getElementById('productStock').value = product.stock;
             document.getElementById('productDescription').value = product.description;
             
             // Produkt löschen und Tab wechseln
@@ -531,6 +560,21 @@
             
             URL.revokeObjectURL(url);
             showAlert('Produkte exportiert!', 'success');
+        }
+
+        // Produkte für Website exportieren (import-data.json)
+        function exportForWebsite() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'import-data.json';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            showAlert('Produkte für Website exportiert!', 'success');
         }
         
         // Produkte importieren
