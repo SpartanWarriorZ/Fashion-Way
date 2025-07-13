@@ -562,6 +562,15 @@
                 loadProducts();
             }
             
+            // Beim Dashboard: Automatische Synchronisation prüfen
+            if (tabName === 'dashboard') {
+                // Wenn keine Produkte geladen sind und Token verfügbar, von GitHub laden
+                if (products.length === 0 && githubSettings.token) {
+                    console.log('🔄 Dashboard: Lade Produkte von GitHub...');
+                    autoSyncFromGitHub();
+                }
+            }
+            
             // Mobile-spezifische Verbesserungen
             if (isMobile()) {
                 // Scroll zum Anfang des Inhalts
@@ -1147,11 +1156,57 @@
             if (githubSettings.token) {
                 console.log('🚀 CMS bereit mit Token:', githubSettings.token.substring(0, 10) + '...');
                 updateGitHubStatus('✅ CMS bereit - Globaler Token geladen', 'success');
+                
+                // Automatische Synchronisation von GitHub
+                autoSyncFromGitHub();
             } else {
                 console.log('⚠️ Kein Token verfügbar - bitte konfigurieren');
                 updateGitHubStatus('⚠️ Token erforderlich - bitte konfigurieren', 'error');
             }
         }, 1000);
+        
+        // Automatische Synchronisation von GitHub
+        async function autoSyncFromGitHub() {
+            try {
+                console.log('🔄 Automatische Synchronisation von GitHub...');
+                updateGitHubStatus('🔄 Lade Produkte von GitHub...', 'info');
+                
+                const response = await fetch(`https://api.github.com/repos/${githubSettings.repo}/contents/import-data.json?ref=${githubSettings.branch}`, {
+                    headers: {
+                        'Authorization': `token ${githubSettings.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const fileData = await response.json();
+                    const content = atob(fileData.content);
+                    const importedProducts = JSON.parse(content);
+                    
+                    // Produkte laden und UI aktualisieren
+                    products = importedProducts;
+                    localStorage.setItem('fashionWayProducts', JSON.stringify(products));
+                    updateStats();
+                    renderProducts();
+                    
+                    console.log(`✅ ${products.length} Produkte von GitHub geladen`);
+                    showAlert(`✅ ${products.length} Produkte von GitHub geladen!`, 'success');
+                    updateGitHubStatus('✅ Automatisch synchronisiert', 'success');
+                    updateLastSync();
+                } else if (response.status === 404) {
+                    console.log('📝 Keine import-data.json gefunden - erstelle neue Datei');
+                    updateGitHubStatus('📝 Keine Produkte gefunden - bereit für neue Einträge', 'info');
+                    showAlert('📝 Keine Produkte auf GitHub gefunden. Du kannst jetzt neue Produkte hinzufügen!', 'info');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                console.error('Auto-Sync Fehler:', error);
+                updateGitHubStatus('⚠️ Auto-Sync fehlgeschlagen', 'error');
+                showAlert(`⚠️ Automatische Synchronisation fehlgeschlagen: ${error.message}`, 'error');
+            }
+        }
         
         // Letzte Synchronisation anzeigen
         const lastSync = localStorage.getItem('fashionWayLastSync');
