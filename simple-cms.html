@@ -708,6 +708,15 @@
                 }
             });
             
+            // UTF-8 Bereinigung für bestehende Produkte
+            products.forEach(product => {
+                if (product.name) product.name = cleanUTF8Text(product.name);
+                if (product.description) product.description = cleanUTF8Text(product.description);
+            });
+            
+            // Bereinigte Produkte speichern
+            localStorage.setItem('fashionWayProducts', JSON.stringify(products));
+            
             updateStats();
             renderProducts();
         }
@@ -777,17 +786,24 @@
         }
         
         // Produkt hinzufügen/bearbeiten
+        // UTF-8 Text bereinigen
+        function cleanUTF8Text(text) {
+            if (!text) return '';
+            // Entferne beschädigte UTF-8 Zeichen und bereinige
+            return text.replace(/[^\x00-\x7F\u00A0-\u00FF\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF\u2C60-\u2C7F\uA720-\uA7FF]/g, '').trim();
+        }
+        
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const product = {
-                name: document.getElementById('productName').value,
+                name: cleanUTF8Text(document.getElementById('productName').value),
                 price: parseFloat(document.getElementById('productPrice').value),
                 category: document.getElementById('productCategory').value,
                 subcategory: document.getElementById('productSubcategory').value,
                 image: document.getElementById('productImage').value,
                 stock: parseInt(document.getElementById('productStock').value),
-                description: document.getElementById('productDescription').value || '',
+                description: cleanUTF8Text(document.getElementById('productDescription').value || ''),
                 id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : Date.now()
             };
             
@@ -1204,9 +1220,18 @@
                     sha = fileData.sha;
                 }
                 
-                // 2. Neue Datei hochladen
-                const content = JSON.stringify(products, null, 2);
-                const encodedContent = btoa(unescape(encodeURIComponent(content)));
+                // 2. Neue Datei hochladen mit UTF-8 Encoding
+                // Alle Produkte UTF-8 bereinigen vor dem Speichern
+                const cleanedProducts = products.map(product => ({
+                    ...product,
+                    name: cleanUTF8Text(product.name || ''),
+                    description: cleanUTF8Text(product.description || '')
+                }));
+                
+                const content = JSON.stringify(cleanedProducts, null, 2);
+                // UTF-8 Encoding sicherstellen
+                const utf8Content = unescape(encodeURIComponent(content));
+                const encodedContent = btoa(utf8Content);
                 
                 const pushResponse = await fetch(`https://api.github.com/repos/${githubSettings.repo}/contents/import-data.json`, {
                     method: 'PUT',
@@ -1253,8 +1278,9 @@
                 
                 if (response.ok) {
                     const fileData = await response.json();
-                    const content = atob(fileData.content);
-                    const importedProducts = JSON.parse(content);
+                    // UTF-8 Decoding sicherstellen
+                    const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
+                    const importedProducts = JSON.parse(decodedContent);
                     
                     products = importedProducts;
                     localStorage.setItem('fashionWayProducts', JSON.stringify(products));
@@ -1401,8 +1427,9 @@
                     updateLoadingStatus('Produkte werden verarbeitet...', 80);
                     
                     const fileData = await response.json();
-                    const content = atob(fileData.content);
-                    const importedProducts = JSON.parse(content);
+                    // UTF-8 Decoding sicherstellen
+                    const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
+                    const importedProducts = JSON.parse(decodedContent);
                     
                     // Produkte laden und UI aktualisieren
                     products = importedProducts;
@@ -1455,8 +1482,9 @@
                 
                 if (response.ok) {
                     const fileData = await response.json();
-                    const content = atob(fileData.content);
-                    const importedProducts = JSON.parse(content);
+                    // UTF-8 Decoding sicherstellen
+                    const decodedContent = decodeURIComponent(escape(atob(fileData.content)));
+                    const importedProducts = JSON.parse(decodedContent);
                     
                     // Produkte laden und UI aktualisieren
                     products = importedProducts;
