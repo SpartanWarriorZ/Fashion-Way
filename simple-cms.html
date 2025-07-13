@@ -714,6 +714,17 @@
                 if (product.description) product.description = cleanUTF8Text(product.description);
             });
             
+            // Migration: Repariere IDs für fortlaufende Nummerierung
+            let nextId = 1;
+            products.forEach(product => {
+                if (!product.id || product.id > 1000000) { // Wenn ID fehlt oder zu groß ist
+                    product.id = nextId;
+                    nextId++;
+                } else {
+                    nextId = Math.max(nextId, product.id + 1);
+                }
+            });
+            
             // Bereinigte Produkte speichern
             localStorage.setItem('fashionWayProducts', JSON.stringify(products));
             
@@ -793,6 +804,13 @@
             return text.replace(/[^\x00-\x7F\u00A0-\u00FF\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF\u2C60-\u2C7F\uA720-\uA7FF]/g, '').trim();
         }
         
+        // Neue fortlaufende ID generieren
+        function generateNextId() {
+            if (products.length === 0) return 1;
+            const maxId = Math.max(...products.map(p => p.id || 0));
+            return maxId + 1;
+        }
+        
         document.getElementById('productForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -804,7 +822,7 @@
                 image: document.getElementById('productImage').value,
                 stock: parseInt(document.getElementById('productStock').value),
                 description: cleanUTF8Text(document.getElementById('productDescription').value || ''),
-                id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : Date.now()
+                id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : generateNextId()
             };
             
             // Prüfen ob ein Produkt bearbeitet wird
