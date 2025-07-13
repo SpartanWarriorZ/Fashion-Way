@@ -8,12 +8,30 @@
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damenkleid für besondere Anlässe",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 8 },
-      { "size": "M", "stock": 12 },
-      { "size": "L", "stock": 10 },
-      { "size": "XL", "stock": 6 },
-      { "size": "XXL", "stock": 3 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 8
+      },
+      {
+        "size": "M",
+        "stock": 12
+      },
+      {
+        "size": "L",
+        "stock": 10
+      },
+      {
+        "size": "XL",
+        "stock": 6
+      },
+      {
+        "size": "XXL",
+        "stock": 3
+      }
     ]
   },
   {
@@ -25,11 +43,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Klassisches Herrenhemd für Business und formelle Anlässe",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -41,12 +74,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Robuste Kinder-Jeans für Spiel und Alltag",
     "sizes": [
-      { "size": "110", "stock": 4 },
-      { "size": "116", "stock": 6 },
-      { "size": "122", "stock": 8 },
-      { "size": "128", "stock": 7 },
-      { "size": "134", "stock": 5 },
-      { "size": "140", "stock": 3 }
+      {
+        "size": "110",
+        "stock": 4
+      },
+      {
+        "size": "116",
+        "stock": 6
+      },
+      {
+        "size": "122",
+        "stock": 8
+      },
+      {
+        "size": "128",
+        "stock": 7
+      },
+      {
+        "size": "134",
+        "stock": 5
+      },
+      {
+        "size": "140",
+        "stock": 3
+      }
     ]
   },
   {
@@ -58,12 +109,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegante Damenbluse für Business und Freizeit",
     "sizes": [
-      { "size": "XS", "stock": 6 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 6
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -75,14 +144,38 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Klassische Herren-Jeans in verschiedenen Schnitten",
     "sizes": [
-      { "size": "28", "stock": 3 },
-      { "size": "30", "stock": 6 },
-      { "size": "32", "stock": 12 },
-      { "size": "34", "stock": 15 },
-      { "size": "36", "stock": 10 },
-      { "size": "38", "stock": 8 },
-      { "size": "40", "stock": 5 },
-      { "size": "42", "stock": 3 }
+      {
+        "size": "28",
+        "stock": 3
+      },
+      {
+        "size": "30",
+        "stock": 6
+      },
+      {
+        "size": "32",
+        "stock": 12
+      },
+      {
+        "size": "34",
+        "stock": 15
+      },
+      {
+        "size": "36",
+        "stock": 10
+      },
+      {
+        "size": "38",
+        "stock": 8
+      },
+      {
+        "size": "40",
+        "stock": 5
+      },
+      {
+        "size": "42",
+        "stock": 3
+      }
     ]
   },
   {
@@ -94,13 +187,34 @@
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
     "description": "Elegante Damenhose für Business und Freizeit",
     "sizes": [
-      { "size": "34", "stock": 4 },
-      { "size": "36", "stock": 8 },
-      { "size": "38", "stock": 12 },
-      { "size": "40", "stock": 10 },
-      { "size": "42", "stock": 7 },
-      { "size": "44", "stock": 5 },
-      { "size": "46", "stock": 3 }
+      {
+        "size": "34",
+        "stock": 4
+      },
+      {
+        "size": "36",
+        "stock": 8
+      },
+      {
+        "size": "38",
+        "stock": 12
+      },
+      {
+        "size": "40",
+        "stock": 10
+      },
+      {
+        "size": "42",
+        "stock": 7
+      },
+      {
+        "size": "44",
+        "stock": 5
+      },
+      {
+        "size": "46",
+        "stock": 3
+      }
     ]
   },
   {
@@ -112,11 +226,26 @@
     "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400",
     "description": "Warmer Herrenpullover für die kalte Jahreszeit",
     "sizes": [
-      { "size": "S", "stock": 8 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 18 },
-      { "size": "XL", "stock": 12 },
-      { "size": "XXL", "stock": 7 }
+      {
+        "size": "S",
+        "stock": 8
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 18
+      },
+      {
+        "size": "XL",
+        "stock": 12
+      },
+      {
+        "size": "XXL",
+        "stock": 7
+      }
     ]
   },
   {
@@ -128,12 +257,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Süßes Kinderkleid für besondere Anlässe",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -145,12 +292,30 @@
     "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400",
     "description": "Stylische Damenjacke für Übergangszeiten",
     "sizes": [
-      { "size": "XS", "stock": 3 },
-      { "size": "S", "stock": 6 },
-      { "size": "M", "stock": 10 },
-      { "size": "L", "stock": 8 },
-      { "size": "XL", "stock": 5 },
-      { "size": "XXL", "stock": 2 }
+      {
+        "size": "XS",
+        "stock": 3
+      },
+      {
+        "size": "S",
+        "stock": 6
+      },
+      {
+        "size": "M",
+        "stock": 10
+      },
+      {
+        "size": "L",
+        "stock": 8
+      },
+      {
+        "size": "XL",
+        "stock": 5
+      },
+      {
+        "size": "XXL",
+        "stock": 2
+      }
     ]
   },
   {
@@ -162,11 +327,26 @@
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
     "description": "Robuste Herrenjacke für Outdoor und Freizeit",
     "sizes": [
-      { "size": "S", "stock": 4 },
-      { "size": "M", "stock": 8 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 9 },
-      { "size": "XXL", "stock": 6 }
+      {
+        "size": "S",
+        "stock": 4
+      },
+      {
+        "size": "M",
+        "stock": 8
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 9
+      },
+      {
+        "size": "XXL",
+        "stock": 6
+      }
     ]
   },
   {
@@ -178,12 +358,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Warme Kinderjacke für den Winter",
     "sizes": [
-      { "size": "110", "stock": 4 },
-      { "size": "116", "stock": 6 },
-      { "size": "122", "stock": 8 },
-      { "size": "128", "stock": 7 },
-      { "size": "134", "stock": 5 },
-      { "size": "140", "stock": 3 }
+      {
+        "size": "110",
+        "stock": 4
+      },
+      {
+        "size": "116",
+        "stock": 6
+      },
+      {
+        "size": "122",
+        "stock": 8
+      },
+      {
+        "size": "128",
+        "stock": 7
+      },
+      {
+        "size": "134",
+        "stock": 5
+      },
+      {
+        "size": "140",
+        "stock": 3
+      }
     ]
   },
   {
@@ -195,12 +393,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegantes Damen-T-Shirt für den Sommer",
     "sizes": [
-      { "size": "XS", "stock": 8 },
-      { "size": "S", "stock": 15 },
-      { "size": "M", "stock": 20 },
-      { "size": "L", "stock": 16 },
-      { "size": "XL", "stock": 10 },
-      { "size": "XXL", "stock": 6 }
+      {
+        "size": "XS",
+        "stock": 8
+      },
+      {
+        "size": "S",
+        "stock": 15
+      },
+      {
+        "size": "M",
+        "stock": 20
+      },
+      {
+        "size": "L",
+        "stock": 16
+      },
+      {
+        "size": "XL",
+        "stock": 10
+      },
+      {
+        "size": "XXL",
+        "stock": 6
+      }
     ]
   },
   {
@@ -212,11 +428,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Elegantes Herren-T-Shirt für den Sommer",
     "sizes": [
-      { "size": "S", "stock": 12 },
-      { "size": "M", "stock": 18 },
-      { "size": "L", "stock": 22 },
-      { "size": "XL", "stock": 15 },
-      { "size": "XXL", "stock": 9 }
+      {
+        "size": "S",
+        "stock": 12
+      },
+      {
+        "size": "M",
+        "stock": 18
+      },
+      {
+        "size": "L",
+        "stock": 22
+      },
+      {
+        "size": "XL",
+        "stock": 15
+      },
+      {
+        "size": "XXL",
+        "stock": 9
+      }
     ]
   },
   {
@@ -228,12 +459,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Elegantes Kinder-Jeans für den Sommer",
     "sizes": [
-      { "size": "110", "stock": 6 },
-      { "size": "116", "stock": 8 },
-      { "size": "122", "stock": 10 },
-      { "size": "128", "stock": 9 },
-      { "size": "134", "stock": 7 },
-      { "size": "140", "stock": 5 }
+      {
+        "size": "110",
+        "stock": 6
+      },
+      {
+        "size": "116",
+        "stock": 8
+      },
+      {
+        "size": "122",
+        "stock": 10
+      },
+      {
+        "size": "128",
+        "stock": 9
+      },
+      {
+        "size": "134",
+        "stock": 7
+      },
+      {
+        "size": "140",
+        "stock": 5
+      }
     ]
   },
   {
@@ -245,12 +494,30 @@
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damen-Pullover für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -262,14 +529,38 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Jeans für den Winter",
     "sizes": [
-      { "size": "28", "stock": 2 },
-      { "size": "30", "stock": 5 },
-      { "size": "32", "stock": 10 },
-      { "size": "34", "stock": 12 },
-      { "size": "36", "stock": 8 },
-      { "size": "38", "stock": 6 },
-      { "size": "40", "stock": 4 },
-      { "size": "42", "stock": 2 }
+      {
+        "size": "28",
+        "stock": 2
+      },
+      {
+        "size": "30",
+        "stock": 5
+      },
+      {
+        "size": "32",
+        "stock": 10
+      },
+      {
+        "size": "34",
+        "stock": 12
+      },
+      {
+        "size": "36",
+        "stock": 8
+      },
+      {
+        "size": "38",
+        "stock": 6
+      },
+      {
+        "size": "40",
+        "stock": 4
+      },
+      {
+        "size": "42",
+        "stock": 2
+      }
     ]
   },
   {
@@ -281,12 +572,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Pullover für den Winter",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -298,12 +607,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegantes Damen-Hemd für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 4 },
-      { "size": "S", "stock": 8 },
-      { "size": "M", "stock": 12 },
-      { "size": "L", "stock": 10 },
-      { "size": "XL", "stock": 6 },
-      { "size": "XXL", "stock": 3 }
+      {
+        "size": "XS",
+        "stock": 4
+      },
+      {
+        "size": "S",
+        "stock": 8
+      },
+      {
+        "size": "M",
+        "stock": 12
+      },
+      {
+        "size": "L",
+        "stock": 10
+      },
+      {
+        "size": "XL",
+        "stock": 6
+      },
+      {
+        "size": "XXL",
+        "stock": 3
+      }
     ]
   },
   {
@@ -315,11 +642,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Elegantes Herren-Bluse für den Winter",
     "sizes": [
-      { "size": "S", "stock": 6 },
-      { "size": "M", "stock": 12 },
-      { "size": "L", "stock": 10 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "S",
+        "stock": 6
+      },
+      {
+        "size": "M",
+        "stock": 12
+      },
+      {
+        "size": "L",
+        "stock": 10
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -331,12 +673,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Bluse für den Winter",
     "sizes": [
-      { "size": "110", "stock": 6 },
-      { "size": "116", "stock": 8 },
-      { "size": "122", "stock": 10 },
-      { "size": "128", "stock": 9 },
-      { "size": "134", "stock": 7 },
-      { "size": "140", "stock": 5 }
+      {
+        "size": "110",
+        "stock": 6
+      },
+      {
+        "size": "116",
+        "stock": 8
+      },
+      {
+        "size": "122",
+        "stock": 10
+      },
+      {
+        "size": "128",
+        "stock": 9
+      },
+      {
+        "size": "134",
+        "stock": 7
+      },
+      {
+        "size": "140",
+        "stock": 5
+      }
     ]
   },
   {
@@ -348,12 +708,30 @@
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damen-Hemdbluse für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -365,11 +743,26 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Hemdbluse für den Winter",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -381,12 +774,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Elegantes Kinder-Hemd für den Winter",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -398,12 +809,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegantes Damen-Top für den Sommer",
     "sizes": [
-      { "size": "XS", "stock": 8 },
-      { "size": "S", "stock": 15 },
-      { "size": "M", "stock": 20 },
-      { "size": "L", "stock": 16 },
-      { "size": "XL", "stock": 10 },
-      { "size": "XXL", "stock": 6 }
+      {
+        "size": "XS",
+        "stock": 8
+      },
+      {
+        "size": "S",
+        "stock": 15
+      },
+      {
+        "size": "M",
+        "stock": 20
+      },
+      {
+        "size": "L",
+        "stock": 16
+      },
+      {
+        "size": "XL",
+        "stock": 10
+      },
+      {
+        "size": "XXL",
+        "stock": 6
+      }
     ]
   },
   {
@@ -415,11 +844,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Elegantes Herren-Tanktop für den Sommer",
     "sizes": [
-      { "size": "S", "stock": 12 },
-      { "size": "M", "stock": 18 },
-      { "size": "L", "stock": 22 },
-      { "size": "XL", "stock": 15 },
-      { "size": "XXL", "stock": 9 }
+      {
+        "size": "S",
+        "stock": 12
+      },
+      {
+        "size": "M",
+        "stock": 18
+      },
+      {
+        "size": "L",
+        "stock": 22
+      },
+      {
+        "size": "XL",
+        "stock": 15
+      },
+      {
+        "size": "XXL",
+        "stock": 9
+      }
     ]
   },
   {
@@ -431,12 +875,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Top für den Sommer",
     "sizes": [
-      { "size": "110", "stock": 6 },
-      { "size": "116", "stock": 8 },
-      { "size": "122", "stock": 10 },
-      { "size": "128", "stock": 9 },
-      { "size": "134", "stock": 7 },
-      { "size": "140", "stock": 5 }
+      {
+        "size": "110",
+        "stock": 6
+      },
+      {
+        "size": "116",
+        "stock": 8
+      },
+      {
+        "size": "122",
+        "stock": 10
+      },
+      {
+        "size": "128",
+        "stock": 9
+      },
+      {
+        "size": "134",
+        "stock": 7
+      },
+      {
+        "size": "140",
+        "stock": 5
+      }
     ]
   },
   {
@@ -448,12 +910,30 @@
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damen-Cardigan für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -465,11 +945,26 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Weste für den Winter",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -481,12 +976,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Elegantes Kinder-Cardigan für den Winter",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -498,13 +1011,34 @@
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
     "description": "Elegantes Damen-Jeans für den Winter",
     "sizes": [
-      { "size": "34", "stock": 4 },
-      { "size": "36", "stock": 8 },
-      { "size": "38", "stock": 12 },
-      { "size": "40", "stock": 10 },
-      { "size": "42", "stock": 7 },
-      { "size": "44", "stock": 5 },
-      { "size": "46", "stock": 3 }
+      {
+        "size": "34",
+        "stock": 4
+      },
+      {
+        "size": "36",
+        "stock": 8
+      },
+      {
+        "size": "38",
+        "stock": 12
+      },
+      {
+        "size": "40",
+        "stock": 10
+      },
+      {
+        "size": "42",
+        "stock": 7
+      },
+      {
+        "size": "44",
+        "stock": 5
+      },
+      {
+        "size": "46",
+        "stock": 3
+      }
     ]
   },
   {
@@ -516,11 +1050,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Elegantes Herren-Chino für den Winter",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -532,12 +1081,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Shorts für den Sommer",
     "sizes": [
-      { "size": "110", "stock": 6 },
-      { "size": "116", "stock": 8 },
-      { "size": "122", "stock": 10 },
-      { "size": "128", "stock": 9 },
-      { "size": "134", "stock": 7 },
-      { "size": "140", "stock": 5 }
+      {
+        "size": "110",
+        "stock": 6
+      },
+      {
+        "size": "116",
+        "stock": 8
+      },
+      {
+        "size": "122",
+        "stock": 10
+      },
+      {
+        "size": "128",
+        "stock": 9
+      },
+      {
+        "size": "134",
+        "stock": 7
+      },
+      {
+        "size": "140",
+        "stock": 5
+      }
     ]
   },
   {
@@ -549,12 +1116,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegantes Damen-Leggings für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -566,11 +1151,26 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Shorts für den Sommer",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -582,12 +1182,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Elegantes Kinder-Leggings für den Sommer",
     "sizes": [
-      { "size": "110", "stock": 6 },
-      { "size": "116", "stock": 8 },
-      { "size": "122", "stock": 10 },
-      { "size": "128", "stock": 9 },
-      { "size": "134", "stock": 7 },
-      { "size": "140", "stock": 5 }
+      {
+        "size": "110",
+        "stock": 6
+      },
+      {
+        "size": "116",
+        "stock": 8
+      },
+      {
+        "size": "122",
+        "stock": 10
+      },
+      {
+        "size": "128",
+        "stock": 9
+      },
+      {
+        "size": "134",
+        "stock": 7
+      },
+      {
+        "size": "140",
+        "stock": 5
+      }
     ]
   },
   {
@@ -599,12 +1217,30 @@
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damen-Blazer für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 5 },
-      { "size": "S", "stock": 10 },
-      { "size": "M", "stock": 14 },
-      { "size": "L", "stock": 11 },
-      { "size": "XL", "stock": 7 },
-      { "size": "XXL", "stock": 4 }
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 10
+      },
+      {
+        "size": "M",
+        "stock": 14
+      },
+      {
+        "size": "L",
+        "stock": 11
+      },
+      {
+        "size": "XL",
+        "stock": 7
+      },
+      {
+        "size": "XXL",
+        "stock": 4
+      }
     ]
   },
   {
@@ -616,11 +1252,26 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Blazer für den Winter",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -632,12 +1283,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Blazer für den Winter",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -649,12 +1318,30 @@
     "image": "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=400",
     "description": "Elegantes Damen-Mantel für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 3 },
-      { "size": "S", "stock": 6 },
-      { "size": "M", "stock": 10 },
-      { "size": "L", "stock": 8 },
-      { "size": "XL", "stock": 5 },
-      { "size": "XXL", "stock": 2 }
+      {
+        "size": "XS",
+        "stock": 3
+      },
+      {
+        "size": "S",
+        "stock": 6
+      },
+      {
+        "size": "M",
+        "stock": 10
+      },
+      {
+        "size": "L",
+        "stock": 8
+      },
+      {
+        "size": "XL",
+        "stock": 5
+      },
+      {
+        "size": "XXL",
+        "stock": 2
+      }
     ]
   },
   {
@@ -666,11 +1353,26 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "description": "Elegantes Herren-Mantel für den Winter",
     "sizes": [
-      { "size": "S", "stock": 4 },
-      { "size": "M", "stock": 8 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 9 },
-      { "size": "XXL", "stock": 6 }
+      {
+        "size": "S",
+        "stock": 4
+      },
+      {
+        "size": "M",
+        "stock": 8
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 9
+      },
+      {
+        "size": "XXL",
+        "stock": 6
+      }
     ]
   },
   {
@@ -682,12 +1384,30 @@
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Elegantes Kinder-Mantel für den Winter",
     "sizes": [
-      { "size": "110", "stock": 4 },
-      { "size": "116", "stock": 6 },
-      { "size": "122", "stock": 8 },
-      { "size": "128", "stock": 7 },
-      { "size": "134", "stock": 5 },
-      { "size": "140", "stock": 3 }
+      {
+        "size": "110",
+        "stock": 4
+      },
+      {
+        "size": "116",
+        "stock": 6
+      },
+      {
+        "size": "122",
+        "stock": 8
+      },
+      {
+        "size": "128",
+        "stock": 7
+      },
+      {
+        "size": "134",
+        "stock": 5
+      },
+      {
+        "size": "140",
+        "stock": 3
+      }
     ]
   },
   {
@@ -699,12 +1419,30 @@
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegantes Damen-Weste für den Winter",
     "sizes": [
-      { "size": "XS", "stock": 3 },
-      { "size": "S", "stock": 6 },
-      { "size": "M", "stock": 10 },
-      { "size": "L", "stock": 8 },
-      { "size": "XL", "stock": 5 },
-      { "size": "XXL", "stock": 2 }
+      {
+        "size": "XS",
+        "stock": 3
+      },
+      {
+        "size": "S",
+        "stock": 6
+      },
+      {
+        "size": "M",
+        "stock": 10
+      },
+      {
+        "size": "L",
+        "stock": 8
+      },
+      {
+        "size": "XL",
+        "stock": 5
+      },
+      {
+        "size": "XXL",
+        "stock": 2
+      }
     ]
   },
   {
@@ -716,11 +1454,26 @@
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Elegantes Herren-Cardigan für den Winter",
     "sizes": [
-      { "size": "S", "stock": 7 },
-      { "size": "M", "stock": 15 },
-      { "size": "L", "stock": 12 },
-      { "size": "XL", "stock": 8 },
-      { "size": "XXL", "stock": 5 }
+      {
+        "size": "S",
+        "stock": 7
+      },
+      {
+        "size": "M",
+        "stock": 15
+      },
+      {
+        "size": "L",
+        "stock": 12
+      },
+      {
+        "size": "XL",
+        "stock": 8
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
     ]
   },
   {
@@ -732,12 +1485,30 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Elegantes Kinder-Weste für den Winter",
     "sizes": [
-      { "size": "110", "stock": 5 },
-      { "size": "116", "stock": 7 },
-      { "size": "122", "stock": 9 },
-      { "size": "128", "stock": 8 },
-      { "size": "134", "stock": 6 },
-      { "size": "140", "stock": 4 }
+      {
+        "size": "110",
+        "stock": 5
+      },
+      {
+        "size": "116",
+        "stock": 7
+      },
+      {
+        "size": "122",
+        "stock": 9
+      },
+      {
+        "size": "128",
+        "stock": 8
+      },
+      {
+        "size": "134",
+        "stock": 6
+      },
+      {
+        "size": "140",
+        "stock": 4
+      }
     ]
   },
   {
@@ -746,7 +1517,6 @@
     "category": "herren",
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
-    "stock": 10,
     "description": "Party Yeeeee",
     "id": 46
   },
@@ -756,7 +1526,6 @@
     "category": "damen",
     "subcategory": "oberteile",
     "image": "https://cdn.pixabay.com/photo/2021/10/12/17/55/bride-6704274_640.jpg",
-    "stock": 2,
     "description": "Brautkleid",
     "id": 47
   },
@@ -766,8 +1535,42 @@
     "category": "damen",
     "subcategory": "schuhe",
     "image": "https://cdn.pixabay.com/photo/2021/10/11/18/56/shoes-6701631_640.jpg",
-    "stock": 10,
     "description": "Damenschuhe",
     "id": 48
+  },
+  {
+    "name": "Herren Schuhe",
+    "price": 29.99,
+    "category": "herren",
+    "subcategory": "schuhe",
+    "image": "https://cdn.pixabay.com/photo/2021/03/26/07/22/oxford-shoes-6125110_640.jpg",
+    "description": "Herrenschuhe für besondere Anlässe",
+    "sizes": [
+      {
+        "size": "37",
+        "stock": 4
+      },
+      {
+        "size": "38",
+        "stock": 5
+      },
+      {
+        "size": "39",
+        "stock": 12
+      },
+      {
+        "size": "40",
+        "stock": 4
+      },
+      {
+        "size": "41",
+        "stock": 8
+      },
+      {
+        "size": "42",
+        "stock": 9
+      }
+    ],
+    "id": 49
   }
 ]
