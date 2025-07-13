@@ -176,17 +176,6 @@
     "id": 16
   },
   {
-    "name": "Damen Stiefel",
-    "price": 79.95,
-    "description": "Elegante Stiefel für Damen.",
-    "category": "damen",
-    "subcategory": "schuhe",
-    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80",
-    "image2": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80",
-    "stock": 7,
-    "id": 17
-  },
-  {
     "name": "Kinder Cap",
     "price": 9.99,
     "description": "Coole Cap für Kinder.",
