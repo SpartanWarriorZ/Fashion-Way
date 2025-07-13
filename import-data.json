@@ -447,7 +447,7 @@
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "stock": 10,
     "description": "Party Yeeeee",
-    "id": 1752423214325
+    "id": 46
   },
   {
     "name": "Agas Brautkleid",
@@ -457,6 +457,16 @@
     "image": "https://cdn.pixabay.com/photo/2021/10/12/17/55/bride-6704274_640.jpg",
     "stock": 2,
     "description": "Brautkleid",
-    "id": 1752440423328
+    "id": 47
+  },
+  {
+    "name": "Damen Schuhe",
+    "price": 29.99,
+    "category": "damen",
+    "subcategory": "schuhe",
+    "image": "https://cdn.pixabay.com/photo/2021/10/11/18/56/shoes-6701631_640.jpg",
+    "stock": 10,
+    "description": "Damenschuhe",
+    "id": 48
   }
 ]
