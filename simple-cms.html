@@ -381,7 +381,9 @@
                 <h3>GitHub Einstellungen</h3>
                 <div class="form-group">
                     <label for="githubToken">GitHub Token</label>
-                    <input type="password" id="githubToken" value="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" placeholder="GitHub Personal Access Token">
+                    <input type="password" id="githubToken" value="" placeholder="GitHub Personal Access Token">
+                    <small>Dein GitHub Personal Access Token für automatische Synchronisation</small>
+                    <br><small style="color: #dc3545;">⚠️ Wichtig: Token wird in github-config.js gespeichert (nicht im Repository)</small>
                     <small>Dein GitHub Personal Access Token für automatische Synchronisation</small>
                 </div>
                 
@@ -470,6 +472,9 @@
         </div>
     </div>
 
+    <!-- GitHub Konfiguration laden (falls vorhanden) -->
+    <script src="github-config.js"></script>
+    
     <script>
         let products = [];
         
@@ -699,9 +704,9 @@
         
         // GitHub API Funktionen
         let githubSettings = {
-            token: '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',
-            repo: 'SpartanWarriorZ/Fashion-Way',
-            branch: 'main'
+            token: window.githubConfig ? window.githubConfig.token : '',
+            repo: window.githubConfig ? window.githubConfig.repo : 'SpartanWarriorZ/Fashion-Way',
+            branch: window.githubConfig ? window.githubConfig.branch : 'main'
         };
         
         // GitHub Einstellungen laden
