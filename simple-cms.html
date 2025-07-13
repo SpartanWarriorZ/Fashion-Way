@@ -914,14 +914,14 @@
             }
             
             const product = {
+                id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : generateNextId(),
                 name: cleanUTF8Text(document.getElementById('productName').value),
                 price: parseFloat(document.getElementById('productPrice').value),
                 category,
                 subcategory,
                 image: imageUrls[0], // Hauptbild
                 description: cleanUTF8Text(document.getElementById('productDescription').value || ''),
-                sizes,
-                id: window.editingProductIndex !== undefined ? products[window.editingProductIndex].id : generateNextId()
+                sizes
             };
             
             // Zusätzliche Bilder hinzufügen

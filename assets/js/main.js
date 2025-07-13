@@ -1297,17 +1297,91 @@ function showProductDetailImage(index) {
   
   const modalImg = document.getElementById('productDetailImage');
   if (modalImg) {
-    modalImg.src = currentProductImages[index];
-    currentImageIndex = index;
-    
-    // Thumbnail-Aktivität aktualisieren
-    document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
-      thumb.classList.toggle('active', i === index);
-    });
-    
-    // Zoom zurücksetzen
-    if (window.resetImageZoom) {
-      window.resetImageZoom();
+    // Nur bei mehreren Bildern die Bildwechsel-Logik anwenden
+    if (currentProductImages.length > 1) {
+      // Zoom-State zurücksetzen
+      if (window.productDetailZoomState) {
+        window.productDetailZoomState.isZoomed = false;
+        window.productDetailZoomState.scale = 1;
+        window.productDetailZoomState.translateX = 0;
+        window.productDetailZoomState.translateY = 0;
+      }
+      
+      // Zoom-Indikator zurücksetzen
+      const zoomIndicator = document.getElementById('productDetailZoomIndicator');
+      if (zoomIndicator) {
+        zoomIndicator.classList.remove('show');
+        zoomIndicator.textContent = 'Klick zum Zoomen';
+        zoomIndicator.classList.remove('zoomed');
+      }
+      
+      // WICHTIG: Bild-Element komplett neu erstellen um alle "Beschädigungen" zu entfernen
+      const container = modalImg.parentNode;
+      
+      // Altes Bild komplett entfernen
+      container.removeChild(modalImg);
+      
+      // Neues Bild-Element erstellen
+      const newImg = document.createElement('img');
+      newImg.id = 'productDetailImage';
+      newImg.className = 'product-detail-image';
+      newImg.alt = currentProduct?.name || 'Produktbild';
+      
+      // Neues Bild zum Container hinzufügen
+      container.appendChild(newImg);
+      
+      // WICHTIG: Gleiche Logik wie beim ersten Laden verwenden
+      const imageUrl = currentProductImages[index];
+      
+      // Bild laden mit Preloading (wie beim ersten Laden)
+      const img = new Image();
+      img.onload = function() {
+        newImg.src = imageUrl;
+        console.log('Bild erfolgreich geladen:', imageUrl);
+        
+        // Hochauflösende Version laden falls verfügbar (wie beim ersten Laden)
+        const highResSrc = imageUrl.replace('?w=400', '?w=1200');
+        if (highResSrc !== imageUrl) {
+          const highResImg = new Image();
+          highResImg.onload = function() {
+            newImg.src = highResSrc;
+            console.log('Hochauflösende Version geladen:', highResSrc);
+          };
+          highResImg.onerror = function() {
+            console.log('Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
+          };
+          highResImg.src = highResSrc;
+        }
+      };
+      img.onerror = function() {
+        console.log('Bild konnte nicht geladen werden:', imageUrl);
+        newImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      img.src = imageUrl;
+      
+      // Zusätzlicher Fallback für das Modal-Bild
+      newImg.onerror = function() {
+        console.log('Modal-Bild konnte nicht geladen werden');
+        newImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      
+      // Zoom-Funktionalität für das neue Bild-Element neu einrichten
+      setupProductDetailImageZoom();
+      
+      currentImageIndex = index;
+      
+      // Thumbnail-Aktivität aktualisieren
+      document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+    } else {
+      // Bei nur einem Bild: Nur Thumbnail-Aktivität aktualisieren, Bild nicht neu laden
+      currentImageIndex = index;
+      
+      // Thumbnail-Aktivität aktualisieren
+      document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
     }
   }
 }
@@ -2054,34 +2128,42 @@ function setupProductDetailImageZoom() {
   const zoomIndicator = document.getElementById('productDetailZoomIndicator');
   if (!modalImg || !zoomIndicator) return;
 
-  let isZoomed = false;
-  let isDragging = false;
-  let isTouching = false;
-  let startX, startY, translateX = 0, translateY = 0;
-  let scale = 1;
-  const ZOOM_LEVEL = 3.5;
+  // Globale Zoom-Variablen für Zugriff beim Bildwechsel
+  window.productDetailZoomState = {
+    isZoomed: false,
+    isDragging: false,
+    isTouching: false,
+    startX: 0,
+    startY: 0,
+    translateX: 0,
+    translateY: 0,
+    scale: 1,
+    ZOOM_LEVEL: 3.5
+  };
+  
+  const state = window.productDetailZoomState;
 
   function showZoomIndicator() {
     zoomIndicator.classList.add('show');
     setTimeout(() => {
-      if (!isZoomed) zoomIndicator.classList.remove('show');
+      if (!state.isZoomed) zoomIndicator.classList.remove('show');
     }, 2000);
   }
   function hideZoomIndicator() {
     zoomIndicator.classList.remove('show');
   }
   function applyTransform() {
-    modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    modalImg.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.scale})`;
   }
   function zoomAtPosition(clientX, clientY) {
     const rect = modalImg.getBoundingClientRect();
     const relativeX = (clientX - rect.left) / rect.width;
     const relativeY = (clientY - rect.top) / rect.height;
     modalImg.style.transformOrigin = `${relativeX * 100}% ${relativeY * 100}%`;
-    scale = ZOOM_LEVEL;
-    translateX = 0;
-    translateY = 0;
-    isZoomed = true;
+    state.scale = state.ZOOM_LEVEL;
+    state.translateX = 0;
+    state.translateY = 0;
+    state.isZoomed = true;
     modalImg.classList.add('zoomed');
     zoomIndicator.textContent = 'Ziehen zum Navigieren • Klick zum Verkleinern';
     zoomIndicator.classList.add('zoomed');
@@ -2092,10 +2174,10 @@ function setupProductDetailImageZoom() {
     applyTransform();
   }
   function resetZoom() {
-    scale = 1;
-    translateX = 0;
-    translateY = 0;
-    isZoomed = false;
+    state.scale = 1;
+    state.translateX = 0;
+    state.translateY = 0;
+    state.isZoomed = false;
     modalImg.style.transformOrigin = 'center';
     modalImg.classList.remove('zoomed');
     modalImg.classList.remove('dragging');
@@ -2108,7 +2190,7 @@ function setupProductDetailImageZoom() {
 
   // Klick zum Zoomen/Zurücksetzen
   modalImg.addEventListener('click', (e) => {
-    if (!isZoomed) {
+    if (!state.isZoomed) {
       zoomAtPosition(e.clientX, e.clientY);
     } else {
       resetZoom();
@@ -2117,49 +2199,49 @@ function setupProductDetailImageZoom() {
 
   // Maus-Drag zum Verschieben
   modalImg.addEventListener('mousedown', (e) => {
-    if (isZoomed) {
+    if (state.isZoomed) {
       e.preventDefault();
-      isDragging = true;
-      startX = e.clientX - translateX;
-      startY = e.clientY - translateY;
+      state.isDragging = true;
+      state.startX = e.clientX - state.translateX;
+      state.startY = e.clientY - state.translateY;
       modalImg.classList.add('dragging');
     }
   });
   document.addEventListener('mousemove', (e) => {
-    if (isZoomed && isDragging) {
-      translateX = e.clientX - startX;
-      translateY = e.clientY - startY;
+    if (state.isZoomed && state.isDragging) {
+      state.translateX = e.clientX - state.startX;
+      state.translateY = e.clientY - state.startY;
       applyTransform();
     }
   });
   document.addEventListener('mouseup', () => {
-    if (isZoomed && isDragging) {
-      isDragging = false;
+    if (state.isZoomed && state.isDragging) {
+      state.isDragging = false;
       modalImg.classList.remove('dragging');
     }
   });
 
   // Touch-Events für Mobilgeräte
   modalImg.addEventListener('touchstart', (e) => {
-    if (isZoomed) {
-      isTouching = true;
+    if (state.isZoomed) {
+      state.isTouching = true;
       const touch = e.touches[0];
-      startX = touch.clientX - translateX;
-      startY = touch.clientY - translateY;
+      state.startX = touch.clientX - state.translateX;
+      state.startY = touch.clientY - state.translateY;
       modalImg.classList.add('dragging');
     }
   });
   modalImg.addEventListener('touchmove', (e) => {
-    if (isZoomed && isTouching) {
+    if (state.isZoomed && state.isTouching) {
       const touch = e.touches[0];
-      translateX = touch.clientX - startX;
-      translateY = touch.clientY - startY;
+      state.translateX = touch.clientX - state.startX;
+      state.translateY = touch.clientY - state.startY;
       applyTransform();
     }
   });
   modalImg.addEventListener('touchend', () => {
-    if (isZoomed && isTouching) {
-      isTouching = false;
+    if (state.isZoomed && state.isTouching) {
+      state.isTouching = false;
       modalImg.classList.remove('dragging');
     }
   });
