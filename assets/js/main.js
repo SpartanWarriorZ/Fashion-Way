@@ -1,3 +1,6 @@
+// Immer beim Laden: LocalStorage für Produkte leeren (Hard-Refresh)
+localStorage.removeItem('fashionWayProducts');
+
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.from('.hero h1', {
@@ -525,11 +528,11 @@ function updateCartQuantity(productId, newQuantity, size = null) {
     return;
   }
   
-  cartItem.quantity = newQuantity;
-  saveCart();
-  updateCartDisplay();
-  updateCartModal();
-  displayProducts(); // Aktualisiere Produktkarten
+    cartItem.quantity = newQuantity;
+    saveCart();
+    updateCartDisplay();
+    updateCartModal();
+    displayProducts(); // Aktualisiere Produktkarten
   
   console.log('Warenkorb-Menge aktualisiert:', { productId, size, newQuantity, cartItem });
 }
@@ -542,7 +545,7 @@ function removeProductFromCart(productId, size = null) {
     showNotification(`Produkt (Größe ${size}) aus Warenkorb entfernt`, 'info');
   } else {
     // Entferne alle Größen des Produkts (Fallback für alte Struktur)
-    cart = cart.filter(item => item.id !== productId);
+  cart = cart.filter(item => item.id !== productId);
     showNotification('Produkt aus Warenkorb entfernt', 'info');
   }
   
