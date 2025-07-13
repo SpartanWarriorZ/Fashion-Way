@@ -887,18 +887,6 @@
             
             // Debug: Alle verfügbaren Felder anzeigen
             console.log('Verfügbare Größenfelder:', Array.from(allSizeInputs).map(input => input.id));
-            
-            // Zusätzliche Verzögerung für sichereres Laden
-            setTimeout(() => {
-                console.log('Zweiter Versuch - Lade Größen und Bestände:', sizesArr);
-                sizesArr.forEach(s => {
-                    const input = document.getElementById('size_' + s.size);
-                    if (input && input.value === '') {
-                        input.value = s.stock;
-                        console.log(`Zweiter Versuch - Größe ${s.size}: ${s.stock} geladen`);
-                    }
-                });
-            }, 100);
         }
         // Produkt speichern (hinzufügen/bearbeiten)
         document.getElementById('productForm').addEventListener('submit', function(e) {
@@ -945,74 +933,13 @@
             
             console.log('Bearbeite Produkt:', product);
             
-            // Lade aktuelle Daten aus import-data.json für dieses Produkt
-            loadCurrentProductData(product.id).then(currentProduct => {
-                const productToEdit = currentProduct || product;
-                
-                console.log('Aktuelle Produktdaten:', productToEdit);
-                
-                // Produktdaten in das Formular laden
-                document.getElementById('productName').value = productToEdit.name;
-                document.getElementById('productPrice').value = productToEdit.price;
-                document.getElementById('productCategory').value = productToEdit.category;
-                document.getElementById('productSubcategory').value = productToEdit.subcategory;
-                document.getElementById('productImage').value = productToEdit.image;
-                document.getElementById('productDescription').value = productToEdit.description || '';
-                
-                // Größenfelder erstellen
-                updateSizeFields();
-                
-                // Index des zu bearbeitenden Produkts speichern
-                window.editingProductIndex = index;
-                
-                // Tab wechseln
-                showTab('add-product');
-                
-                // Warten bis die Felder erstellt wurden, dann Bestände laden
-                setTimeout(() => {
-                    if (productToEdit.sizes && productToEdit.sizes.length > 0) {
-                        fillSizeFields(productToEdit.sizes);
-                        console.log('Größen und Bestände aus import-data.json geladen:', productToEdit.sizes);
-                        
-                        // Zusätzliche Verzögerung für sichereres Laden
-                        setTimeout(() => {
-                            console.log('Finale Überprüfung der geladenen Bestände:');
-                            productToEdit.sizes.forEach(s => {
-                                const input = document.getElementById('size_' + s.size);
-                                if (input) {
-                                    console.log(`Final - Größe ${s.size}: Feld hat Wert "${input.value}", sollte "${s.stock}" sein`);
-                                    if (input.value !== s.stock.toString()) {
-                                        input.value = s.stock;
-                                        console.log(`Korrigiert - Größe ${s.size}: ${s.stock} gesetzt`);
-                                    }
-                                }
-                            });
-                        }, 200);
-                    } else {
-                        console.log('Keine Größen gefunden für Produkt:', productToEdit.name);
-                        console.log('Produkt hat keine Größen definiert - alle Felder bleiben leer');
-                    }
-                }, 500);
-                
-                showAlert('Produkt zum Bearbeiten geladen. Klicke "Produkt hinzufügen" um zu speichern.', 'success');
-            }).catch(error => {
-                console.error('Fehler beim Laden der aktuellen Produktdaten:', error);
-                // Fallback auf lokale Daten
-                editProductFallback(product, index);
-            });
-        }
-        
-        // Fallback-Funktion für Produktbearbeitung
-        function editProductFallback(product, index) {
-            console.log('Verwende Fallback-Daten für Produkt:', product);
-            
             // Produktdaten in das Formular laden
             document.getElementById('productName').value = product.name;
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productCategory').value = product.category;
             document.getElementById('productSubcategory').value = product.subcategory;
             document.getElementById('productImage').value = product.image;
-            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productDescription').value = product.description;
             
             // Größenfelder erstellen
             updateSizeFields();
@@ -1027,52 +954,15 @@
             setTimeout(() => {
                 if (product.sizes && product.sizes.length > 0) {
                     fillSizeFields(product.sizes);
-                    console.log('Größen und Bestände geladen (Fallback):', product.sizes);
-                    
-                    // Zusätzliche Verzögerung für sichereres Laden
-                    setTimeout(() => {
-                        console.log('Finale Überprüfung der geladenen Bestände (Fallback):');
-                        product.sizes.forEach(s => {
-                            const input = document.getElementById('size_' + s.size);
-                            if (input) {
-                                console.log(`Final - Größe ${s.size}: Feld hat Wert "${input.value}", sollte "${s.stock}" sein`);
-                                if (input.value !== s.stock.toString()) {
-                                    input.value = s.stock;
-                                    console.log(`Korrigiert - Größe ${s.size}: ${s.stock} gesetzt`);
-                                }
-                            }
-                        });
-                    }, 200);
+                    console.log('Größen und Bestände geladen:', product.sizes);
                 } else {
                     console.log('Keine Größen gefunden für Produkt:', product.name);
+                    // Kein Fallback mehr - Produkt hat keine Größen definiert
+                    console.log('Produkt hat keine Größen definiert - alle Felder bleiben leer');
                 }
-            }, 500);
+            }, 300);
             
-            showAlert('Produkt zum Bearbeiten geladen (Fallback-Modus). Klicke "Produkt hinzufügen" um zu speichern.', 'success');
-        }
-        
-        // Lade aktuelle Produktdaten aus import-data.json
-        async function loadCurrentProductData(productId) {
-            try {
-                const response = await fetch('import-data.json');
-                if (!response.ok) {
-                    throw new Error('import-data.json nicht gefunden');
-                }
-                
-                const data = await response.json();
-                const currentProduct = data.find(p => p.id === productId);
-                
-                if (currentProduct) {
-                    console.log('Aktuelle Daten gefunden für Produkt ID:', productId);
-                    return currentProduct;
-                } else {
-                    console.log('Keine aktuellen Daten gefunden für Produkt ID:', productId);
-                    return null;
-                }
-            } catch (error) {
-                console.error('Fehler beim Laden der aktuellen Produktdaten:', error);
-                return null;
-            }
+            showAlert('Produkt zum Bearbeiten geladen. Klicke "Produkt hinzufügen" um zu speichern.', 'success');
         }
         
         // Produkt löschen
