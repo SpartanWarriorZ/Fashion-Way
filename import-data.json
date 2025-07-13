@@ -448,5 +448,15 @@
     "stock": 10,
     "description": "Party Yeeeee",
     "id": 1752423214325
+  },
+  {
+    "name": "Agas Brautkleid",
+    "price": 399.99,
+    "category": "damen",
+    "subcategory": "oberteile",
+    "image": "https://cdn.pixabay.com/photo/2021/10/12/17/55/bride-6704274_640.jpg",
+    "stock": 2,
+    "description": "Brautkleid",
+    "id": 1752440423328
   }
 ]
