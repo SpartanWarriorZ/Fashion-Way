@@ -866,14 +866,23 @@
                 githubSettings.branch = savedSettings.branch || githubSettings.branch;
             }
             
-            // UI aktualisieren
-            document.getElementById('githubToken').value = githubSettings.token;
+            // UI aktualisieren - Token wird immer angezeigt
+            const tokenField = document.getElementById('githubToken');
+            if (tokenField) {
+                tokenField.value = githubSettings.token || '';
+                // Zeige an, dass es ein globaler Token ist
+                if (githubSettings.token) {
+                    tokenField.placeholder = 'Globaler Token geladen ✓';
+                    tokenField.style.backgroundColor = '#d4edda';
+                }
+            }
+            
             document.getElementById('githubRepo').value = githubSettings.repo;
             document.getElementById('githubBranch').value = githubSettings.branch;
             
             // Status anzeigen
             if (githubSettings.token) {
-                updateGitHubStatus('✅ Token konfiguriert', 'success');
+                updateGitHubStatus('✅ Globaler Token konfiguriert', 'success');
             } else {
                 updateGitHubStatus('⚠️ Token nicht konfiguriert', 'error');
             }
@@ -1121,11 +1130,23 @@
         // Initial GitHub Einstellungen laden
         loadGitHubSettings();
         
+        // UI sofort aktualisieren
+        setTimeout(() => {
+            // Token-Feld nochmal explizit setzen
+            const tokenField = document.getElementById('githubToken');
+            if (tokenField && githubSettings.token) {
+                tokenField.value = githubSettings.token;
+                tokenField.placeholder = 'Globaler Token geladen ✓';
+                tokenField.style.backgroundColor = '#d4edda';
+                console.log('✅ Token-Feld aktualisiert');
+            }
+        }, 100);
+        
         // Automatische Token-Initialisierung nach kurzer Verzögerung
         setTimeout(() => {
             if (githubSettings.token) {
                 console.log('🚀 CMS bereit mit Token:', githubSettings.token.substring(0, 10) + '...');
-                updateGitHubStatus('✅ CMS bereit - Token automatisch geladen', 'success');
+                updateGitHubStatus('✅ CMS bereit - Globaler Token geladen', 'success');
             } else {
                 console.log('⚠️ Kein Token verfügbar - bitte konfigurieren');
                 updateGitHubStatus('⚠️ Token erforderlich - bitte konfigurieren', 'error');
