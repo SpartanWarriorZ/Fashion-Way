@@ -1107,7 +1107,7 @@ function openProductDetailModal(product) {
           setupMobileFullscreenSwipe(modalImg);
           
           // Vollbild-Zoom-Funktionalität aktivieren
-          setupFullscreenZoom(modalImg);
+          // setupFullscreenZoom(modalImg); // Diese Zeile entfernen
           
           // Aktuelles Bild in hochauflösender Qualität im Vollbildmodus laden
           loadHighResImageInFullscreen(modalImg);
@@ -1121,6 +1121,12 @@ function openProductDetailModal(product) {
           modalImg.style.zIndex = '';
           modalImg.style.objectFit = '';
           modalImg.style.backgroundColor = '';
+          modalImg.style.cursor = '';
+          modalImg.style.transform = '';
+          modalImg.style.maxWidth = '';
+          modalImg.style.maxHeight = '';
+          modalImg.style.margin = '';
+          modalImg.style.padding = '';
           modalImg.classList.remove('mobile-zoomed');
           isExpanded = false;
           
@@ -1512,6 +1518,12 @@ function closeProductDetailModal() {
       modalImg.style.zIndex = '';
       modalImg.style.objectFit = '';
       modalImg.style.backgroundColor = '';
+      modalImg.style.cursor = '';
+      modalImg.style.transform = '';
+      modalImg.style.maxWidth = '';
+      modalImg.style.maxHeight = '';
+      modalImg.style.margin = '';
+      modalImg.style.padding = '';
       modalImg.classList.remove('mobile-zoomed');
     }
     
@@ -3164,4 +3176,18 @@ function removeFullscreenZoom(modalImg) {
       indicator.parentNode.removeChild(indicator);
     }
   });
+}
+
+// Beim Öffnen des Modals (nach modal.classList.add('active');):
+document.body.style.overflow = 'hidden';
+document.documentElement.style.overflow = 'hidden';
+window._modalNoScrollHandler = function(e) { e.preventDefault(); };
+document.body.addEventListener('touchmove', window._modalNoScrollHandler, { passive: false });
+
+// Beim Schließen des Modals (nach modal.classList.remove('active');):
+document.body.style.overflow = '';
+document.documentElement.style.overflow = '';
+if (window._modalNoScrollHandler) {
+  document.body.removeEventListener('touchmove', window._modalNoScrollHandler, { passive: false });
+  delete window._modalNoScrollHandler;
 }
