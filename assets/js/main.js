@@ -1079,73 +1079,96 @@ function openProductDetailModal(product) {
       // Lightbox-Funktionalität direkt nach dem Laden des Bildes einrichten
       setupProductDetailImageZoom();
       
-          // Mobile: Einfache Bildvergrößerung direkt im Modal
-    if (window.innerWidth <= 768) {
-      modalImg.style.cursor = 'pointer';
-      let isExpanded = false;
-      
-      modalImg.addEventListener('click', function() {
-        if (!isExpanded) {
-          // Bild vergrößern
-          modalImg.style.position = 'fixed';
-          modalImg.style.top = '0';
-          modalImg.style.left = '0';
-          modalImg.style.width = '100vw';
-          modalImg.style.height = '100vh';
-          modalImg.style.zIndex = '99999';
-          modalImg.style.objectFit = 'contain';
-          modalImg.style.backgroundColor = 'rgba(0,0,0,0.95)';
-          modalImg.style.cursor = 'pointer';
-          modalImg.classList.add('mobile-zoomed');
-          isExpanded = true;
-          
-          // Modal-Pfeile ausblenden und Vollbild-Pfeile anzeigen
-          removeModalNavigationArrows();
-          addMobileFullscreenNavigation();
-          
-          // Vollbild-Swipe-Navigation aktivieren
-          setupMobileFullscreenSwipe(modalImg);
-          
-          // Vollbild-Zoom-Funktionalität aktivieren
-          // setupFullscreenZoom(modalImg); // Diese Zeile entfernen
-          
-          // Aktuelles Bild in hochauflösender Qualität im Vollbildmodus laden
-          loadHighResImageInFullscreen(modalImg);
-        } else {
-          // Bild zurücksetzen
-          modalImg.style.position = '';
-          modalImg.style.top = '';
-          modalImg.style.left = '';
-          modalImg.style.width = '';
-          modalImg.style.height = '';
-          modalImg.style.zIndex = '';
-          modalImg.style.objectFit = '';
-          modalImg.style.backgroundColor = '';
-          modalImg.style.cursor = '';
-          modalImg.style.transform = '';
-          modalImg.style.maxWidth = '';
-          modalImg.style.maxHeight = '';
-          modalImg.style.margin = '';
-          modalImg.style.padding = '';
-          modalImg.classList.remove('mobile-zoomed');
-          isExpanded = false;
-          
-          // Vollbild-Pfeile ausblenden und Modal-Pfeile wieder anzeigen
-          removeMobileFullscreenNavigation();
-          removeMobileFullscreenSwipe(modalImg);
-          removeFullscreenZoom(modalImg);
-          
-          // Zusätzlich: Alle Vollbild-Pfeile im DOM entfernen falls noch vorhanden
-          document.querySelectorAll('.mobile-fullscreen-nav').forEach(arrow => {
-            arrow.remove();
-          });
-          
-          if (window.currentProductImages && window.currentProductImages.length > 1) {
-            addModalNavigationArrows();
+      // --- NEU: Mausrad-Bildwechsel auf Desktop ---
+      if (window.innerWidth > 900 && window.currentProductImages && window.currentProductImages.length > 1) {
+        // Vorherige Listener entfernen, um Duplikate zu vermeiden
+        const imageContainer = document.querySelector('.product-detail-image-container');
+        if (imageContainer) {
+          imageContainer.removeEventListener('wheel', window._modalImgWheelHandler);
+          if (!window._modalImgWheelHandler) {
+            window._modalImgWheelHandler = function(e) {
+              e.preventDefault();
+              if (e.deltaY > 0) {
+                // Nächstes Bild
+                showProductDetailImage((window.currentImageIndex + 1) % window.currentProductImages.length);
+              } else if (e.deltaY < 0) {
+                // Vorheriges Bild
+                showProductDetailImage((window.currentImageIndex - 1 + window.currentProductImages.length) % window.currentProductImages.length);
+              }
+            };
           }
+          imageContainer.addEventListener('wheel', window._modalImgWheelHandler, { passive: false });
         }
-      });
-    }
+      }
+      // --- ENDE NEU ---
+      
+      // Mobile: Einfache Bildvergrößerung direkt im Modal
+      if (window.innerWidth <= 768) {
+        modalImg.style.cursor = 'pointer';
+        let isExpanded = false;
+        
+        modalImg.addEventListener('click', function() {
+          if (!isExpanded) {
+            // Bild vergrößern
+            modalImg.style.position = 'fixed';
+            modalImg.style.top = '0';
+            modalImg.style.left = '0';
+            modalImg.style.width = '100vw';
+            modalImg.style.height = '100vh';
+            modalImg.style.zIndex = '99999';
+            modalImg.style.objectFit = 'contain';
+            modalImg.style.backgroundColor = 'rgba(0,0,0,0.95)';
+            modalImg.style.cursor = 'pointer';
+            modalImg.classList.add('mobile-zoomed');
+            isExpanded = true;
+            
+            // Modal-Pfeile ausblenden und Vollbild-Pfeile anzeigen
+            removeModalNavigationArrows();
+            addMobileFullscreenNavigation();
+            
+            // Vollbild-Swipe-Navigation aktivieren
+            setupMobileFullscreenSwipe(modalImg);
+            
+            // Vollbild-Zoom-Funktionalität aktivieren
+            // setupFullscreenZoom(modalImg); // Diese Zeile entfernen
+            
+            // Aktuelles Bild in hochauflösender Qualität im Vollbildmodus laden
+            loadHighResImageInFullscreen(modalImg);
+          } else {
+            // Bild zurücksetzen
+            modalImg.style.position = '';
+            modalImg.style.top = '';
+            modalImg.style.left = '';
+            modalImg.style.width = '';
+            modalImg.style.height = '';
+            modalImg.style.zIndex = '';
+            modalImg.style.objectFit = '';
+            modalImg.style.backgroundColor = '';
+            modalImg.style.cursor = '';
+            modalImg.style.transform = '';
+            modalImg.style.maxWidth = '';
+            modalImg.style.maxHeight = '';
+            modalImg.style.margin = '';
+            modalImg.style.padding = '';
+            modalImg.classList.remove('mobile-zoomed');
+            isExpanded = false;
+            
+            // Vollbild-Pfeile ausblenden und Modal-Pfeile wieder anzeigen
+            removeMobileFullscreenNavigation();
+            removeMobileFullscreenSwipe(modalImg);
+            removeFullscreenZoom(modalImg);
+            
+            // Zusätzlich: Alle Vollbild-Pfeile im DOM entfernen falls noch vorhanden
+            document.querySelectorAll('.mobile-fullscreen-nav').forEach(arrow => {
+              arrow.remove();
+            });
+            
+            if (window.currentProductImages && window.currentProductImages.length > 1) {
+              addModalNavigationArrows();
+            }
+          }
+        });
+      }
     };
     img.onerror = function() {
       console.log('Bild konnte nicht geladen werden:', imageUrl);
@@ -1456,6 +1479,29 @@ function showProductDetailImage(index) {
       
       // Zoom-Funktionalität für das neue Bild-Element neu einrichten
       setupProductDetailImageZoom();
+      
+      // --- NEU: Mausrad-Bildwechsel auch nach Bildwechsel auf Desktop ---
+      if (window.innerWidth > 900 && window.currentProductImages && window.currentProductImages.length > 1) {
+        // Vorherige Listener entfernen, um Duplikate zu vermeiden
+        const imageContainer = document.querySelector('.product-detail-image-container');
+        if (imageContainer) {
+          imageContainer.removeEventListener('wheel', window._modalImgWheelHandler);
+          if (!window._modalImgWheelHandler) {
+            window._modalImgWheelHandler = function(e) {
+              e.preventDefault();
+              if (e.deltaY > 0) {
+                // Nächstes Bild
+                showProductDetailImage((window.currentImageIndex + 1) % window.currentProductImages.length);
+              } else if (e.deltaY < 0) {
+                // Vorheriges Bild
+                showProductDetailImage((window.currentImageIndex - 1 + window.currentProductImages.length) % window.currentProductImages.length);
+              }
+            };
+          }
+          imageContainer.addEventListener('wheel', window._modalImgWheelHandler, { passive: false });
+        }
+      }
+      // --- ENDE NEU ---
       
       currentImageIndex = index;
       window.currentImageIndex = index; // Auch global aktualisieren
