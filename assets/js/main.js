@@ -235,7 +235,7 @@ function createProductCard(product) {
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
-      <div class="product-price">€${product.price.toFixed(2)}</div>
+      <div class="product-price">${product.price.toFixed(2)} €</div>
       <div class="product-stock">${totalStock > 0 ? `${totalStock} verfügbar` : 'Ausverkauft'}</div>
       ${totalQuantity > 0 ? `
         <div class="cart-indicator">
@@ -469,7 +469,7 @@ function updateCartModal() {
           <div class="cart-item-info">
             <h4>${product.name}</h4>
             ${item.size ? `<p class="cart-item-size">Größe: ${item.size}</p>` : ''}
-            <p class="cart-item-price">€${product.price.toFixed(2)}</p>
+            <p class="cart-item-price">${product.price.toFixed(2)} €</p>
           </div>
           <div class="cart-item-quantity">
             <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1}, '${item.size || ''}')" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
@@ -477,7 +477,7 @@ function updateCartModal() {
             <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1}, '${item.size || ''}')" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
           </div>
           <div class="cart-item-total">
-            €${itemTotal.toFixed(2)}
+            ${itemTotal.toFixed(2)} €
           </div>
           <button class="cart-item-remove" onclick="removeProductFromCart(${item.id}, '${item.size || ''}')">&times;</button>
         </div>
@@ -486,7 +486,7 @@ function updateCartModal() {
   });
   
   cartBody.innerHTML = cartHTML;
-  totalPriceElement.textContent = `€${totalPrice.toFixed(2)}`;
+  totalPriceElement.textContent = `${totalPrice.toFixed(2)} €`;
   checkoutBtn.disabled = false;
 }
 
@@ -1061,6 +1061,85 @@ function openProductDetailModal(product) {
     img.onload = function() {
       modalImg.src = imageUrl;
       console.log('Bild erfolgreich geladen:', imageUrl);
+      
+      // Hochauflösende Version laden falls verfügbar
+      const highResSrc = imageUrl.replace('?w=400', '?w=1200');
+      if (highResSrc !== imageUrl) {
+        const highResImg = new Image();
+        highResImg.onload = function() {
+          modalImg.src = highResSrc;
+          console.log('Hochauflösende Version geladen:', highResSrc);
+        };
+        highResImg.onerror = function() {
+          console.log('Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
+        };
+        highResImg.src = highResSrc;
+      }
+      
+      // Lightbox-Funktionalität direkt nach dem Laden des Bildes einrichten
+      setupProductDetailImageZoom();
+      
+          // Mobile: Einfache Bildvergrößerung direkt im Modal
+    if (window.innerWidth <= 768) {
+      modalImg.style.cursor = 'pointer';
+      let isExpanded = false;
+      
+      modalImg.addEventListener('click', function() {
+        if (!isExpanded) {
+          // Bild vergrößern
+          modalImg.style.position = 'fixed';
+          modalImg.style.top = '0';
+          modalImg.style.left = '0';
+          modalImg.style.width = '100vw';
+          modalImg.style.height = '100vh';
+          modalImg.style.zIndex = '99999';
+          modalImg.style.objectFit = 'contain';
+          modalImg.style.backgroundColor = 'rgba(0,0,0,0.95)';
+          modalImg.style.cursor = 'pointer';
+          modalImg.classList.add('mobile-zoomed');
+          isExpanded = true;
+          
+          // Modal-Pfeile ausblenden und Vollbild-Pfeile anzeigen
+          removeModalNavigationArrows();
+          addMobileFullscreenNavigation();
+          
+          // Vollbild-Swipe-Navigation aktivieren
+          setupMobileFullscreenSwipe(modalImg);
+          
+          // Vollbild-Zoom-Funktionalität aktivieren
+          setupFullscreenZoom(modalImg);
+          
+          // Aktuelles Bild in hochauflösender Qualität im Vollbildmodus laden
+          loadHighResImageInFullscreen(modalImg);
+        } else {
+          // Bild zurücksetzen
+          modalImg.style.position = '';
+          modalImg.style.top = '';
+          modalImg.style.left = '';
+          modalImg.style.width = '';
+          modalImg.style.height = '';
+          modalImg.style.zIndex = '';
+          modalImg.style.objectFit = '';
+          modalImg.style.backgroundColor = '';
+          modalImg.classList.remove('mobile-zoomed');
+          isExpanded = false;
+          
+          // Vollbild-Pfeile ausblenden und Modal-Pfeile wieder anzeigen
+          removeMobileFullscreenNavigation();
+          removeMobileFullscreenSwipe(modalImg);
+          removeFullscreenZoom(modalImg);
+          
+          // Zusätzlich: Alle Vollbild-Pfeile im DOM entfernen falls noch vorhanden
+          document.querySelectorAll('.mobile-fullscreen-nav').forEach(arrow => {
+            arrow.remove();
+          });
+          
+          if (window.currentProductImages && window.currentProductImages.length > 1) {
+            addModalNavigationArrows();
+          }
+        }
+      });
+    }
     };
     img.onerror = function() {
       console.log('Bild konnte nicht geladen werden:', imageUrl);
@@ -1105,25 +1184,7 @@ function openProductDetailModal(product) {
       modalTitle: !!modalTitle
     });
     
-    // Bildqualität optimieren - hochauflösende Version laden
-    img.onload = function() {
-      modalImg.src = imageUrl;
-      console.log('Bild erfolgreich geladen:', imageUrl);
-      
-      // Hochauflösende Version laden falls verfügbar
-      const highResSrc = imageUrl.replace('?w=400', '?w=1200');
-      if (highResSrc !== imageUrl) {
-        const highResImg = new Image();
-        highResImg.onload = function() {
-          modalImg.src = highResSrc;
-          console.log('Hochauflösende Version geladen:', highResSrc);
-        };
-        highResImg.onerror = function() {
-          console.log('Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
-        };
-        highResImg.src = highResSrc;
-      }
-    };
+
     
     // Kategorie anzeigen
     if (modalCategory) {
@@ -1132,7 +1193,7 @@ function openProductDetailModal(product) {
     
     // Preis anzeigen
     if (modalPrice) {
-      modalPrice.textContent = product.price;
+      modalPrice.textContent = `${product.price.toFixed(2)} €`;
     }
     
     // Beschreibung anzeigen
@@ -1260,7 +1321,9 @@ function openProductDetailModal(product) {
     
     // Aktuelle Bilder für das Modal setzen
     currentProductImages = allImages;
+    window.currentProductImages = allImages; // Auch global setzen für Navigation
     currentImageIndex = 0;
+    window.currentImageIndex = 0; // Auch global setzen für Navigation
     
     // Thumbnails erstellen
     const thumbnailsContainer = document.getElementById('productDetailThumbnails');
@@ -1283,11 +1346,31 @@ function openProductDetailModal(product) {
       scroll.stop();
     }
     
+    // Swipe-Navigation und Pfeil-Navigation für das Modal einrichten (alle Geräte)
+    console.log('Modal öffnen: Anzahl Bilder:', allImages.length);
+    if (allImages.length > 1) {
+      console.log('Modal öffnen: Richte Navigation ein');
+      if (window.innerWidth > 900) {
+        setupModalSwipeNavigation();
+      }
+      addModalNavigationArrows();
+    } else {
+      console.log('Modal öffnen: Keine Navigation nötig - nur ein Bild');
+    }
+    
     // Focus auf Close-Button setzen
     setTimeout(() => {
       const closeBtn = document.getElementById('productDetailModalClose');
       if (closeBtn) closeBtn.focus();
     }, 100);
+
+    // Zoom-Hinweis sofort anzeigen
+    const zoomIndicator = document.getElementById('productDetailZoomIndicator');
+    if (zoomIndicator) {
+      zoomIndicator.classList.add('show');
+      zoomIndicator.textContent = 'Klick zum Zoomen';
+      zoomIndicator.classList.remove('zoomed');
+    }
   }
 }
 
@@ -1310,7 +1393,7 @@ function showProductDetailImage(index) {
       // Zoom-Indikator zurücksetzen
       const zoomIndicator = document.getElementById('productDetailZoomIndicator');
       if (zoomIndicator) {
-        zoomIndicator.classList.remove('show');
+        zoomIndicator.classList.add('show');
         zoomIndicator.textContent = 'Klick zum Zoomen';
         zoomIndicator.classList.remove('zoomed');
       }
@@ -1369,6 +1452,7 @@ function showProductDetailImage(index) {
       setupProductDetailImageZoom();
       
       currentImageIndex = index;
+      window.currentImageIndex = index; // Auch global aktualisieren
       
       // Thumbnail-Aktivität aktualisieren
       document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
@@ -1377,6 +1461,7 @@ function showProductDetailImage(index) {
     } else {
       // Bei nur einem Bild: Nur Thumbnail-Aktivität aktualisieren, Bild nicht neu laden
       currentImageIndex = index;
+      window.currentImageIndex = index; // Auch global aktualisieren
       
       // Thumbnail-Aktivität aktualisieren
       document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
@@ -1399,6 +1484,63 @@ function closeProductDetailModal() {
     if (scroll && scroll.start) {
       scroll.start();
     }
+    
+    // Zoom zurücksetzen
+    if (window.productDetailZoomState) {
+      window.productDetailZoomState.isZoomed = false;
+      window.productDetailZoomState.scale = 1;
+      window.productDetailZoomState.translateX = 0;
+      window.productDetailZoomState.translateY = 0;
+    }
+    
+    // Zoom-Indikator zurücksetzen
+    const zoomIndicator = document.getElementById('productDetailZoomIndicator');
+    if (zoomIndicator) {
+      zoomIndicator.classList.add('show');
+      zoomIndicator.textContent = 'Klick zum Zoomen';
+      zoomIndicator.classList.remove('zoomed');
+    }
+    
+    // Vollbildmodus zurücksetzen falls aktiv
+    const modalImg = document.getElementById('productDetailImage');
+    if (modalImg && modalImg.classList.contains('mobile-zoomed')) {
+      modalImg.style.position = '';
+      modalImg.style.top = '';
+      modalImg.style.left = '';
+      modalImg.style.width = '';
+      modalImg.style.height = '';
+      modalImg.style.zIndex = '';
+      modalImg.style.objectFit = '';
+      modalImg.style.backgroundColor = '';
+      modalImg.classList.remove('mobile-zoomed');
+    }
+    
+    // Vollbild-Navigation entfernen
+    removeMobileFullscreenNavigation();
+    
+    // Vollbild-Swipe-Navigation entfernen
+    if (modalImg) {
+      removeMobileFullscreenSwipe(modalImg);
+      removeFullscreenZoom(modalImg);
+    }
+    
+    // Zusätzlich: Alle Vollbild-Pfeile im DOM entfernen falls noch vorhanden
+    document.querySelectorAll('.mobile-fullscreen-nav').forEach(arrow => {
+      arrow.remove();
+    });
+    
+    // Modal-Swipe-Navigation entfernen
+    removeModalSwipeNavigation();
+    removeModalNavigationArrows();
+    
+    // Globale Variablen zurücksetzen
+    currentProduct = null;
+    currentProductImages = null;
+    window.currentProductImages = null;
+    currentImageIndex = null;
+    window.currentImageIndex = null;
+    selectedSize = null;
+    selectedQuantity = 1;
   }
 }
 
@@ -1821,11 +1963,8 @@ function setupImageZoom() {
       modalImg.classList.remove('dragging');
       zoomIndicator.textContent = 'Klick zum Zoomen';
       zoomIndicator.classList.remove('zoomed');
-      hideZoomIndicator();
-      
-      // Bildqualität zurücksetzen
+      zoomIndicator.classList.add('show'); // Hinweis dauerhaft anzeigen
       modalImg.style.imageRendering = '';
-      
       applyTransform();
     }
     
@@ -2183,17 +2322,66 @@ function setupProductDetailImageZoom() {
     modalImg.classList.remove('dragging');
     zoomIndicator.textContent = 'Klick zum Zoomen';
     zoomIndicator.classList.remove('zoomed');
-    hideZoomIndicator();
+    zoomIndicator.classList.add('show'); // Hinweis dauerhaft anzeigen
     modalImg.style.imageRendering = '';
     applyTransform();
   }
 
-  // Klick zum Zoomen/Zurücksetzen
+  // Klick zum Zoomen/Zurücksetzen oder Bildvergrößerung
   modalImg.addEventListener('click', (e) => {
-    if (!state.isZoomed) {
-      zoomAtPosition(e.clientX, e.clientY);
+    // Auf Mobilgeräten: Bildschirmfüllende Anzeige, auf Desktop: Zoom
+    if (window.innerWidth <= 768) {
+      // Mobile: Bildschirmfüllende Anzeige
+      if (!modalImg.classList.contains('mobile-zoomed')) {
+        // Bild bildschirmfüllend machen
+        modalImg.classList.add('mobile-zoomed');
+        modalImg.style.position = 'fixed';
+        modalImg.style.top = '0';
+        modalImg.style.left = '0';
+        modalImg.style.width = '100vw';
+        modalImg.style.height = '100vh';
+        modalImg.style.objectFit = 'contain';
+        modalImg.style.zIndex = '10000';
+        modalImg.style.backgroundColor = 'rgba(0,0,0,0.9)';
+        modalImg.style.cursor = 'zoom-out';
+        zoomIndicator.textContent = 'Swipe oder Pfeile zum Wechseln • Klick zum Verkleinern';
+        zoomIndicator.classList.add('show');
+        
+        // Swipe-Funktionalität für Vollbild aktivieren
+        setupMobileFullscreenSwipe(modalImg);
+        
+        // Navigations-Pfeile hinzufügen (nur wenn mehrere Bilder vorhanden)
+        if (window.currentProductImages && window.currentProductImages.length > 1) {
+          addMobileFullscreenNavigation();
+        }
+      } else {
+        // Bild zurücksetzen
+        modalImg.classList.remove('mobile-zoomed');
+        modalImg.style.position = '';
+        modalImg.style.top = '';
+        modalImg.style.left = '';
+        modalImg.style.width = '';
+        modalImg.style.height = '';
+        modalImg.style.objectFit = '';
+        modalImg.style.zIndex = '';
+        modalImg.style.backgroundColor = '';
+        modalImg.style.cursor = 'zoom-in';
+        zoomIndicator.textContent = 'Klick zum Vergrößern';
+        zoomIndicator.classList.remove('show');
+        
+        // Swipe-Funktionalität deaktivieren
+        removeMobileFullscreenSwipe(modalImg);
+        
+        // Navigations-Pfeile entfernen
+        removeMobileFullscreenNavigation();
+      }
     } else {
-      resetZoom();
+      // Desktop: Zoom-Funktionalität
+      if (!state.isZoomed) {
+        zoomAtPosition(e.clientX, e.clientY);
+      } else {
+        resetZoom();
+      }
     }
   });
 
@@ -2221,30 +2409,32 @@ function setupProductDetailImageZoom() {
     }
   });
 
-  // Touch-Events für Mobilgeräte
-  modalImg.addEventListener('touchstart', (e) => {
-    if (state.isZoomed) {
-      state.isTouching = true;
-      const touch = e.touches[0];
-      state.startX = touch.clientX - state.translateX;
-      state.startY = touch.clientY - state.translateY;
-      modalImg.classList.add('dragging');
-    }
-  });
-  modalImg.addEventListener('touchmove', (e) => {
-    if (state.isZoomed && state.isTouching) {
-      const touch = e.touches[0];
-      state.translateX = touch.clientX - state.startX;
-      state.translateY = touch.clientY - state.startY;
-      applyTransform();
-    }
-  });
-  modalImg.addEventListener('touchend', () => {
-    if (state.isZoomed && state.isTouching) {
-      state.isTouching = false;
-      modalImg.classList.remove('dragging');
-    }
-  });
+  // Touch-Events nur für Desktop (Zoom-Funktionalität)
+  if (window.innerWidth > 768) {
+    modalImg.addEventListener('touchstart', (e) => {
+      if (state.isZoomed) {
+        state.isTouching = true;
+        const touch = e.touches[0];
+        state.startX = touch.clientX - state.translateX;
+        state.startY = touch.clientY - state.translateY;
+        modalImg.classList.add('dragging');
+      }
+    });
+    modalImg.addEventListener('touchmove', (e) => {
+      if (state.isZoomed && state.isTouching) {
+        const touch = e.touches[0];
+        state.translateX = touch.clientX - state.startX;
+        state.translateY = touch.clientY - state.startY;
+        applyTransform();
+      }
+    });
+    modalImg.addEventListener('touchend', () => {
+      if (state.isZoomed && state.isTouching) {
+        state.isTouching = false;
+        modalImg.classList.remove('dragging');
+      }
+    });
+  }
 
   // Zoom zurücksetzen beim Schließen des Modals
   const modal = document.getElementById('productDetailModal');
@@ -2254,6 +2444,724 @@ function setupProductDetailImageZoom() {
     });
   }
 
-  // Initialtext für den Zoom-Indikator
-  zoomIndicator.textContent = 'Klick zum Zoomen';
+  // Initialtext für den Zoom-Indikator (nur Desktop)
+  if (window.innerWidth > 768) {
+    zoomIndicator.textContent = 'Klick zum Zoomen';
+  } else {
+    zoomIndicator.textContent = 'Klick zum Vergrößern';
+  }
+}
+
+// Mobile Vollbild-Swipe-Funktionalität
+function setupMobileFullscreenSwipe(modalImg) {
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let isSwiping = false;
+  let swipeThreshold = 50;
+
+  // Touch-Events für Swipe
+  modalImg.addEventListener('touchstart', handleTouchStart, { passive: false });
+  modalImg.addEventListener('touchmove', handleTouchMove, { passive: false });
+  modalImg.addEventListener('touchend', handleTouchEnd, { passive: false });
+
+  // Keyboard-Events für Pfeil-Navigation
+  document.addEventListener('keydown', handleKeyDown);
+
+  function handleTouchStart(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isSwiping = true;
+  }
+
+  function handleTouchMove(e) {
+    if (!isSwiping) return;
+    
+    currentX = e.touches[0].clientX;
+    currentY = e.touches[0].clientY;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // Nur horizontale Swipes erlauben (weniger vertikale Bewegung)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+      e.preventDefault();
+    }
+  }
+
+  function handleTouchEnd(e) {
+    if (!isSwiping) return;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // Horizontale Swipe-Erkennung
+    if (Math.abs(deltaX) > swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        // Swipe nach rechts = vorheriges Bild
+        showPreviousImage();
+      } else {
+        // Swipe nach links = nächstes Bild
+        showNextImage();
+      }
+    }
+    
+    isSwiping = false;
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'ArrowLeft') {
+      showPreviousImage();
+    } else if (e.key === 'ArrowRight') {
+      showNextImage();
+    } else if (e.key === 'Escape') {
+      // ESC-Taste zum Verkleinern
+      modalImg.click();
+    }
+  }
+
+
+
+  // Event-Listener-Referenzen speichern für späteres Entfernen
+  modalImg._fullscreenEventListeners = {
+    touchstart: handleTouchStart,
+    touchmove: handleTouchMove,
+    touchend: handleTouchEnd,
+    keydown: handleKeyDown
+  };
+}
+
+function removeMobileFullscreenSwipe(modalImg) {
+  if (modalImg._fullscreenEventListeners) {
+    modalImg.removeEventListener('touchstart', modalImg._fullscreenEventListeners.touchstart);
+    modalImg.removeEventListener('touchmove', modalImg._fullscreenEventListeners.touchmove);
+    modalImg.removeEventListener('touchend', modalImg._fullscreenEventListeners.touchend);
+    document.removeEventListener('keydown', modalImg._fullscreenEventListeners.keydown);
+    delete modalImg._fullscreenEventListeners;
+  }
+}
+
+// Vollbild-Navigation-Pfeile hinzufügen
+function addMobileFullscreenNavigation() {
+  // Bestehende Pfeile entfernen falls vorhanden
+  removeMobileFullscreenNavigation();
+  
+  // Nur Pfeile hinzufügen wenn es mehrere Bilder gibt
+  if (!window.currentProductImages || window.currentProductImages.length <= 1) {
+    return;
+  }
+  
+  const prevBtn = document.createElement('div');
+  prevBtn.className = 'mobile-fullscreen-nav prev';
+  prevBtn.innerHTML = '‹';
+  prevBtn.addEventListener('click', () => {
+    const modalImg = document.getElementById('productDetailImage');
+    if (modalImg && modalImg.classList.contains('mobile-zoomed')) {
+      showPreviousImage(modalImg);
+    }
+  });
+  
+  const nextBtn = document.createElement('div');
+  nextBtn.className = 'mobile-fullscreen-nav next';
+  nextBtn.innerHTML = '›';
+  nextBtn.addEventListener('click', () => {
+    const modalImg = document.getElementById('productDetailImage');
+    if (modalImg && modalImg.classList.contains('mobile-zoomed')) {
+      showNextImage(modalImg);
+    }
+  });
+  
+  document.body.appendChild(prevBtn);
+  document.body.appendChild(nextBtn);
+  
+  // CSS-Klasse 'show' hinzufügen um die Pfeile sichtbar zu machen
+  prevBtn.classList.add('show');
+  nextBtn.classList.add('show');
+  
+  // Referenzen speichern
+  window._mobileFullscreenNav = { prevBtn, nextBtn };
+}
+
+// Vollbild-Navigation-Pfeile entfernen
+function removeMobileFullscreenNavigation() {
+  // Referenzen entfernen
+  if (window._mobileFullscreenNav) {
+    if (window._mobileFullscreenNav.prevBtn) {
+      window._mobileFullscreenNav.prevBtn.remove();
+    }
+    if (window._mobileFullscreenNav.nextBtn) {
+      window._mobileFullscreenNav.nextBtn.remove();
+    }
+    delete window._mobileFullscreenNav;
+  }
+  
+  // Zusätzlich: Alle Vollbild-Pfeile im DOM entfernen (Sicherheitsmaßnahme)
+  document.querySelectorAll('.mobile-fullscreen-nav').forEach(arrow => {
+    arrow.remove();
+  });
+}
+
+// Hilfsfunktionen für Bildwechsel (werden von Swipe und Pfeilen verwendet)
+function showNextImage(modalImg = null) {
+  if (!modalImg) {
+    modalImg = document.getElementById('productDetailImage');
+  }
+  
+  if (window.currentProductImages && window.currentProductImages.length > 1) {
+    const currentIndex = window.currentImageIndex || 0;
+    const nextIndex = (currentIndex + 1) % window.currentProductImages.length;
+    
+    // Prüfe ob wir im Vollbildmodus sind
+    if (modalImg.classList.contains('mobile-zoomed')) {
+      // Im Vollbildmodus: Hochauflösende Bildqualitäts-Logik verwenden
+      const imageUrl = window.currentProductImages[nextIndex];
+      
+      // Bild laden mit Preloading (wie im normalen Modal)
+      const img = new Image();
+      img.onload = function() {
+        modalImg.src = imageUrl;
+        console.log('Vollbild: Bild erfolgreich geladen:', imageUrl);
+        
+        // Hochauflösende Version laden falls verfügbar (wie im normalen Modal)
+        const highResSrc = imageUrl.replace('?w=400', '?w=1200');
+        if (highResSrc !== imageUrl) {
+          const highResImg = new Image();
+          highResImg.onload = function() {
+            modalImg.src = highResSrc;
+            console.log('Vollbild: Hochauflösende Version geladen:', highResSrc);
+          };
+          highResImg.onerror = function() {
+            console.log('Vollbild: Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
+          };
+          highResImg.src = highResSrc;
+        }
+      };
+      img.onerror = function() {
+        console.log('Vollbild: Bild konnte nicht geladen werden:', imageUrl);
+        modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      img.src = imageUrl;
+      
+      // Zusätzlicher Fallback für das Vollbild-Bild
+      modalImg.onerror = function() {
+        console.log('Vollbild: Bild konnte nicht geladen werden');
+        modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      
+      // Zoom zurücksetzen beim Bildwechsel
+      if (modalImg._fullscreenZoom && modalImg._fullscreenZoom.resetZoom) {
+        modalImg._fullscreenZoom.resetZoom();
+      }
+      
+      window.currentImageIndex = nextIndex;
+      
+      // Thumbnail-Aktivität aktualisieren
+      document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === nextIndex);
+      });
+    } else {
+      // Im normalen Modal: Normale Bildwechsel-Logik verwenden
+      showProductDetailImage(nextIndex);
+    }
+  }
+}
+
+function showPreviousImage(modalImg = null) {
+  if (!modalImg) {
+    modalImg = document.getElementById('productDetailImage');
+  }
+  
+  if (window.currentProductImages && window.currentProductImages.length > 1) {
+    const currentIndex = window.currentImageIndex || 0;
+    const prevIndex = currentIndex === 0 ? window.currentProductImages.length - 1 : currentIndex - 1;
+    
+    // Prüfe ob wir im Vollbildmodus sind
+    if (modalImg.classList.contains('mobile-zoomed')) {
+      // Im Vollbildmodus: Hochauflösende Bildqualitäts-Logik verwenden
+      const imageUrl = window.currentProductImages[prevIndex];
+      
+      // Bild laden mit Preloading (wie im normalen Modal)
+      const img = new Image();
+      img.onload = function() {
+        modalImg.src = imageUrl;
+        console.log('Vollbild: Bild erfolgreich geladen:', imageUrl);
+        
+        // Hochauflösende Version laden falls verfügbar (wie im normalen Modal)
+        const highResSrc = imageUrl.replace('?w=400', '?w=1200');
+        if (highResSrc !== imageUrl) {
+          const highResImg = new Image();
+          highResImg.onload = function() {
+            modalImg.src = highResSrc;
+            console.log('Vollbild: Hochauflösende Version geladen:', highResSrc);
+          };
+          highResImg.onerror = function() {
+            console.log('Vollbild: Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
+          };
+          highResImg.src = highResSrc;
+        }
+      };
+      img.onerror = function() {
+        console.log('Vollbild: Bild konnte nicht geladen werden:', imageUrl);
+        modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      img.src = imageUrl;
+      
+      // Zusätzlicher Fallback für das Vollbild-Bild
+      modalImg.onerror = function() {
+        console.log('Vollbild: Bild konnte nicht geladen werden');
+        modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+      };
+      
+      // Zoom zurücksetzen beim Bildwechsel
+      if (modalImg._fullscreenZoom && modalImg._fullscreenZoom.resetZoom) {
+        modalImg._fullscreenZoom.resetZoom();
+      }
+      
+      window.currentImageIndex = prevIndex;
+      
+      // Thumbnail-Aktivität aktualisieren
+      document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === prevIndex);
+      });
+    } else {
+      // Im normalen Modal: Normale Bildwechsel-Logik verwenden
+      showProductDetailImage(prevIndex);
+    }
+  }
+}
+
+// Modal Swipe-Navigation (für normales Modal, nicht Vollbild)
+function setupModalSwipeNavigation() {
+  const modal = document.getElementById('productDetailModal');
+  const modalImg = document.getElementById('productDetailImage');
+  
+  if (!modal || !modalImg) return;
+  
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let isSwiping = false;
+  let swipeThreshold = 50;
+  
+  // Touch-Events für Swipe
+  modal.addEventListener('touchstart', handleModalTouchStart, { passive: false });
+  modal.addEventListener('touchmove', handleModalTouchMove, { passive: false });
+  modal.addEventListener('touchend', handleModalTouchEnd, { passive: false });
+  
+  // Keyboard-Events für Pfeil-Navigation (global für das gesamte Dokument)
+  document.addEventListener('keydown', handleModalKeyDown);
+  window._modalKeyDownListener = handleModalKeyDown;
+  
+  function handleModalTouchStart(e) {
+    // Nur auf dem Bild-Bereich Swipe erlauben
+    if (e.target.closest('.product-detail-image-container')) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isSwiping = true;
+    }
+  }
+  
+  function handleModalTouchMove(e) {
+    if (!isSwiping) return;
+    
+    currentX = e.touches[0].clientX;
+    currentY = e.touches[0].clientY;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // Nur horizontale Swipes erlauben (weniger vertikale Bewegung)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+      e.preventDefault();
+    }
+  }
+  
+  function handleModalTouchEnd(e) {
+    if (!isSwiping) return;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // Horizontale Swipe-Erkennung
+    if (Math.abs(deltaX) > swipeThreshold && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        // Swipe nach rechts = vorheriges Bild
+        showProductDetailImage((window.currentImageIndex || 0) === 0 ? 
+          window.currentProductImages.length - 1 : (window.currentImageIndex || 0) - 1);
+      } else {
+        // Swipe nach links = nächstes Bild
+        showProductDetailImage(((window.currentImageIndex || 0) + 1) % window.currentProductImages.length);
+      }
+    }
+    
+    isSwiping = false;
+  }
+  
+  function handleModalKeyDown(e) {
+    // Nur reagieren wenn das Modal offen ist
+    const modal = document.getElementById('productDetailModal');
+    if (!modal || !modal.classList.contains('active')) return;
+    
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      showProductDetailImage((window.currentImageIndex || 0) === 0 ? 
+        window.currentProductImages.length - 1 : (window.currentImageIndex || 0) - 1);
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      showProductDetailImage(((window.currentImageIndex || 0) + 1) % window.currentProductImages.length);
+    }
+  }
+  
+  // Event-Listener-Referenzen speichern für späteres Entfernen
+  modal._modalSwipeEventListeners = {
+    touchstart: handleModalTouchStart,
+    touchmove: handleModalTouchMove,
+    touchend: handleModalTouchEnd,
+    keydown: handleModalKeyDown
+  };
+}
+
+function removeModalSwipeNavigation() {
+  const modal = document.getElementById('productDetailModal');
+  if (modal && modal._modalSwipeEventListeners) {
+    modal.removeEventListener('touchstart', modal._modalSwipeEventListeners.touchstart);
+    modal.removeEventListener('touchmove', modal._modalSwipeEventListeners.touchmove);
+    modal.removeEventListener('touchend', modal._modalSwipeEventListeners.touchend);
+    document.removeEventListener('keydown', modal._modalSwipeEventListeners.keydown);
+    delete modal._modalSwipeEventListeners;
+  }
+  
+  // Zusätzlich: Alle globalen Keyboard-Event-Listener entfernen falls vorhanden
+  if (window._modalKeyDownListener) {
+    document.removeEventListener('keydown', window._modalKeyDownListener);
+    delete window._modalKeyDownListener;
+  }
+}
+
+// Modal-Navigations-Pfeile hinzufügen
+function addModalNavigationArrows() {
+  // Bestehende Pfeile entfernen falls vorhanden
+  removeModalNavigationArrows();
+  
+  // Nur Pfeile hinzufügen wenn es mehrere Bilder gibt
+  console.log('Modal Navigation: Prüfe Bilder:', window.currentProductImages);
+  console.log('Modal Navigation: Anzahl Bilder:', window.currentProductImages ? window.currentProductImages.length : 0);
+  if (!window.currentProductImages || window.currentProductImages.length <= 1) {
+    console.log('Modal Navigation: Keine Pfeile nötig - nur ein Bild vorhanden');
+    return;
+  }
+  
+  const imageContainer = document.querySelector('.product-detail-image-container');
+  if (!imageContainer) {
+    console.log('Modal Navigation: Image container nicht gefunden');
+    return;
+  }
+  
+  console.log('Modal Navigation: Erstelle Pfeil-Buttons');
+  console.log('Aktuelle Bilder:', window.currentProductImages);
+  console.log('Aktueller Index:', window.currentImageIndex);
+  
+  const prevBtn = document.createElement('div');
+  prevBtn.className = 'modal-nav-arrow prev';
+  prevBtn.innerHTML = '‹';
+  prevBtn.style.display = 'flex';
+  prevBtn.style.zIndex = '10003';
+  prevBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Modal Navigation: Vorheriger Button geklickt');
+    if (window.currentProductImages && window.currentProductImages.length > 1) {
+      const currentIndex = window.currentImageIndex || 0;
+      const prevIndex = currentIndex === 0 ? window.currentProductImages.length - 1 : currentIndex - 1;
+      console.log('Wechsle von Index', currentIndex, 'zu', prevIndex);
+      showProductDetailImage(prevIndex);
+    }
+  });
+  
+  const nextBtn = document.createElement('div');
+  nextBtn.className = 'modal-nav-arrow next';
+  nextBtn.innerHTML = '›';
+  nextBtn.style.display = 'flex';
+  nextBtn.style.zIndex = '10003';
+  nextBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Modal Navigation: Nächster Button geklickt');
+    if (window.currentProductImages && window.currentProductImages.length > 1) {
+      const currentIndex = window.currentImageIndex || 0;
+      const nextIndex = (currentIndex + 1) % window.currentProductImages.length;
+      console.log('Wechsle von Index', currentIndex, 'zu', nextIndex);
+      showProductDetailImage(nextIndex);
+    }
+  });
+  
+  imageContainer.appendChild(prevBtn);
+  imageContainer.appendChild(nextBtn);
+  
+  // Referenzen speichern
+  window._modalNavArrows = { prevBtn, nextBtn };
+  
+  console.log('Modal Navigation: Pfeil-Buttons erstellt und hinzugefügt');
+  console.log('Modal Navigation: Pfeile im DOM:', imageContainer.querySelectorAll('.modal-nav-arrow').length);
+  console.log('Modal Navigation: Image Container:', imageContainer);
+}
+
+// Modal-Navigations-Pfeile entfernen
+function removeModalNavigationArrows() {
+  if (window._modalNavArrows) {
+    if (window._modalNavArrows.prevBtn) {
+      window._modalNavArrows.prevBtn.remove();
+    }
+    if (window._modalNavArrows.nextBtn) {
+      window._modalNavArrows.nextBtn.remove();
+    }
+    delete window._modalNavArrows;
+  }
+}
+
+// Mobile Bildvergrößerung ist jetzt direkt in openProductDetailModal integriert
+
+// Die Lightbox-Logik ist jetzt in setupProductDetailImageZoom() integriert
+
+// Vollbildmodus mit hochauflösender Bildqualität laden
+function loadHighResImageInFullscreen(modalImg) {
+  if (!modalImg || !window.currentProductImages || !window.currentImageIndex) return;
+  
+  const currentImageUrl = window.currentProductImages[window.currentImageIndex];
+  
+  // Bild laden mit Preloading (wie im normalen Modal)
+  const img = new Image();
+  img.onload = function() {
+    modalImg.src = currentImageUrl;
+    console.log('Vollbild: Aktuelles Bild erfolgreich geladen:', currentImageUrl);
+    
+    // Hochauflösende Version laden falls verfügbar (wie im normalen Modal)
+    const highResSrc = currentImageUrl.replace('?w=400', '?w=1200');
+    if (highResSrc !== currentImageUrl) {
+      const highResImg = new Image();
+      highResImg.onload = function() {
+        modalImg.src = highResSrc;
+        console.log('Vollbild: Hochauflösende Version des aktuellen Bildes geladen:', highResSrc);
+      };
+      highResImg.onerror = function() {
+        console.log('Vollbild: Hochauflösende Version konnte nicht geladen werden, verwende Standard-Auflösung');
+      };
+      highResImg.src = highResSrc;
+    }
+  };
+  img.onerror = function() {
+    console.log('Vollbild: Aktuelles Bild konnte nicht geladen werden:', currentImageUrl);
+    modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+  };
+  img.src = currentImageUrl;
+  
+  // Zusätzlicher Fallback für das Vollbild-Bild
+  modalImg.onerror = function() {
+    console.log('Vollbild: Aktuelles Bild konnte nicht geladen werden');
+    modalImg.src = 'https://via.placeholder.com/600x800?text=Kein+Bild+verfügbar';
+  };
+}
+
+// Vollbild-Zoom-Funktionalität
+function setupFullscreenZoom(modalImg) {
+  if (!modalImg) return;
+  
+  let isZoomed = false;
+  let scale = 1;
+  let translateX = 0;
+  let translateY = 0;
+  let startX = 0;
+  let startY = 0;
+  let lastX = 0;
+  let lastY = 0;
+  let isDragging = false;
+  let initialDistance = 0;
+  let initialScale = 1;
+  
+  // Zoom-Indikator erstellen
+  const zoomIndicator = document.createElement('div');
+  zoomIndicator.id = 'fullscreenZoomIndicator';
+  zoomIndicator.className = 'fullscreen-zoom-indicator';
+  zoomIndicator.textContent = 'Doppeltipp zum Zoomen';
+  zoomIndicator.style.cssText = `
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 100002;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  `;
+  document.body.appendChild(zoomIndicator);
+  
+  function showZoomIndicator() {
+    zoomIndicator.style.opacity = '1';
+    setTimeout(() => {
+      zoomIndicator.style.opacity = '0';
+    }, 2000);
+  }
+  
+  function hideZoomIndicator() {
+    zoomIndicator.style.opacity = '0';
+  }
+  
+  function applyTransform() {
+    modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+  }
+  
+  function resetZoom() {
+    scale = 1;
+    translateX = 0;
+    translateY = 0;
+    isZoomed = false;
+    applyTransform();
+    modalImg.style.cursor = 'pointer';
+    hideZoomIndicator();
+  }
+  
+  function zoomAtPosition(clientX, clientY) {
+    const rect = modalImg.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Zoom um den Klickpunkt
+    const newScale = scale === 1 ? 3 : 1;
+    const scaleChange = newScale / scale;
+    
+    // Berechne neue Position
+    translateX = clientX - (clientX - translateX) * scaleChange;
+    translateY = clientY - (clientY - translateY) * scaleChange;
+    
+    scale = newScale;
+    isZoomed = scale > 1;
+    
+    applyTransform();
+    modalImg.style.cursor = isZoomed ? 'grab' : 'pointer';
+    
+    if (isZoomed) {
+      showZoomIndicator();
+      zoomIndicator.textContent = 'Ziehen zum Verschieben • Doppeltipp zum Zurücksetzen';
+    } else {
+      hideZoomIndicator();
+    }
+  }
+  
+  // Doppelklick zum Zoomen
+  let lastClickTime = 0;
+  modalImg.addEventListener('click', function(e) {
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastClickTime;
+    
+    if (timeDiff < 300 && timeDiff > 0) {
+      // Doppelklick erkannt
+      e.preventDefault();
+      e.stopPropagation();
+      zoomAtPosition(e.clientX, e.clientY);
+    }
+    
+    lastClickTime = currentTime;
+  });
+  
+  // Touch-Events für Pinch-to-Zoom
+  modalImg.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 1) {
+      // Einzelner Touch - für Drag
+      const touch = e.touches[0];
+      startX = touch.clientX - translateX;
+      startY = touch.clientY - translateY;
+      lastX = touch.clientX;
+      lastY = touch.clientY;
+      isDragging = isZoomed;
+    } else if (e.touches.length === 2) {
+      // Zwei Touches - für Pinch-to-Zoom
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      initialDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+      initialScale = scale;
+    }
+  }, { passive: false });
+  
+  modalImg.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 1 && isDragging) {
+      // Drag
+      const touch = e.touches[0];
+      translateX = touch.clientX - startX;
+      translateY = touch.clientY - startY;
+      applyTransform();
+    } else if (e.touches.length === 2) {
+      // Pinch-to-Zoom
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const currentDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+      
+      if (initialDistance > 0) {
+        scale = Math.max(1, Math.min(5, initialScale * (currentDistance / initialDistance)));
+        isZoomed = scale > 1;
+        applyTransform();
+        modalImg.style.cursor = isZoomed ? 'grab' : 'pointer';
+      }
+    }
+  }, { passive: false });
+  
+  modalImg.addEventListener('touchend', function(e) {
+    isDragging = false;
+    if (scale < 1.1) {
+      resetZoom();
+    }
+  });
+  
+  // ESC-Taste zum Zurücksetzen
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isZoomed) {
+      resetZoom();
+    }
+  });
+  
+  // Zoom-Indikator beim ersten Laden anzeigen
+  setTimeout(() => {
+    showZoomIndicator();
+  }, 500);
+  
+  // Referenz für späteres Entfernen speichern
+  modalImg._fullscreenZoom = {
+    zoomIndicator,
+    resetZoom,
+    cleanup: function() {
+      if (zoomIndicator && zoomIndicator.parentNode) {
+        zoomIndicator.parentNode.removeChild(zoomIndicator);
+      }
+    }
+  };
+}
+
+// Vollbild-Zoom entfernen
+function removeFullscreenZoom(modalImg) {
+  if (modalImg && modalImg._fullscreenZoom) {
+    modalImg._fullscreenZoom.cleanup();
+    delete modalImg._fullscreenZoom;
+  }
+  
+  // Zusätzlich: Alle Zoom-Indikatoren entfernen
+  const zoomIndicators = document.querySelectorAll('.fullscreen-zoom-indicator');
+  zoomIndicators.forEach(indicator => {
+    if (indicator.parentNode) {
+      indicator.parentNode.removeChild(indicator);
+    }
+  });
 }
