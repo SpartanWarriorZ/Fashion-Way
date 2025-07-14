@@ -1577,5 +1577,49 @@
       }
     ],
     "id": 49
+  },
+  {
+    "id": 50,
+    "name": "Kinder Schuhe",
+    "price": 19.99,
+    "category": "kinder",
+    "subcategory": "schuhe",
+    "image": "https://cdn.pixabay.com/photo/2014/02/15/19/27/shoes-266849_1280.jpg",
+    "description": "Kinder Schuhe für den besten Start ins Leben",
+    "sizes": [
+      {
+        "size": "28",
+        "stock": 1
+      },
+      {
+        "size": "29",
+        "stock": 5
+      },
+      {
+        "size": "30",
+        "stock": 7
+      },
+      {
+        "size": "31",
+        "stock": 3
+      },
+      {
+        "size": "32",
+        "stock": 4
+      },
+      {
+        "size": "33",
+        "stock": 2
+      },
+      {
+        "size": "34",
+        "stock": 3
+      },
+      {
+        "size": "35",
+        "stock": 5
+      }
+    ],
+    "image2": "https://cdn.pixabay.com/photo/2017/04/09/18/54/shoes-2216498_1280.jpg"
   }
 ]
