@@ -1752,11 +1752,6 @@ function addProductToCartFromModal() {
     return;
   }
   
-  if (selectedQuantity <= 0) {
-    showNotification('Bitte wählen Sie eine Menge größer als 0', 'warning');
-    return;
-  }
-  
   // Produkt mit aktueller Größe und Menge zum Warenkorb hinzufügen
   const productId = currentProduct.id || Date.now();
   
@@ -1766,10 +1761,22 @@ function addProductToCartFromModal() {
   );
   
   if (existingItemIndex >= 0) {
-    // Menge aktualisieren
-    cart[existingItemIndex].quantity = selectedQuantity;
-    showNotification(`Menge für ${currentProduct.name} (${selectedSize}) auf ${selectedQuantity} aktualisiert`, 'success');
+    if (selectedQuantity <= 0) {
+      // Produkt aus Warenkorb entfernen wenn Menge 0
+      cart.splice(existingItemIndex, 1);
+      showNotification(`${currentProduct.name} (${selectedSize}) wurde aus dem Warenkorb entfernt`, 'info');
+    } else {
+      // Menge aktualisieren
+      cart[existingItemIndex].quantity = selectedQuantity;
+      showNotification(`Menge für ${currentProduct.name} (${selectedSize}) auf ${selectedQuantity} aktualisiert`, 'success');
+    }
   } else {
+    // Nur neue Produkte hinzufügen wenn Menge > 0
+    if (selectedQuantity <= 0) {
+      showNotification('Bitte wählen Sie eine Menge größer als 0', 'warning');
+      return;
+    }
+    
     // Neues Produkt zum Warenkorb hinzufügen
     const cartItem = {
       id: productId,
@@ -1790,8 +1797,7 @@ function addProductToCartFromModal() {
   // Größenauswahl im Modal aktualisieren
   updateSizeOptionsInModal();
   
-  // Modal schließen
-  closeProductDetailModal();
+  // Modal bleibt offen für weitere Aktionen
 }
 
 // Größenauswahl im Modal aktualisieren

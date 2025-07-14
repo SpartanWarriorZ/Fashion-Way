@@ -6145,4 +6145,9 @@ footer {
   .modal-nav-arrow {
     display: none !important;
   }
+  
+  /* Desktop: Abstand zwischen Größen- und Mengenauswahl verringern */
+  .product-detail-sizes {
+    margin-bottom: 0;
+  }
 }
