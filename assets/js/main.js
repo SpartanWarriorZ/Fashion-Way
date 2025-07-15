@@ -476,12 +476,16 @@ function openCart(event) {
   // Animation-Klassen bereinigen
   clearAnimationClasses();
   
+  // Modal zuerst anzeigen für flüssigere Übergänge
+  document.getElementById('cartModal').classList.add('active');
+  
   // Nur aktualisieren wenn es ein neues Modal ist oder der Warenkorb leer ist
   if (isNewModal || cart.length === 0) {
-    updateCartModal();
+    // Mit leichter Verzögerung aktualisieren für flüssigere Übergänge
+    requestAnimationFrame(() => {
+      updateCartModal();
+    });
   }
-  
-  document.getElementById('cartModal').classList.add('active');
   
   // Body-Scroll verhindern
   document.body.style.overflow = 'hidden';
@@ -536,7 +540,8 @@ function updateCartModalSilently() {
   // Sanfte Transition für die Aktualisierung
   cartBody.classList.add('updating');
   
-  setTimeout(() => {
+  // Verwende requestAnimationFrame für flüssigere Updates
+  requestAnimationFrame(() => {
     if (cart.length === 0) {
       cartBody.innerHTML = `
         <div class="cart-empty">
@@ -586,10 +591,10 @@ function updateCartModalSilently() {
     }
     
     // Transition-Klasse entfernen
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       cartBody.classList.remove('updating');
-    }, 50);
-  }, 50);
+    });
+  });
 }
 
 // Sicherheitsmaßnahme: Animation-Klassen nach 2 Sekunden automatisch entfernen
@@ -620,58 +625,8 @@ function setupAnimationCleanup() {
 
 // Warenkorb Modal aktualisieren
 function updateCartModal() {
-  const cartBody = document.getElementById('cartModalBody');
-  const totalPriceElement = document.getElementById('cartTotalPrice');
-  const checkoutBtn = document.getElementById('cartCheckoutBtn');
-  
-  if (cart.length === 0) {
-    cartBody.innerHTML = `
-      <div class="cart-empty">
-        <p>Ihr Warenkorb ist leer</p>
-        <button onclick="continueShopping()" class="continue-shopping-btn">Weiter einkaufen</button>
-      </div>
-    `;
-    totalPriceElement.textContent = '€0.00';
-    checkoutBtn.disabled = true;
-    return;
-  }
-  
-  let totalPrice = 0;
-  let cartHTML = '';
-  
-  cart.forEach(item => {
-    const product = allProducts.find(p => p.id === item.id);
-    if (product) {
-      const itemTotal = product.price * item.quantity;
-      totalPrice += itemTotal;
-      
-      cartHTML += `
-        <div class="cart-item">
-          <div class="cart-item-image">
-            <img src="${product.image}" alt="${product.name}">
-          </div>
-          <div class="cart-item-info">
-            <h4>${product.name}</h4>
-            ${item.size ? `<p class="cart-item-size">Größe: ${item.size}</p>` : ''}
-            <p class="cart-item-price">${product.price.toFixed(2)} €</p>
-          </div>
-          <div class="cart-item-quantity">
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1}, '${item.size || ''}')" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-            <span>${item.quantity}</span>
-            <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1}, '${item.size || ''}')" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
-          </div>
-          <div class="cart-item-total">
-            ${itemTotal.toFixed(2)} €
-          </div>
-          <button class="cart-item-remove" onclick="removeProductFromCart(${item.id}, '${item.size || ''}')">&times;</button>
-        </div>
-      `;
-    }
-  });
-  
-  cartBody.innerHTML = cartHTML;
-  totalPriceElement.textContent = `${totalPrice.toFixed(2)} €`;
-  checkoutBtn.disabled = false;
+  // Verwende die sanfte Aktualisierung für bessere Performance
+  updateCartModalSilently();
 }
 
 // Warenkorb-Menge aktualisieren
@@ -712,11 +667,21 @@ function updateCartQuantity(productId, newQuantity, size = null) {
     return;
   }
   
-    cartItem.quantity = newQuantity;
-    saveCart();
-    updateCartDisplay();
+  cartItem.quantity = newQuantity;
+  saveCart();
+  updateCartDisplay();
+  
+  // Verwende requestAnimationFrame für flüssigere Updates
+  requestAnimationFrame(() => {
     updateCartModal();
-    displayProducts(); // Aktualisiere Produktkarten
+  });
+  
+  // Aktualisiere Produktkarten nur wenn nötig
+  if (window.innerWidth > 900) {
+    requestAnimationFrame(() => {
+      displayProducts();
+    });
+  }
   
   console.log('Warenkorb-Menge aktualisiert:', { productId, size, newQuantity, cartItem });
 }
@@ -729,14 +694,24 @@ function removeProductFromCart(productId, size = null) {
     showNotification(`Produkt (Größe ${size}) aus Warenkorb entfernt`, 'info');
   } else {
     // Entferne alle Größen des Produkts (Fallback für alte Struktur)
-  cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => item.id !== productId);
     showNotification('Produkt aus Warenkorb entfernt', 'info');
   }
   
   saveCart();
   updateCartDisplay();
-  updateCartModal();
-  displayProducts(); // Aktualisiere Produktkarten
+  
+  // Verwende requestAnimationFrame für flüssigere Updates
+  requestAnimationFrame(() => {
+    updateCartModal();
+  });
+  
+  // Aktualisiere Produktkarten nur wenn nötig
+  if (window.innerWidth > 900) {
+    requestAnimationFrame(() => {
+      displayProducts();
+    });
+  }
 }
 
 // Checkout-Modal erstellen
@@ -2010,7 +1985,10 @@ function openProductDetailModal(product) {
       modalTitle: !!modalTitle
     });
     
-
+    // Bewertungen zum Modal hinzufügen
+    setTimeout(() => {
+      addReviewsToProductModal(product.id);
+    }, 100);
     
     // Kategorie anzeigen
     if (modalCategory) {
@@ -2387,6 +2365,17 @@ function closeProductDetailModal() {
     // Modal-Swipe-Navigation entfernen
     removeModalSwipeNavigation();
     removeModalNavigationArrows();
+    
+    // Bewertungen und Kommentar-Formular entfernen
+    const reviewsSection = modal.querySelector('.product-reviews-section');
+    if (reviewsSection) {
+      reviewsSection.remove();
+    }
+    
+    const writeReviewSection = modal.querySelector('.write-review-section');
+    if (writeReviewSection) {
+      writeReviewSection.remove();
+    }
     
     // Globale Variablen zurücksetzen
     currentProduct = null;
@@ -4056,3 +4045,512 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }, 200);
 });
+
+// Bewertungs- und Kommentarsystem
+function generateProductReviews(productId) {
+  // Beispiel-Bewertungen für verschiedene Produkte
+  const sampleReviews = {
+    // Damenkleid
+    1: [
+      {
+        author: "Sarah M.",
+        rating: 5,
+        title: "Perfektes Kleid für besondere Anlässe",
+        text: "Das Kleid ist wunderschön und sitzt perfekt. Die Qualität ist erstklassig und es ist sehr bequem zu tragen. Ich habe es bereits bei mehreren Anlässen getragen und immer Komplimente bekommen.",
+        date: "2024-01-15",
+        helpful: 12
+      },
+      {
+        author: "Lisa K.",
+        rating: 4.5,
+        title: "Sehr schön, aber etwas teuer",
+        text: "Das Design ist wirklich elegant und die Verarbeitung ist hochwertig. Der Preis ist etwas hoch, aber die Qualität rechtfertigt es. Ich würde es weiterempfehlen.",
+        date: "2024-01-10",
+        helpful: 8
+      },
+      {
+        author: "Anna W.",
+        rating: 5,
+        title: "Absolut empfehlenswert!",
+        text: "Eines der schönsten Kleider, die ich je besessen habe. Der Stoff ist weich und fällt wunderschön. Die Passform ist perfekt und es ist sehr vielseitig einsetzbar.",
+        date: "2024-01-05",
+        helpful: 15
+      }
+    ],
+    // Herrenhemd
+    2: [
+      {
+        author: "Michael B.",
+        rating: 4,
+        title: "Gute Qualität für den Preis",
+        text: "Das Hemd ist gut verarbeitet und sitzt angenehm. Der Stoff ist atmungsaktiv und bügelt sich leicht. Für Business-Anlässe sehr gut geeignet.",
+        date: "2024-01-12",
+        helpful: 6
+      },
+      {
+        author: "Thomas R.",
+        rating: 5,
+        title: "Exzellente Passform",
+        text: "Endlich ein Hemd, das wirklich passt! Die Größen sind genau und der Schnitt ist modern. Sehr zufrieden mit dem Kauf.",
+        date: "2024-01-08",
+        helpful: 9
+      }
+    ],
+    // Kinder-Jeans
+    3: [
+      {
+        author: "Mama von Max",
+        rating: 4.5,
+        title: "Robust und bequem",
+        text: "Mein Sohn liebt diese Jeans! Sie sind sehr robust und halten auch wildes Spielen aus. Die Waschbarkeit ist super und sie behalten ihre Form.",
+        date: "2024-01-14",
+        helpful: 11
+      },
+      {
+        author: "Familie Schmidt",
+        rating: 5,
+        title: "Perfekt für aktive Kinder",
+        text: "Wir haben bereits mehrere Paare gekauft. Die Qualität ist konstant gut und die Kinder finden sie bequem. Sehr empfehlenswert!",
+        date: "2024-01-06",
+        helpful: 7
+      }
+    ],
+    // Damen Bluse
+    4: [
+      {
+        author: "Julia H.",
+        rating: 4,
+        title: "Elegant und vielseitig",
+        text: "Die Bluse ist sehr elegant und lässt sich gut kombinieren. Der Stoff ist angenehm auf der Haut und die Verarbeitung ist sauber.",
+        date: "2024-01-11",
+        helpful: 5
+      },
+      {
+        author: "Claudia M.",
+        rating: 4.5,
+        title: "Perfekt fürs Büro",
+        text: "Ideal für den Arbeitsalltag. Die Bluse ist professionell, aber nicht langweilig. Die Qualität ist gut und sie ist pflegeleicht.",
+        date: "2024-01-09",
+        helpful: 8
+      }
+    ],
+    // Herren Jeans
+    5: [
+      {
+        author: "Andreas K.",
+        rating: 5,
+        title: "Beste Jeans die ich je hatte",
+        text: "Die Passform ist perfekt und der Stoff ist hochwertig. Sie sind bequem und sehen trotzdem elegant aus. Definitiv ein Kaufempfehlung!",
+        date: "2024-01-13",
+        helpful: 14
+      },
+      {
+        author: "Peter W.",
+        rating: 4,
+        title: "Gute Qualität",
+        text: "Solide Jeans mit guter Verarbeitung. Der Preis ist fair für die Qualität. Ich bin zufrieden mit dem Kauf.",
+        date: "2024-01-07",
+        helpful: 6
+      }
+    ]
+  };
+
+  // Fallback für Produkte ohne spezifische Bewertungen
+  const fallbackReviews = [
+    {
+      author: "Kunde",
+      rating: 4.5,
+      title: "Sehr zufrieden",
+      text: "Das Produkt entspricht voll und ganz meinen Erwartungen. Die Qualität ist gut und der Preis ist fair. Gerne wieder!",
+      date: "2024-01-15",
+      helpful: 3
+    },
+    {
+      author: "Zufriedener Kunde",
+      rating: 4,
+      title: "Empfehlenswert",
+      text: "Gute Qualität für den Preis. Das Produkt ist wie beschrieben und wurde schnell geliefert.",
+      date: "2024-01-10",
+      helpful: 2
+    }
+  ];
+
+  // Benutzerdefinierte Bewertungen hinzufügen
+  let allReviews = sampleReviews[productId] || fallbackReviews;
+  
+  // Benutzerdefinierte Bewertungen hinzufügen falls vorhanden
+  if (window.userReviews && window.userReviews[productId]) {
+    allReviews = [...allReviews, ...window.userReviews[productId]];
+  }
+  
+  return allReviews;
+}
+
+function renderStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  
+  let starsHTML = '';
+  
+  // Volle Sterne
+  for (let i = 0; i < fullStars; i++) {
+    starsHTML += '<span class="star filled">★</span>';
+  }
+  
+  // Halber Stern
+  if (hasHalfStar) {
+    starsHTML += '<span class="star half">★</span>';
+  }
+  
+  // Leere Sterne
+  for (let i = 0; i < emptyStars; i++) {
+    starsHTML += '<span class="star empty">★</span>';
+  }
+  
+  return starsHTML;
+}
+
+function calculateAverageRating(reviews) {
+  if (reviews.length === 0) return 0;
+  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+  return Math.round((sum / reviews.length) * 10) / 10;
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('de-DE', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+function renderProductReviews(productId) {
+  const reviews = generateProductReviews(productId);
+  const averageRating = calculateAverageRating(reviews);
+  
+  if (reviews.length === 0) {
+    return `
+      <div class="product-reviews-section">
+        <div class="product-reviews-header">
+          <h3 class="product-reviews-title">Bewertungen & Kommentare</h3>
+        </div>
+        <p style="text-align: center; color: #6b7280; padding: 2rem;">
+          Noch keine Bewertungen vorhanden. Seien Sie der Erste!
+        </p>
+      </div>
+    `;
+  }
+  
+  let reviewsHTML = `
+    <div class="product-reviews-section">
+      <div class="product-reviews-header">
+        <h3 class="product-reviews-title">Bewertungen & Kommentare</h3>
+        <div class="product-reviews-summary">
+          <div class="product-reviews-average">
+            <div class="stars">
+              ${renderStars(averageRating)}
+            </div>
+            <span>${averageRating}</span>
+          </div>
+          <div class="product-reviews-count">
+            ${reviews.length} Bewertung${reviews.length !== 1 ? 'en' : ''}
+          </div>
+        </div>
+      </div>
+      <div class="product-reviews-list">
+  `;
+  
+  reviews.forEach((review, index) => {
+    reviewsHTML += `
+      <div class="product-review-item">
+        <div class="product-review-header">
+          <div class="product-review-author">${review.author}</div>
+          <div class="product-review-date">${formatDate(review.date)}</div>
+        </div>
+        <div class="product-review-rating">
+          <div class="product-review-stars">
+            ${renderStars(review.rating)}
+          </div>
+          <span>${review.rating}/5</span>
+        </div>
+        <div class="product-review-title">${review.title}</div>
+        <div class="product-review-text">${review.text}</div>
+        <div class="product-review-helpful">
+          <button class="product-review-helpful-btn" onclick="markReviewHelpful(${index})">
+            👍 Hilfreich
+          </button>
+          <span class="product-review-helpful-count">${review.helpful} fanden das hilfreich</span>
+        </div>
+      </div>
+    `;
+  });
+  
+  reviewsHTML += `
+      </div>
+    </div>
+  `;
+  
+  return reviewsHTML;
+}
+
+function markReviewHelpful(reviewIndex) {
+  const button = event.target;
+  if (button.classList.contains('active')) {
+    button.classList.remove('active');
+    button.textContent = '👍 Hilfreich';
+  } else {
+    button.classList.add('active');
+    button.textContent = '✅ Hilfreich';
+  }
+}
+
+// Funktion zum Hinzufügen der Bewertungen zum Produktdetail-Modal
+function addReviewsToProductModal(productId) {
+  const modalBody = document.querySelector('.product-detail-info-section');
+  if (!modalBody) return;
+  
+  // Entferne vorhandene Bewertungen falls vorhanden
+  const existingReviews = modalBody.querySelector('.product-reviews-section');
+  if (existingReviews) {
+    existingReviews.remove();
+  }
+  
+  // Füge neue Bewertungen nach den zusätzlichen Informationen hinzu
+  const additionalInfoSection = modalBody.querySelector('.product-detail-additional-info');
+  if (additionalInfoSection) {
+    const reviewsHTML = renderProductReviews(productId);
+    const writeReviewHTML = renderWriteReviewSection(productId);
+    additionalInfoSection.insertAdjacentHTML('afterend', reviewsHTML + writeReviewHTML);
+  } else {
+    // Fallback: Am Ende hinzufügen
+    const reviewsHTML = renderProductReviews(productId);
+    const writeReviewHTML = renderWriteReviewSection(productId);
+    modalBody.insertAdjacentHTML('beforeend', reviewsHTML + writeReviewHTML);
+  }
+  
+  // Event-Listener für das Bewertungsformular hinzufügen
+  setupReviewFormListeners();
+}
+
+// Bewertung schreiben Sektion rendern
+function renderWriteReviewSection(productId) {
+  return `
+    <div class="write-review-section">
+      <h3 class="write-review-title">Bewertung schreiben</h3>
+      <form class="write-review-form" id="writeReviewForm">
+        <div class="review-form-row">
+          <div class="review-form-group">
+            <label for="reviewFirstName">Vorname *</label>
+            <input type="text" id="reviewFirstName" name="firstName" required>
+          </div>
+          <div class="review-form-group">
+            <label for="reviewLastName">Nachname *</label>
+            <input type="text" id="reviewLastName" name="lastName" required>
+          </div>
+        </div>
+        
+        <div class="rating-input-section">
+          <label class="rating-input-label">Ihre Bewertung *</label>
+          <div class="rating-input-stars" id="ratingInputStars">
+            <span class="rating-input-star" data-rating="1">★</span>
+            <span class="rating-input-star" data-rating="2">★</span>
+            <span class="rating-input-star" data-rating="3">★</span>
+            <span class="rating-input-star" data-rating="4">★</span>
+            <span class="rating-input-star" data-rating="5">★</span>
+            <span class="rating-input-text" id="ratingText">Klicken Sie auf einen Stern</span>
+          </div>
+          <input type="hidden" id="selectedRating" name="rating" value="0">
+        </div>
+        
+        <div class="review-form-group">
+          <label for="reviewTitle">Titel Ihrer Bewertung *</label>
+          <input type="text" id="reviewTitle" name="title" placeholder="z.B. 'Sehr zufrieden' oder 'Gute Qualität'" required>
+        </div>
+        
+        <div class="review-form-group">
+          <label for="reviewText">Ihr Kommentar *</label>
+          <textarea id="reviewText" name="text" placeholder="Teilen Sie Ihre Erfahrungen mit diesem Produkt..." required></textarea>
+        </div>
+        
+        <button type="submit" class="submit-review-btn" id="submitReviewBtn" disabled>
+          Bewertung absenden
+        </button>
+      </form>
+    </div>
+  `;
+}
+
+// Event-Listener für das Bewertungsformular einrichten
+function setupReviewFormListeners() {
+  // Sterne-Bewertung
+  const ratingStars = document.querySelectorAll('.rating-input-star');
+  const selectedRatingInput = document.getElementById('selectedRating');
+  const ratingText = document.getElementById('ratingText');
+  const submitBtn = document.getElementById('submitReviewBtn');
+  
+  if (ratingStars.length > 0) {
+    ratingStars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        setRating(rating);
+      });
+      
+      star.addEventListener('mouseenter', function() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        highlightStars(rating);
+        updateRatingText(rating);
+      });
+    });
+    
+    // Mouseleave für Sterne-Container
+    const starsContainer = document.getElementById('ratingInputStars');
+    if (starsContainer) {
+      starsContainer.addEventListener('mouseleave', function() {
+        const currentRating = parseInt(selectedRatingInput.value) || 0;
+        highlightStars(currentRating);
+        updateRatingText(currentRating);
+      });
+    }
+  }
+  
+  // Formular-Submit
+  const reviewForm = document.getElementById('writeReviewForm');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      submitReview();
+    });
+  }
+  
+  // Validierung für Submit-Button
+  const formInputs = document.querySelectorAll('#writeReviewForm input, #writeReviewForm textarea');
+  formInputs.forEach(input => {
+    input.addEventListener('input', validateReviewForm);
+  });
+}
+
+// Sterne-Bewertung setzen
+function setRating(rating) {
+  const selectedRatingInput = document.getElementById('selectedRating');
+  const submitBtn = document.getElementById('submitReviewBtn');
+  
+  selectedRatingInput.value = rating;
+  highlightStars(rating);
+  updateRatingText(rating);
+  validateReviewForm();
+}
+
+// Sterne hervorheben
+function highlightStars(rating) {
+  const ratingStars = document.querySelectorAll('.rating-input-star');
+  
+  ratingStars.forEach((star, index) => {
+    const starRating = index + 1;
+    if (starRating <= rating) {
+      star.classList.add('filled');
+      star.classList.remove('active');
+    } else {
+      star.classList.remove('filled', 'active');
+    }
+  });
+}
+
+// Bewertungstext aktualisieren
+function updateRatingText(rating) {
+  const ratingText = document.getElementById('ratingText');
+  const ratingDescriptions = {
+    0: 'Klicken Sie auf einen Stern',
+    1: 'Sehr schlecht',
+    2: 'Schlecht',
+    3: 'Durchschnittlich',
+    4: 'Gut',
+    5: 'Sehr gut'
+  };
+  
+  if (ratingText) {
+    ratingText.textContent = ratingDescriptions[rating] || 'Klicken Sie auf einen Stern';
+  }
+}
+
+// Bewertungsformular validieren
+function validateReviewForm() {
+  const firstName = document.getElementById('reviewFirstName')?.value.trim();
+  const lastName = document.getElementById('reviewLastName')?.value.trim();
+  const rating = parseInt(document.getElementById('selectedRating')?.value) || 0;
+  const title = document.getElementById('reviewTitle')?.value.trim();
+  const text = document.getElementById('reviewText')?.value.trim();
+  const submitBtn = document.getElementById('submitReviewBtn');
+  
+  const isValid = firstName && lastName && rating > 0 && title && text;
+  
+  if (submitBtn) {
+    submitBtn.disabled = !isValid;
+  }
+}
+
+// Bewertung absenden
+function submitReview() {
+  const firstName = document.getElementById('reviewFirstName')?.value.trim();
+  const lastName = document.getElementById('reviewLastName')?.value.trim();
+  const rating = parseInt(document.getElementById('selectedRating')?.value) || 0;
+  const title = document.getElementById('reviewTitle')?.value.trim();
+  const text = document.getElementById('reviewText')?.value.trim();
+  
+  if (!firstName || !lastName || rating === 0 || !title || !text) {
+    showNotification('Bitte füllen Sie alle Pflichtfelder aus', 'error');
+    return;
+  }
+  
+  // Neue Bewertung erstellen
+  const newReview = {
+    author: `${firstName} ${lastName}`,
+    rating: rating,
+    title: title,
+    text: text,
+    date: new Date().toISOString().split('T')[0],
+    helpful: 0
+  };
+  
+  // Bewertung zu den bestehenden hinzufügen (in der Praxis würde man das an einen Server senden)
+  const productId = currentProduct?.id;
+  if (productId) {
+    // Hier würde normalerweise ein API-Call erfolgen
+    console.log('Neue Bewertung:', newReview);
+    
+    // Bewertung zur lokalen Liste hinzufügen (für Demo-Zwecke)
+    if (!window.userReviews) {
+      window.userReviews = {};
+    }
+    if (!window.userReviews[productId]) {
+      window.userReviews[productId] = [];
+    }
+    window.userReviews[productId].push(newReview);
+    
+    // Formular zurücksetzen
+    resetReviewForm();
+    
+    // Bewertungen neu rendern
+    addReviewsToProductModal(productId);
+    
+    showNotification('Vielen Dank für Ihre Bewertung!', 'success');
+  }
+}
+
+// Bewertungsformular zurücksetzen
+function resetReviewForm() {
+  const form = document.getElementById('writeReviewForm');
+  if (form) {
+    form.reset();
+  }
+  
+  // Sterne zurücksetzen
+  setRating(0);
+  
+  // Submit-Button deaktivieren
+  const submitBtn = document.getElementById('submitReviewBtn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+  }
+}
