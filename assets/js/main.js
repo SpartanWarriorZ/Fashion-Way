@@ -57,7 +57,7 @@ async function loadProducts() {
     setTimeout(() => {
       if (!scroll) {
         scroll = new LocomotiveScroll({
-          el: document.querySelector('[data-scroll-container]'),
+          el: document.getElementById('page-wrapper'),
           smooth: true,
           lerp: 0.08,
           multiplier: 1,
@@ -103,7 +103,7 @@ async function loadProducts() {
     setTimeout(() => {
       if (!scroll) {
         scroll = new LocomotiveScroll({
-          el: document.querySelector('[data-scroll-container]'),
+          el: document.getElementById('page-wrapper'),
           smooth: true,
           lerp: 0.08,
           multiplier: 1,
@@ -141,6 +141,33 @@ function filterAndDisplayProducts() {
   
   sortProducts();
   displayProducts();
+  // Nach jedem Rendern: Locomotive Scroll updaten
+  if (window.scroll && window.scroll.update) {
+    setTimeout(() => {
+      window.scroll.update();
+      if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
+        ScrollTrigger.refresh();
+      }
+    }, 100);
+  }
+  // Nach jedem Rendern: Wrapper-Höhe dynamisch setzen
+  setTimeout(() => {
+    const wrapper = document.getElementById('page-wrapper');
+    if (wrapper) {
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      if (wrapperRect.height < windowHeight) {
+        wrapper.style.minHeight = windowHeight + 'px';
+      } else {
+        wrapper.style.minHeight = '';
+      }
+    }
+    // Manuelles Resize-Event auslösen
+    window.dispatchEvent(new Event('resize'));
+    if (window.scroll && window.scroll.update) {
+      window.scroll.update();
+    }
+  }, 100);
 }
 
 // Produkte sortieren
@@ -182,6 +209,15 @@ function displayProducts() {
         }
       });
     }
+    // Dynamische min-height für das Grid setzen
+    setTimeout(() => {
+      const header = document.querySelector('.navbar');
+      const footer = document.querySelector('footer');
+      const headerHeight = header ? header.offsetHeight : 0;
+      const footerHeight = footer ? footer.offsetHeight : 0;
+      const minGridHeight = window.innerHeight - headerHeight - footerHeight - 40;
+      shopGrid.style.minHeight = minGridHeight > 0 ? minGridHeight + 'px' : '0';
+    }, 100);
     return;
   }
   
@@ -202,6 +238,15 @@ function displayProducts() {
       }
     });
   }
+  // Dynamische min-height für das Grid setzen
+  setTimeout(() => {
+    const header = document.querySelector('.navbar');
+    const footer = document.querySelector('footer');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const footerHeight = footer ? footer.offsetHeight : 0;
+    const minGridHeight = window.innerHeight - headerHeight - footerHeight - 40;
+    shopGrid.style.minHeight = minGridHeight > 0 ? minGridHeight + 'px' : '0';
+  }, 100);
 }
 
 // Produktkarte erstellen
@@ -411,12 +456,31 @@ function openCart(event) {
     event.stopPropagation();
   }
   
+  // Hamburger-Menü schließen (falls offen)
+  const mobileNav = document.getElementById('mobileNav');
+  const burgerMenu = document.getElementById('burgerMenu');
+  if (mobileNav && mobileNav.classList.contains('active')) {
+    mobileNav.classList.remove('active');
+  }
+  if (burgerMenu && burgerMenu.classList.contains('active')) {
+    burgerMenu.classList.remove('active');
+  }
+  
   const modal = document.getElementById('cartModal');
-  if (!modal) {
+  const isNewModal = !modal;
+  
+  if (isNewModal) {
     createCartModal();
   }
   
-  updateCartModal();
+  // Animation-Klassen bereinigen
+  clearAnimationClasses();
+  
+  // Nur aktualisieren wenn es ein neues Modal ist oder der Warenkorb leer ist
+  if (isNewModal || cart.length === 0) {
+    updateCartModal();
+  }
+  
   document.getElementById('cartModal').classList.add('active');
   
   // Body-Scroll verhindern
@@ -434,6 +498,126 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
+// Warenkorb komplett entfernen (für "Weiter einkaufen" Button)
+function removeCartModal() {
+  const modal = document.getElementById('cartModal');
+  if (modal) {
+    // Alle Animation-Klassen entfernen
+    modal.classList.remove('swiping-out', 'swiping-in');
+    modal.remove();
+  }
+  
+  // Body-Scroll wiederherstellen
+  document.body.style.overflow = '';
+}
+
+// Animation-Klassen bereinigen
+function clearAnimationClasses() {
+  const cartModal = document.getElementById('cartModal');
+  const checkoutModal = document.getElementById('checkoutModal');
+  
+  if (cartModal) {
+    cartModal.classList.remove('swiping-out', 'swiping-in');
+  }
+  
+  if (checkoutModal) {
+    checkoutModal.classList.remove('swiping-out', 'swiping-in');
+  }
+}
+
+// Warenkorb-Modal leise aktualisieren (ohne visuelle Effekte)
+function updateCartModalSilently() {
+  const cartBody = document.getElementById('cartModalBody');
+  const totalPriceElement = document.getElementById('cartTotalPrice');
+  const checkoutBtn = document.getElementById('cartCheckoutBtn');
+  
+  if (!cartBody || !totalPriceElement || !checkoutBtn) return;
+  
+  // Sanfte Transition für die Aktualisierung
+  cartBody.classList.add('updating');
+  
+  setTimeout(() => {
+    if (cart.length === 0) {
+      cartBody.innerHTML = `
+        <div class="cart-empty">
+          <p>Ihr Warenkorb ist leer</p>
+          <button onclick="continueShopping()" class="continue-shopping-btn">Weiter einkaufen</button>
+        </div>
+      `;
+      totalPriceElement.textContent = '€0.00';
+      checkoutBtn.disabled = true;
+    } else {
+      let totalPrice = 0;
+      let cartHTML = '';
+      
+      cart.forEach(item => {
+        const product = allProducts.find(p => p.id === item.id);
+        if (product) {
+          const itemTotal = product.price * item.quantity;
+          totalPrice += itemTotal;
+          
+          cartHTML += `
+            <div class="cart-item">
+              <div class="cart-item-image">
+                <img src="${product.image}" alt="${product.name}">
+              </div>
+              <div class="cart-item-info">
+                <h4>${product.name}</h4>
+                ${item.size ? `<p class="cart-item-size">Größe: ${item.size}</p>` : ''}
+                <p class="cart-item-price">${product.price.toFixed(2)} €</p>
+              </div>
+              <div class="cart-item-quantity">
+                <button onclick="updateCartQuantity(${item.id}, ${item.quantity - 1}, '${item.size || ''}')" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+                <span>${item.quantity}</span>
+                <button onclick="updateCartQuantity(${item.id}, ${item.quantity + 1}, '${item.size || ''}')" ${item.quantity >= product.stock ? 'disabled' : ''}>+</button>
+              </div>
+              <div class="cart-item-total">
+                ${itemTotal.toFixed(2)} €
+              </div>
+              <button class="cart-item-remove" onclick="removeProductFromCart(${item.id}, '${item.size || ''}')">&times;</button>
+            </div>
+          `;
+        }
+      });
+      
+      cartBody.innerHTML = cartHTML;
+      totalPriceElement.textContent = `${totalPrice.toFixed(2)} €`;
+      checkoutBtn.disabled = false;
+    }
+    
+    // Transition-Klasse entfernen
+    setTimeout(() => {
+      cartBody.classList.remove('updating');
+    }, 50);
+  }, 50);
+}
+
+// Sicherheitsmaßnahme: Animation-Klassen nach 2 Sekunden automatisch entfernen
+function setupAnimationCleanup() {
+  setInterval(() => {
+    const cartModal = document.getElementById('cartModal');
+    const checkoutModal = document.getElementById('checkoutModal');
+    
+    if (cartModal && cartModal.classList.contains('swiping-out')) {
+      // Wenn swiping-out länger als 2 Sekunden aktiv ist, entfernen
+      setTimeout(() => {
+        if (cartModal && cartModal.classList.contains('swiping-out')) {
+          cartModal.classList.remove('swiping-out');
+        }
+      }, 2000);
+    }
+    
+    if (checkoutModal && checkoutModal.classList.contains('swiping-out')) {
+      // Wenn swiping-out länger als 2 Sekunden aktiv ist, entfernen
+      setTimeout(() => {
+        if (checkoutModal && checkoutModal.classList.contains('swiping-out')) {
+          checkoutModal.classList.remove('swiping-out');
+        }
+      }, 2000);
+    }
+  }, 1000);
+}
+
 // Warenkorb Modal aktualisieren
 function updateCartModal() {
   const cartBody = document.getElementById('cartModalBody');
@@ -444,7 +628,7 @@ function updateCartModal() {
     cartBody.innerHTML = `
       <div class="cart-empty">
         <p>Ihr Warenkorb ist leer</p>
-        <button onclick="closeCart()" class="continue-shopping-btn">Weiter einkaufen</button>
+        <button onclick="continueShopping()" class="continue-shopping-btn">Weiter einkaufen</button>
       </div>
     `;
     totalPriceElement.textContent = '€0.00';
@@ -555,10 +739,596 @@ function removeProductFromCart(productId, size = null) {
   displayProducts(); // Aktualisiere Produktkarten
 }
 
+// Checkout-Modal erstellen
+function createCheckoutModal() {
+  const modal = document.createElement('div');
+  modal.id = 'checkoutModal';
+  modal.className = 'checkout-modal';
+  
+  // Berechne Gesamtpreis
+  let totalPrice = 0;
+  cart.forEach(item => {
+    const product = allProducts.find(p => p.id === item.id);
+    if (product) {
+      totalPrice += product.price * item.quantity;
+    }
+  });
+  
+  // Versandkosten (kostenlos ab 50€)
+  const shippingCost = totalPrice >= 50 ? 0 : 4.99;
+  const finalTotal = totalPrice + shippingCost;
+  
+  modal.innerHTML = `
+    <div class="checkout-modal-overlay" id="checkoutModalOverlay"></div>
+    <div class="checkout-modal-content">
+      <div class="checkout-modal-header">
+        <button class="checkout-back-btn" id="checkoutBackBtn">
+          <span>&larr;</span> Zurück zum Warenkorb
+        </button>
+        <h3>Checkout</h3>
+        <button class="checkout-modal-close" id="checkoutModalClose">&times;</button>
+      </div>
+      
+      <div class="checkout-modal-body">
+        <div class="checkout-steps">
+          <!-- Schritt 1: Lieferadresse -->
+          <div class="checkout-step active" id="step1">
+            <h4>1. Lieferadresse</h4>
+            <form id="addressForm" class="checkout-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">Vorname *</label>
+                  <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Nachname *</label>
+                  <input type="text" id="lastName" name="lastName" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">E-Mail *</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Telefonnummer</label>
+                <input type="tel" id="phone" name="phone">
+              </div>
+              
+              <div class="form-group">
+                <label for="street">Straße & Hausnummer *</label>
+                <input type="text" id="street" name="street" required>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="zipCode">PLZ *</label>
+                  <input type="text" id="zipCode" name="zipCode" required>
+                </div>
+                <div class="form-group">
+                  <label for="city">Stadt *</label>
+                  <input type="text" id="city" name="city" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="country">Land *</label>
+                <select id="country" name="country" required>
+                  <option value="DE">Deutschland</option>
+                  <option value="AT">Österreich</option>
+                  <option value="CH">Schweiz</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="newsletter" name="newsletter">
+                  Ich möchte den Newsletter erhalten
+                </label>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Schritt 2: Versand -->
+          <div class="checkout-step" id="step2">
+            <h4>2. Versand</h4>
+            <div class="shipping-options">
+              <div class="shipping-option">
+                <input type="radio" id="shipping-dhl" name="shipping" value="dhl" checked>
+                <label for="shipping-dhl">
+                  <div class="shipping-info">
+                    <strong>DHL Express</strong>
+                    <span>2-3 Werktage</span>
+                  </div>
+                  <div class="shipping-price">
+                    ${shippingCost === 0 ? 'Kostenlos' : shippingCost.toFixed(2) + ' €'}
+                  </div>
+                </label>
+              </div>
+              
+              <div class="shipping-option">
+                <input type="radio" id="shipping-hermes" name="shipping" value="hermes">
+                <label for="shipping-hermes">
+                  <div class="shipping-info">
+                    <strong>Hermes</strong>
+                    <span>3-5 Werktage</span>
+                  </div>
+                  <div class="shipping-price">
+                    ${shippingCost === 0 ? 'Kostenlos' : (shippingCost - 1).toFixed(2) + ' €'}
+                  </div>
+                </label>
+              </div>
+              
+              <div class="shipping-option">
+                <input type="radio" id="shipping-pickup" name="shipping" value="pickup">
+                <label for="shipping-pickup">
+                  <div class="shipping-info">
+                    <strong>Abholung im Store</strong>
+                    <span>Ab morgen verfügbar</span>
+                  </div>
+                  <div class="shipping-price">
+                    Kostenlos
+                  </div>
+                </label>
+              </div>
+            </div>
+            
+            <div class="shipping-notice">
+              <p><strong>Kostenloser Versand ab 50€ Bestellwert!</strong></p>
+              <p>Ihr aktueller Bestellwert: ${totalPrice.toFixed(2)}€</p>
+              ${totalPrice < 50 ? `<p>Noch ${(50 - totalPrice).toFixed(2)}€ für kostenlosen Versand</p>` : ''}
+            </div>
+          </div>
+          
+          <!-- Schritt 3: Zahlung -->
+          <div class="checkout-step" id="step3">
+            <h4>3. Zahlung</h4>
+            <div class="payment-options">
+              <div class="payment-option">
+                <input type="radio" id="payment-paypal" name="payment" value="paypal" checked>
+                <label for="payment-paypal">
+                  <div class="payment-info">
+                    <strong>PayPal</strong>
+                    <span>Schnell und sicher</span>
+                  </div>
+                  <div class="payment-icon">💳</div>
+                </label>
+              </div>
+              
+              <div class="payment-option">
+                <input type="radio" id="payment-creditcard" name="payment" value="creditcard">
+                <label for="payment-creditcard">
+                  <div class="payment-info">
+                    <strong>Kreditkarte</strong>
+                    <span>Visa, Mastercard, American Express</span>
+                  </div>
+                  <div class="payment-icon">💳</div>
+                </label>
+              </div>
+              
+              <div class="payment-option">
+                <input type="radio" id="payment-invoice" name="payment" value="invoice">
+                <label for="payment-invoice">
+                  <div class="payment-info">
+                    <strong>Rechnung</strong>
+                    <span>Zahlung nach Erhalt</span>
+                  </div>
+                  <div class="payment-icon">📄</div>
+                </label>
+              </div>
+              
+              <div class="payment-option">
+                <input type="radio" id="payment-sepa" name="payment" value="sepa">
+                <label for="payment-sepa">
+                  <div class="payment-info">
+                    <strong>SEPA-Lastschrift</strong>
+                    <span>Direkt von Ihrem Konto</span>
+                  </div>
+                  <div class="payment-icon">🏦</div>
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Schritt 4: Zusammenfassung -->
+          <div class="checkout-step" id="step4">
+            <h4>4. Bestellübersicht</h4>
+            <div class="order-summary">
+              <div class="order-items">
+                ${cart.map(item => {
+                  const product = allProducts.find(p => p.id === item.id);
+                  if (product) {
+                    return `
+                      <div class="order-item">
+                        <img src="${product.image}" alt="${product.name}">
+                        <div class="order-item-info">
+                          <h5>${product.name}</h5>
+                          ${item.size ? `<span>Größe: ${item.size}</span>` : ''}
+                          <span>Menge: ${item.quantity}</span>
+                        </div>
+                        <div class="order-item-price">
+                          ${(product.price * item.quantity).toFixed(2)} €
+                        </div>
+                      </div>
+                    `;
+                  }
+                  return '';
+                }).join('')}
+              </div>
+              
+              <div class="order-totals">
+                <div class="order-total-row">
+                  <span>Zwischensumme:</span>
+                  <span>${totalPrice.toFixed(2)} €</span>
+                </div>
+                <div class="order-total-row">
+                  <span>Versand:</span>
+                  <span>${shippingCost === 0 ? 'Kostenlos' : shippingCost.toFixed(2) + ' €'}</span>
+                </div>
+                <div class="order-total-row total">
+                  <span>Gesamt:</span>
+                  <span>${finalTotal.toFixed(2)} €</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="terms-checkbox">
+              <label>
+                <input type="checkbox" id="termsAccepted" required>
+                Ich akzeptiere die <a href="#" target="_blank">AGB</a> und <a href="#" target="_blank">Datenschutzerklärung</a> *
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="checkout-modal-footer">
+        <div class="checkout-navigation">
+          <button class="checkout-prev-btn" id="checkoutPrevBtn" style="display: none;">Zurück</button>
+          <button class="checkout-next-btn" id="checkoutNextBtn">Weiter</button>
+          <button class="checkout-submit-btn" id="checkoutSubmitBtn" style="display: none;">Bestellung abschließen</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Event Listeners
+  document.getElementById('checkoutModalClose').addEventListener('click', closeCheckout);
+  document.getElementById('checkoutModalOverlay').addEventListener('click', closeCheckout);
+  document.getElementById('checkoutBackBtn').addEventListener('click', handleCheckoutBackButton);
+  document.getElementById('checkoutPrevBtn').addEventListener('click', previousCheckoutStep);
+  document.getElementById('checkoutNextBtn').addEventListener('click', nextCheckoutStep);
+  document.getElementById('checkoutSubmitBtn').addEventListener('click', submitOrder);
+  
+  // Form-Validierung
+  setupCheckoutFormValidation();
+}
+
+// Checkout-Schritte verwalten
+let currentCheckoutStep = 1;
+const totalCheckoutSteps = 4;
+
+// Zurück-Button Handler für Checkout
+function handleCheckoutBackButton() {
+  if (currentCheckoutStep > 1) {
+    // Wenn nicht im ersten Schritt, gehe einen Schritt zurück
+    previousCheckoutStep();
+  } else {
+    // Wenn im ersten Schritt, gehe zurück zum Warenkorb
+    closeCheckout();
+  }
+}
+
+function nextCheckoutStep() {
+  if (validateCurrentStep()) {
+    if (currentCheckoutStep < totalCheckoutSteps) {
+      currentCheckoutStep++;
+      updateCheckoutStep();
+    }
+  }
+}
+
+function previousCheckoutStep() {
+  if (currentCheckoutStep > 1) {
+    currentCheckoutStep--;
+    updateCheckoutStep();
+  }
+}
+
+function updateCheckoutStep() {
+  // Alle Schritte ausblenden
+  for (let i = 1; i <= totalCheckoutSteps; i++) {
+    const step = document.getElementById(`step${i}`);
+    if (step) {
+      step.classList.remove('active');
+    }
+  }
+  
+  // Aktuellen Schritt anzeigen
+  const currentStep = document.getElementById(`step${currentCheckoutStep}`);
+  if (currentStep) {
+    currentStep.classList.add('active');
+  }
+  
+  // Navigation-Buttons anpassen
+  const prevBtn = document.getElementById('checkoutPrevBtn');
+  const nextBtn = document.getElementById('checkoutNextBtn');
+  const submitBtn = document.getElementById('checkoutSubmitBtn');
+  const backBtn = document.getElementById('checkoutBackBtn');
+  
+  if (prevBtn) prevBtn.style.display = currentCheckoutStep > 1 ? 'block' : 'none';
+  if (nextBtn) nextBtn.style.display = currentCheckoutStep < totalCheckoutSteps ? 'block' : 'none';
+  if (submitBtn) submitBtn.style.display = currentCheckoutStep === totalCheckoutSteps ? 'block' : 'none';
+  
+  // Button-Text anpassen
+  if (nextBtn) {
+    nextBtn.textContent = currentCheckoutStep === totalCheckoutSteps - 1 ? 'Zur Übersicht' : 'Weiter';
+  }
+  
+  // Zurück-Button Text anpassen
+  if (backBtn) {
+    if (currentCheckoutStep === 1) {
+      backBtn.innerHTML = '<span>&larr;</span> Zurück zum Warenkorb';
+    } else {
+      const stepNames = ['', 'Lieferadresse', 'Versand', 'Zahlung', 'Übersicht'];
+      backBtn.innerHTML = `<span>&larr;</span> Zurück zu ${stepNames[currentCheckoutStep - 1]}`;
+    }
+  }
+}
+
+function validateCurrentStep() {
+  switch (currentCheckoutStep) {
+    case 1:
+      return validateAddressForm();
+    case 2:
+      return validateShippingSelection();
+    case 3:
+      return validatePaymentSelection();
+    case 4:
+      return validateTermsAcceptance();
+    default:
+      return true;
+  }
+}
+
+function validateAddressForm() {
+  const requiredFields = ['firstName', 'lastName', 'email', 'street', 'zipCode', 'city', 'country'];
+  let isValid = true;
+  
+  requiredFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field && !field.value.trim()) {
+      field.classList.add('error');
+      isValid = false;
+    } else if (field) {
+      field.classList.remove('error');
+    }
+  });
+  
+  // E-Mail-Validierung
+  const emailField = document.getElementById('email');
+  if (emailField && emailField.value) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailField.value)) {
+      emailField.classList.add('error');
+      isValid = false;
+    }
+  }
+  
+  if (!isValid) {
+    showNotification('Bitte füllen Sie alle Pflichtfelder korrekt aus', 'error');
+  }
+  
+  return isValid;
+}
+
+function validateShippingSelection() {
+  const selectedShipping = document.querySelector('input[name="shipping"]:checked');
+  if (!selectedShipping) {
+    showNotification('Bitte wählen Sie eine Versandart aus', 'error');
+    return false;
+  }
+  return true;
+}
+
+function validatePaymentSelection() {
+  const selectedPayment = document.querySelector('input[name="payment"]:checked');
+  if (!selectedPayment) {
+    showNotification('Bitte wählen Sie eine Zahlungsart aus', 'error');
+    return false;
+  }
+  return true;
+}
+
+function validateTermsAcceptance() {
+  const termsAccepted = document.getElementById('termsAccepted');
+  if (!termsAccepted || !termsAccepted.checked) {
+    showNotification('Bitte akzeptieren Sie die AGB und Datenschutzerklärung', 'error');
+    return false;
+  }
+  return true;
+}
+
+function setupCheckoutFormValidation() {
+  // Real-time Validierung für E-Mail
+  const emailField = document.getElementById('email');
+  if (emailField) {
+    emailField.addEventListener('blur', function() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (this.value && !emailRegex.test(this.value)) {
+        this.classList.add('error');
+      } else {
+        this.classList.remove('error');
+      }
+    });
+  }
+  
+  // Real-time Validierung für PLZ
+  const zipField = document.getElementById('zipCode');
+  if (zipField) {
+    zipField.addEventListener('blur', function() {
+      const zipRegex = /^\d{5}$/;
+      if (this.value && !zipRegex.test(this.value)) {
+        this.classList.add('error');
+      } else {
+        this.classList.remove('error');
+      }
+    });
+  }
+}
+
+function submitOrder() {
+  if (validateCurrentStep()) {
+    // Hier würde normalerweise die Bestellung an den Server gesendet werden
+    showNotification('Bestellung erfolgreich aufgegeben! Vielen Dank für Ihren Einkauf.', 'success');
+    
+    // Warenkorb leeren
+    cart = [];
+    saveCart();
+    updateCartDisplay();
+    
+    // Checkout-Modal schließen
+    const checkoutModal = document.getElementById('checkoutModal');
+    if (checkoutModal) {
+      checkoutModal.remove();
+    }
+    
+    // Warenkorb-Modal komplett entfernen
+    removeCartModal();
+    
+    // Body-Scroll wiederherstellen
+    document.body.style.overflow = '';
+    
+    // Checkout-Schritt zurücksetzen
+    currentCheckoutStep = 1;
+  }
+}
+
+function closeCheckout() {
+  const modal = document.getElementById('checkoutModal');
+  if (modal) {
+    // Swipe-out Animation
+    modal.classList.add('swiping-out');
+    
+    setTimeout(() => {
+      modal.remove();
+      currentCheckoutStep = 1;
+      
+      // Warenkorb wieder öffnen mit Swipe-in Animation
+      setTimeout(() => {
+        // Warenkorb-Modal wiederherstellen (nicht neu erstellen)
+        const cartModal = document.getElementById('cartModal');
+        if (cartModal) {
+          // Alle Animation-Klassen entfernen
+          cartModal.classList.remove('swiping-out', 'swiping-in');
+          
+          // Warenkorb-Inhalt vor dem Anzeigen aktualisieren (ohne Flackern)
+          updateCartModalSilently();
+          
+          cartModal.classList.add('active');
+          cartModal.classList.add('swiping-in');
+          document.body.style.overflow = 'hidden';
+          
+          setTimeout(() => {
+            cartModal.classList.remove('swiping-in');
+          }, 600);
+        } else {
+          // Fallback: Warenkorb neu erstellen falls er nicht existiert
+          openCart();
+          const newCartModal = document.getElementById('cartModal');
+          if (newCartModal) {
+            newCartModal.classList.add('swiping-in');
+            setTimeout(() => {
+              newCartModal.classList.remove('swiping-in');
+            }, 600);
+          }
+        }
+      }, 100);
+    }, 300);
+  }
+}
+
+// Weiter einkaufen - Modal schließen und zum Shop scrollen
+function continueShopping() {
+  // Hamburger-Menü schließen (falls offen)
+  const mobileNav = document.getElementById('mobileNav');
+  const burgerMenu = document.getElementById('burgerMenu');
+  if (mobileNav && mobileNav.classList.contains('active')) {
+    mobileNav.classList.remove('active');
+  }
+  if (burgerMenu && burgerMenu.classList.contains('active')) {
+    burgerMenu.classList.remove('active');
+  }
+  
+  // Body-Scroll wiederherstellen
+  document.body.style.overflow = '';
+  
+  // Warenkorb-Modal komplett entfernen
+  removeCartModal();
+  
+  // Längere Verzögerung für Mobile, damit alle Modals geschlossen sind
+  const delay = window.innerWidth <= 900 ? 500 : 300;
+  
+  setTimeout(() => {
+    const shopSection = document.getElementById('shop');
+    if (shopSection && scroll) {
+      // Scroll zum Shop mit Offset (Desktop: -10px, Mobile: -20px)
+      const offset = window.innerWidth > 900 ? -10 : -20;
+      scroll.scrollTo(shopSection, { 
+        offset: offset, 
+        duration: 1000, 
+        disableLerp: false 
+      });
+    } else if (shopSection) {
+      // Fallback ohne Locomotive Scroll
+      const offset = window.innerWidth > 900 ? -10 : -20;
+      const offsetTop = shopSection.offsetTop + offset;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  }, delay);
+}
+
 // Zur Kasse
 function checkout() {
-  showNotification('Checkout-Funktion wird noch implementiert', 'info');
-  closeCart();
+  if (cart.length === 0) {
+    showNotification('Ihr Warenkorb ist leer', 'error');
+    return;
+  }
+  
+  // Swipe-Animation starten
+  const cartModal = document.getElementById('cartModal');
+  if (cartModal) {
+    // Alle Animation-Klassen entfernen
+    cartModal.classList.remove('swiping-in');
+    cartModal.classList.add('swiping-out');
+  }
+  
+  // Nach der Swipe-Animation das Checkout-Modal öffnen
+  setTimeout(() => {
+    // Warenkorb-Modal nur verstecken (nicht schließen)
+    if (cartModal) {
+      cartModal.classList.remove('active');
+      // Animation-Klasse entfernen
+      cartModal.classList.remove('swiping-out');
+    }
+    
+    // Checkout-Modal erstellen und öffnen
+    createCheckoutModal();
+    const checkoutModal = document.getElementById('checkoutModal');
+    checkoutModal.classList.add('active', 'swiping-in');
+    document.body.style.overflow = 'hidden';
+    
+    // Swipe-in Animation-Klasse nach der Animation entfernen
+    setTimeout(() => {
+      checkoutModal.classList.remove('swiping-in');
+    }, 600);
+  }, 300);
 }
 
 // Event Listeners für Warenkorb-Buttons
@@ -691,17 +1461,42 @@ function showErrorMessage(message) {
 
 // Mobile Navigation
 function setupMobileNavigation() {
+  if (window.mobileNavInitialized) return;
+  window.mobileNavInitialized = true;
   const burgerMenu = document.getElementById('burgerMenu');
   const mobileNav = document.getElementById('mobileNav');
   const closeMobileNav = document.getElementById('closeMobileNav');
   
   if (burgerMenu && mobileNav && closeMobileNav) {
-    burgerMenu.addEventListener('click', () => {
-      mobileNav.classList.add('active');
+    // Burger-Button als Toggle: öffnet und schließt das Menü
+    burgerMenu.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      
+      if (mobileNav.classList.contains('active')) {
+        // Menü ist offen -> schließen
+        mobileNav.classList.remove('active');
+        burgerMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      } else {
+        // Menü ist geschlossen -> öffnen
+        mobileNav.classList.add('active');
+        burgerMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+          const firstLink = mobileNav.querySelector('a');
+          if (firstLink) firstLink.focus();
+        }, 200);
+      }
     });
     
+    // Separate Close-Button funktioniert weiterhin
     closeMobileNav.addEventListener('click', () => {
-      mobileNav.classList.remove('active');
+      if (mobileNav.classList.contains('active')) {
+        mobileNav.classList.remove('active');
+        burgerMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     });
     
     // Schließen bei Klick auf Links und spezielle Shop-Navigation
@@ -713,16 +1508,18 @@ function setupMobileNavigation() {
         if (href === '#shop' && window.innerWidth <= 900) {
           e.preventDefault();
           const shopSection = document.querySelector('#shop');
+          const navbar = document.querySelector('.navbar');
+          const navbarHeight = navbar ? navbar.offsetHeight : 0;
           if (shopSection && scroll) {
-            // Scroll zum Shop mit Offset von 30px nach oben
+            // Scroll zum Shop mit festem negativen Offset von -20px
             scroll.scrollTo(shopSection, { 
-              offset: -30, 
+              offset: -20, 
               duration: 1000, 
               disableLerp: false 
             });
           } else if (shopSection) {
             // Fallback ohne Locomotive Scroll
-            const offsetTop = shopSection.offsetTop - 30;
+            const offsetTop = shopSection.offsetTop - 20;
             window.scrollTo({
               top: offsetTop,
               behavior: 'smooth'
@@ -1277,30 +2074,30 @@ function openProductDetailModal(product) {
       if (product.sizes) {
         // Neue Struktur mit individuellem Lagerbestand
         sizesHTML = product.sizes.map(sizeObj => {
-          const isAvailable = sizeObj.stock > 0;
-          const stockText = isAvailable ? `(${sizeObj.stock})` : '(ausverkauft)';
-          
-                // Warenkorb-Menge für diese Größe ermitteln
-      const cartItem = cart.find(item => item.id === product.id && item.size === sizeObj.size);
-      const cartQuantity = cartItem ? cartItem.quantity : 0;
-      
-      return `
-        <div class="size-option-container">
-          <button class="size-option ${!isAvailable ? 'disabled' : ''}" 
-                  data-size="${sizeObj.size}" 
-                  onclick="${isAvailable ? `selectSize('${sizeObj.size}')` : ''}"
-                  ${!isAvailable ? 'disabled' : ''}>
-            <span class="size-label">${sizeObj.size}</span>
-            <span class="stock-info">${stockText}</span>
-          </button>
-          ${cartQuantity > 0 ? `
-            <div class="cart-quantity-badge">
-              <span class="cart-quantity-number">${cartQuantity}</span>
-              <span class="cart-quantity-text">im Warenkorb</span>
+          // Wenn sizeObj.stock nicht gesetzt ist, als 0 behandeln
+          const stockValue = (typeof sizeObj.stock === 'number' && !isNaN(sizeObj.stock)) ? sizeObj.stock : 0;
+          const isAvailable = stockValue > 0;
+          const stockText = isAvailable ? `(${stockValue})` : '(ausverkauft)';
+          // Warenkorb-Menge für diese Größe ermitteln
+          const cartItem = cart.find(item => item.id === product.id && item.size === sizeObj.size);
+          const cartQuantity = cartItem ? cartItem.quantity : 0;
+          return `
+            <div class="size-option-container">
+              <button class="size-option ${!isAvailable ? 'disabled' : ''}" 
+                      data-size="${sizeObj.size}" 
+                      onclick="${isAvailable ? `selectSize('${sizeObj.size}')` : ''}"
+                      ${!isAvailable ? 'disabled' : ''}>
+                <span class="size-label">${sizeObj.size}</span>
+                <span class="stock-info">${stockText}</span>
+              </button>
+              ${cartQuantity > 0 ? `
+                <div class="cart-quantity-badge">
+                  <span class="cart-quantity-number">${cartQuantity}</span>
+                  <span class="cart-quantity-text">im Warenkorb</span>
+                </div>
+              ` : ''}
             </div>
-          ` : ''}
-        </div>
-      `;
+          `;
         }).join('');
       } else {
         // Fallback für alte Struktur
@@ -1797,6 +2594,12 @@ function addProductToCartFromModal() {
   // Größenauswahl im Modal aktualisieren
   updateSizeOptionsInModal();
   
+  // Warenkorb-Modal aktualisieren falls es geöffnet ist
+  const cartModal = document.getElementById('cartModal');
+  if (cartModal && cartModal.classList.contains('active')) {
+    updateCartModal();
+  }
+  
   // Modal bleibt offen für weitere Aktionen
 }
 
@@ -1812,15 +2615,14 @@ function updateSizeOptionsInModal() {
   if (currentProduct.sizes) {
     // Neue Struktur mit individuellem Lagerbestand
     sizesHTML = currentProduct.sizes.map(sizeObj => {
-      const isAvailable = sizeObj.stock > 0;
-      const stockText = isAvailable ? `(${sizeObj.stock})` : '(ausverkauft)';
-      
+      // Wenn sizeObj.stock nicht gesetzt ist, als 0 behandeln
+      const stockValue = (typeof sizeObj.stock === 'number' && !isNaN(sizeObj.stock)) ? sizeObj.stock : 0;
+      const isAvailable = stockValue > 0;
+      const stockText = isAvailable ? `(${stockValue})` : '(ausverkauft)';
       // Warenkorb-Menge für diese Größe ermitteln
       const cartItem = cart.find(item => item.id === currentProduct.id && item.size === sizeObj.size);
       const cartQuantity = cartItem ? cartItem.quantity : 0;
-      
       const isSelected = selectedSize === sizeObj.size;
-      
       return `
         <div class="size-option-container">
           <button class="size-option ${!isAvailable ? 'disabled' : ''} ${isSelected ? 'selected' : ''}" 
@@ -2285,6 +3087,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDesktopBackToTopButton(); // Desktop Back to Top Button
   setupCartButtons(); // Warenkorb Button Setup
   updateCartDisplay(); // Aktualisiere Cart-Anzeige nach Initialisierung
+  setupAnimationCleanup(); // Animation-Cleanup Setup
   
   // Resize Event Listener für Button-Management
   window.addEventListener('resize', () => {
@@ -3243,3 +4046,13 @@ if (window._modalNoScrollHandler) {
   document.body.removeEventListener('touchmove', window._modalNoScrollHandler, { passive: false });
   delete window._modalNoScrollHandler;
 }
+
+// Nach dem Laden der Seite: Resize-Event und scroll.update()
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    window.dispatchEvent(new Event('resize'));
+    if (window.scroll && window.scroll.update) {
+      window.scroll.update();
+    }
+  }, 200);
+});

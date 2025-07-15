@@ -15,290 +15,295 @@
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
 </head>
 <body data-scroll-container>
-  <header class="hero" data-scroll-section>
-    <div class="hero-bg" data-scroll></div>
-    <nav class="navbar sticky" data-scroll>
-      <div class="logo">
-        <span class="logo-row">
-          <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
-        </span>
-      </div>
-      <button class="burger" id="burgerMenu" aria-label="Menü öffnen" style="display:none;">
-        &#9776;
-      </button>
-      <ul class="nav-links">
-        <li><a href="#shop" data-scroll-to>Shop</a></li>
-        <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
-        <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
-        <li class="cart-container">
-          <button class="cart-btn" id="cartBtn" aria-label="Warenkorb öffnen">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-            <span class="cart-count" id="cartCount">0</span>
-          </button>
-        </li>
-      </ul>
-      <nav class="mobile-nav" id="mobileNav">
-        <button class="close-btn" id="closeMobileNav" aria-label="Menü schließen">&times;</button>
-        <ul>
+  <div id="page-wrapper">
+    <header class="hero" data-scroll-section>
+      <div class="hero-bg" data-scroll></div>
+      <nav class="navbar sticky" data-scroll>
+        <div class="logo">
+          <span class="logo-row">
+            <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
+          </span>
+        </div>
+        <!-- Hamburger-Menü-Icon -->
+        <button id="burgerMenu" type="button" aria-label="Menü öffnen" class="burger">
+          <!-- Icon oder SVG bleibt erhalten -->
+          &#9776;
+        </button>
+        <ul class="nav-links">
           <li><a href="#shop" data-scroll-to>Shop</a></li>
           <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
           <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
-          <li class="mobile-cart">
-            <button class="cart-btn mobile" id="mobileCartBtn" aria-label="Warenkorb öffnen">
+          <li class="cart-container">
+            <button class="cart-btn" id="cartBtn" aria-label="Warenkorb öffnen">
               <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
               </svg>
-              <span class="cart-count" id="mobileCartCount">0</span>
-              <span>Warenkorb</span>
+              <span class="cart-count" id="cartCount">0</span>
             </button>
           </li>
         </ul>
+        <nav class="mobile-nav" id="mobileNav">
+          <button class="close-btn" id="closeMobileNav" aria-label="Menü schließen">&times;</button>
+          <ul>
+            <li><a href="#shop" data-scroll-to>Shop</a></li>
+            <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
+            <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
+            <li class="mobile-cart">
+              <button class="cart-btn mobile" id="mobileCartBtn" aria-label="Warenkorb öffnen">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <span class="cart-count" id="mobileCartCount">0</span>
+                <span>Warenkorb</span>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </nav>
-    </nav>
-    <div class="hero-content" data-scroll data-scroll-speed="1.5">
-      <h1 class="hero-title">
-        <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
-      </h1>
-      <p class="hero-subtitle">Dein Weg zu exklusiven Styles, Trends und Inspiration.<br>Erlebe Fashion neu gedacht.</p>
-      <a href="#shop" class="cta-btn" data-scroll-to><span>Jetzt shoppen</span></a>
-    </div>
-  </header>
+      <div class="hero-content" data-scroll data-scroll-speed="1.5">
+        <h1 class="hero-title">
+          <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
+        </h1>
+        <p class="hero-subtitle">Dein Weg zu exklusiven Styles, Trends und Inspiration.<br>Erlebe Fashion neu gedacht.</p>
+        <a href="#shop" class="cta-btn" data-scroll-to><span>Jetzt shoppen</span></a>
+      </div>
+    </header>
 
-  <main data-scroll-section style="margin-top:2.5rem;">
-    <section class="products" id="shop">
-      <div class="shop-main">
-        <!-- Sidebar/Kategorien werden auf Mobil über dem Shop angezeigt -->
-        <aside class="shop-sidebar">
-          <nav class="shop-nav">
-            <ul class="main-cat-list">
-              <li><button class="main-cat-btn active" data-maincat="herren">Herren</button></li>
-              <li><button class="main-cat-btn" data-maincat="damen">Damen</button></li>
-              <li><button class="main-cat-btn" data-maincat="kinder">Kinder</button></li>
-            </ul>
-            <ul class="sub-cat-list">
-              <li><button class="sub-cat-btn active" data-subcat="alle">Alle</button></li>
-              <li><button class="sub-cat-btn" data-subcat="oberteile">Oberteile</button></li>
-              <li><button class="sub-cat-btn" data-subcat="hosen">Hosen</button></li>
-              <li><button class="sub-cat-btn" data-subcat="schuhe">Schuhe</button></li>
-              <li><button class="sub-cat-btn" data-subcat="accessoires">Accessoires</button></li>
-            </ul>
-          </nav>
-        </aside>
-        <div class="shop-products">
-          <div class="shop-header" style="text-align:left;margin-bottom:0.25rem;padding:0.1rem 0;margin-left:20px;">
-            <h2 class="shop-title" style="
-              font-family: 'Montserrat', sans-serif;
-              font-weight: 900;
-              font-size: 2.5rem;
-              color: #18181b;
-              margin: 0 0 0.5rem 0;
-              text-transform: uppercase;
-              letter-spacing: 0.05em;
-              background: linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              background-clip: text;
-              cursor: pointer;
-              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-              display: inline-block;
-              transform: scale(1);
-            " onmouseover="this.style.transform='scale(1.05)'; this.style.letterSpacing='0.1em'; this.style.background='linear-gradient(135deg, #ff8c3e 0%, #ff3e55 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';" onmouseout="this.style.transform='scale(1)'; this.style.letterSpacing='0.05em'; this.style.background='linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';">Shop</h2>
-            <div class="shop-subtitle" style="
-              font-family: 'Roboto', sans-serif;
-              font-size: 1rem;
-              color: #6b7280;
-              font-weight: 400;
-              margin: 0;
-              line-height: 1.4;
-            ">Entdecke unsere exklusive Kollektion</div>
+    <main data-scroll-section style="margin-top:2.5rem;">
+      <section class="products" id="shop">
+        <div class="shop-main">
+          <!-- Sidebar/Kategorien werden auf Mobil über dem Shop angezeigt -->
+          <aside class="shop-sidebar">
+            <nav class="shop-nav">
+              <ul class="main-cat-list">
+                <li><button class="main-cat-btn active" data-maincat="herren">Herren</button></li>
+                <li><button class="main-cat-btn" data-maincat="damen">Damen</button></li>
+                <li><button class="main-cat-btn" data-maincat="kinder">Kinder</button></li>
+              </ul>
+              <ul class="sub-cat-list">
+                <li><button class="sub-cat-btn active" data-subcat="alle">Alle</button></li>
+                <li><button class="sub-cat-btn" data-subcat="oberteile">Oberteile</button></li>
+                <li><button class="sub-cat-btn" data-subcat="hosen">Hosen</button></li>
+                <li><button class="sub-cat-btn" data-subcat="schuhe">Schuhe</button></li>
+                <li><button class="sub-cat-btn" data-subcat="accessoires">Accessoires</button></li>
+              </ul>
+            </nav>
+          </aside>
+          <div class="shop-products">
+            <div class="shop-header" style="text-align:left;margin-bottom:0.25rem;padding:0.1rem 0;margin-left:20px;">
+              <h2 class="shop-title" style="
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 900;
+                font-size: 2.5rem;
+                color: #18181b;
+                margin: 0 0 0.5rem 0;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                background: linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: inline-block;
+                transform: scale(1);
+              " onmouseover="this.style.transform='scale(1.05)'; this.style.letterSpacing='0.1em'; this.style.background='linear-gradient(135deg, #ff8c3e 0%, #ff3e55 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';" onmouseout="this.style.transform='scale(1)'; this.style.letterSpacing='0.05em'; this.style.background='linear-gradient(135deg, #ff3e55 0%, #ff8c3e 100%)'; this.style.webkitBackgroundClip='text'; this.style.webkitTextFillColor='transparent'; this.style.backgroundClip='text';">Shop</h2>
+              <div class="shop-subtitle" style="
+                font-family: 'Roboto', sans-serif;
+                font-size: 1rem;
+                color: #6b7280;
+                font-weight: 400;
+                margin: 0;
+                line-height: 1.4;
+              ">Entdecke unsere exklusive Kollektion</div>
+            </div>
+            
+            <div class="shop-sort-bar" style="display:flex;justify-content:flex-end;align-items:center;gap:1rem;margin-bottom:2rem;width:100%;padding:0 20px;">
+              <label for="sortPrice" style="font-size:1rem;color:#555;font-weight:500;">Sortieren nach:</label>
+              <select id="sortPrice" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #ececec;font-size:1rem;background:white;cursor:pointer;">
+                <option value="default">Standard</option>
+                <option value="price-asc">Preis: aufsteigend</option>
+                <option value="price-desc">Preis: absteigend</option>
+              </select>
+            </div>
+            
+            <div class="shop-grid" id="shopGrid">
+              <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lookbook" id="lookbook" data-scroll-section>
+        <!-- Inhalt entfernt -->
+      </section>
+
+      <section class="contact" id="kontakt" data-scroll-section>
+        <!-- Inhalt entfernt -->
+      </section>
+    </main>
+
+    <!-- Produktdetail Modal -->
+    <div class="product-detail-modal" id="productDetailModal">
+      <div class="product-detail-modal-overlay" id="productDetailModalOverlay"></div>
+      <div class="product-detail-modal-content">
+        <button class="product-detail-modal-close" id="productDetailModalClose" aria-label="Modal schließen">
+          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+        
+        <div class="product-detail-container">
+          <!-- Linke Seite: Produktbild -->
+          <div class="product-detail-image-section">
+            <div class="product-detail-image-container">
+              <div class="zoom-indicator" id="productDetailZoomIndicator">Klick zum Zoomen</div>
+              <img id="productDetailImage" src="" alt="Produktbild" class="product-detail-image">
+            </div>
+            
+            <!-- Bildergalerie Thumbnails -->
+            <div class="product-detail-thumbnails" id="productDetailThumbnails">
+              <!-- Thumbnails werden dynamisch eingefügt -->
+            </div>
           </div>
           
-          <div class="shop-sort-bar" style="display:flex;justify-content:flex-end;align-items:center;gap:1rem;margin-bottom:2rem;width:100%;padding:0 20px;">
-            <label for="sortPrice" style="font-size:1rem;color:#555;font-weight:500;">Sortieren nach:</label>
-            <select id="sortPrice" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #ececec;font-size:1rem;background:white;cursor:pointer;">
-              <option value="default">Standard</option>
-              <option value="price-asc">Preis: aufsteigend</option>
-              <option value="price-desc">Preis: absteigend</option>
-            </select>
-          </div>
-          
-          <div class="shop-grid" id="shopGrid">
-            <!-- Die Produkte werden jetzt dynamisch per JS eingefügt -->
+          <!-- Rechte Seite: Produktinformationen -->
+          <div class="product-detail-info-section">
+            <div class="product-detail-header">
+              <h2 id="productDetailTitle" class="product-detail-title"></h2>
+              <div class="product-detail-category" id="productDetailCategory"></div>
+              <div class="product-detail-price" id="productDetailPrice"></div>
+            </div>
+            
+            <div class="product-detail-description" id="productDetailDescription">
+              <!-- Beschreibung wird dynamisch eingefügt -->
+            </div>
+            
+            <!-- Größenauswahl -->
+            <div class="product-detail-sizes" id="productDetailSizes">
+              <h3>Größe wählen</h3>
+              <div class="size-options" id="sizeOptions">
+                <!-- Größen werden dynamisch eingefügt -->
+              </div>
+            </div>
+            
+            <!-- Menge -->
+            <div class="product-detail-quantity">
+              <h3>Menge</h3>
+              <div class="quantity-selector">
+                <button class="quantity-btn minus" id="productDetailQuantityMinus">-</button>
+                <span class="quantity-display" id="productDetailQuantity">1</span>
+                <button class="quantity-btn plus" id="productDetailQuantityPlus">+</button>
+              </div>
+            </div>
+            
+            <!-- Verfügbarkeit -->
+            <div class="product-detail-availability" id="productDetailAvailability">
+              <!-- Verfügbarkeitsstatus wird dynamisch eingefügt -->
+            </div>
+            
+            <!-- Aktionen -->
+            <div class="product-detail-actions">
+              <button class="product-detail-add-to-cart-btn" id="productDetailAddToCartBtn">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                In den Warenkorb
+              </button>
+              <button class="product-detail-buy-now-btn" id="productDetailBuyNowBtn">
+                Jetzt kaufen
+              </button>
+            </div>
+            
+            <!-- Zusätzliche Informationen -->
+            <div class="product-detail-additional-info">
+              <div class="info-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Kostenloser Versand ab 50€</span>
+              </div>
+              <div class="info-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>30 Tage Rückgaberecht</span>
+              </div>
+              <div class="info-item">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>Sichere Bezahlung</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="lookbook" id="lookbook" data-scroll-section>
-      <!-- Inhalt entfernt -->
-    </section>
-
-    <section class="contact" id="kontakt" data-scroll-section>
-      <!-- Inhalt entfernt -->
-    </section>
-  </main>
-
-  <!-- Produktdetail Modal -->
-  <div class="product-detail-modal" id="productDetailModal">
-    <div class="product-detail-modal-overlay" id="productDetailModalOverlay"></div>
-    <div class="product-detail-modal-content">
-      <button class="product-detail-modal-close" id="productDetailModalClose" aria-label="Modal schließen">
-        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    <!-- Desktop Combined Action Button -->
+    <div class="desktop-combined-action-button" id="desktopCombinedActionBtn">
+      <button class="desktop-back-to-top-btn" id="desktopBackToTopBtn" aria-label="Nach oben scrollen">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
         </svg>
       </button>
-      
-      <div class="product-detail-container">
-        <!-- Linke Seite: Produktbild -->
-        <div class="product-detail-image-section">
-          <div class="product-detail-image-container">
-            <div class="zoom-indicator" id="productDetailZoomIndicator">Klick zum Zoomen</div>
-            <img id="productDetailImage" src="" alt="Produktbild" class="product-detail-image">
-          </div>
-          
-          <!-- Bildergalerie Thumbnails -->
-          <div class="product-detail-thumbnails" id="productDetailThumbnails">
-            <!-- Thumbnails werden dynamisch eingefügt -->
-          </div>
+      <button class="desktop-cart-action-btn" id="desktopCartActionBtn" aria-label="Warenkorb öffnen">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+        <span class="desktop-cart-count" id="desktopCartActionCount">0</span>
+      </button>
+    </div>
+
+      <!-- Mobile Combined Action Button -->
+    <div class="mobile-combined-action-button" id="mobileCombinedActionBtn">
+      <button class="mobile-back-to-top-btn" id="mobileBackToTopBtn" aria-label="Nach oben scrollen">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        </svg>
+      </button>
+      <button class="mobile-cart-action-btn" id="mobileCartActionBtn" aria-label="Warenkorb öffnen">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+        <span class="mobile-cart-count" id="mobileCartActionCount">0</span>
+      </button>
+    </div>
+
+    <!-- Lightbox für Produktbilder (mobil und desktop) -->
+    <div id="imageLightbox" class="image-lightbox" style="display:none;">
+      <button class="image-lightbox-close" id="imageLightboxClose" aria-label="Schließen">
+        &times;
+      </button>
+      <button class="image-lightbox-arrow image-lightbox-prev" id="imageLightboxPrev" aria-label="Vorheriges Bild">
+        &#8592;
+      </button>
+      <img id="imageLightboxImg" src="" alt="Produktbild groß" class="image-lightbox-img">
+      <button class="image-lightbox-arrow image-lightbox-next" id="imageLightboxNext" aria-label="Nächstes Bild">
+        &#8594;
+      </button>
+    </div>
+    <footer data-scroll-section>
+      <div class="footer-content">
+        <div class="footer-logo">
+          <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
         </div>
-        
-        <!-- Rechte Seite: Produktinformationen -->
-        <div class="product-detail-info-section">
-          <div class="product-detail-header">
-            <h2 id="productDetailTitle" class="product-detail-title"></h2>
-            <div class="product-detail-category" id="productDetailCategory"></div>
-            <div class="product-detail-price" id="productDetailPrice"></div>
-          </div>
-          
-          <div class="product-detail-description" id="productDetailDescription">
-            <!-- Beschreibung wird dynamisch eingefügt -->
-          </div>
-          
-          <!-- Größenauswahl -->
-          <div class="product-detail-sizes" id="productDetailSizes">
-            <h3>Größe wählen</h3>
-            <div class="size-options" id="sizeOptions">
-              <!-- Größen werden dynamisch eingefügt -->
-            </div>
-          </div>
-          
-          <!-- Menge -->
-          <div class="product-detail-quantity">
-            <h3>Menge</h3>
-            <div class="quantity-selector">
-              <button class="quantity-btn minus" id="productDetailQuantityMinus">-</button>
-              <span class="quantity-display" id="productDetailQuantity">1</span>
-              <button class="quantity-btn plus" id="productDetailQuantityPlus">+</button>
-            </div>
-          </div>
-          
-          <!-- Verfügbarkeit -->
-          <div class="product-detail-availability" id="productDetailAvailability">
-            <!-- Verfügbarkeitsstatus wird dynamisch eingefügt -->
-          </div>
-          
-          <!-- Aktionen -->
-          <div class="product-detail-actions">
-            <button class="product-detail-add-to-cart-btn" id="productDetailAddToCartBtn">
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-              </svg>
-              In den Warenkorb
-            </button>
-            <button class="product-detail-buy-now-btn" id="productDetailBuyNowBtn">
-              Jetzt kaufen
-            </button>
-          </div>
-          
-          <!-- Zusätzliche Informationen -->
-          <div class="product-detail-additional-info">
-            <div class="info-item">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <span>Kostenloser Versand ab 50€</span>
-            </div>
-            <div class="info-item">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <span>30 Tage Rückgaberecht</span>
-            </div>
-            <div class="info-item">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <span>Sichere Bezahlung</span>
-            </div>
-          </div>
+        <ul class="footer-links">
+          <li><a href="#shop" data-scroll-to>Shop</a></li>
+          <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
+          <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
+        </ul>
+        <div class="footer-social">
+          <a href="mailto:kontakt@fashion-way.de" title="E-Mail">✉️</a>
+          <a href="https://instagram.com/" target="_blank" title="Instagram">📸</a>
+        </div>
+        <div style="margin-top:1.5rem;font-size:1rem;color:#bbb;">
+          &copy; 2024 FASHION-WAY – Kontakt: kontakt@fashion-way.de
         </div>
       </div>
-    </div>
+    </footer>
   </div>
-
-  <!-- Desktop Combined Action Button -->
-  <div class="desktop-combined-action-button" id="desktopCombinedActionBtn">
-    <button class="desktop-back-to-top-btn" id="desktopBackToTopBtn" aria-label="Nach oben scrollen">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-      </svg>
-    </button>
-    <button class="desktop-cart-action-btn" id="desktopCartActionBtn" aria-label="Warenkorb öffnen">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
-      <span class="desktop-cart-count" id="desktopCartActionCount">0</span>
-    </button>
-  </div>
-
-    <!-- Mobile Combined Action Button -->
-  <div class="mobile-combined-action-button" id="mobileCombinedActionBtn">
-    <button class="mobile-back-to-top-btn" id="mobileBackToTopBtn" aria-label="Nach oben scrollen">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-      </svg>
-    </button>
-    <button class="mobile-cart-action-btn" id="mobileCartActionBtn" aria-label="Warenkorb öffnen">
-      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
-      <span class="mobile-cart-count" id="mobileCartActionCount">0</span>
-    </button>
-  </div>
-
-  <!-- Lightbox für Produktbilder (mobil und desktop) -->
-  <div id="imageLightbox" class="image-lightbox" style="display:none;">
-    <button class="image-lightbox-close" id="imageLightboxClose" aria-label="Schließen">
-      &times;
-    </button>
-    <button class="image-lightbox-arrow image-lightbox-prev" id="imageLightboxPrev" aria-label="Vorheriges Bild">
-      &#8592;
-    </button>
-    <img id="imageLightboxImg" src="" alt="Produktbild groß" class="image-lightbox-img">
-    <button class="image-lightbox-arrow image-lightbox-next" id="imageLightboxNext" aria-label="Nächstes Bild">
-      &#8594;
-    </button>
-  </div>
-
-  <footer data-scroll-section>
-    <div class="footer-content">
-      <div class="footer-logo">FASHION<span class="minus">-</span>WAY</div>
-      <ul class="footer-links">
-        <li><a href="#shop" data-scroll-to>Shop</a></li>
-        <li><a href="#lookbook" data-scroll-to>Lookbook</a></li>
-        <li><a href="#kontakt" data-scroll-to>Kontakt</a></li>
-      </ul>
-      <div class="footer-social">
-        <a href="#" aria-label="Instagram"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg#icon"></use></svg></a>
-        <a href="#" aria-label="Facebook"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg#icon"></use></svg></a>
-        <a href="#" aria-label="TikTok"><svg width="24" height="24" fill="currentColor"><use href="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/tiktok.svg#icon"></use></svg></a>
-      </div>
-      <p style="margin-top:1.5rem;">&copy; 2025 FASHION-WAY. All rights reserved.</p>
-    </div>
-  </footer>
-  
   <script src="assets/js/main.js"></script>
   <script>
     // ScrollTo-Fix für Locomotive Scroll bei Anker-Links
@@ -438,9 +443,6 @@
       const grid = document.getElementById('shopGrid');
       grid.innerHTML = '';
       let list = products[maincat] || [];
-      while (list.length < PRODUCTS_PER_CATEGORY) {
-        list = list.concat(list);
-      }
       // 1. Filtern
       let filtered = (subcat === 'alle') ? list : list.filter(p => p.subcat === subcat);
       // 2. Sortieren
@@ -499,7 +501,7 @@
           if (window.innerWidth > 900) {
             const shopSection = document.getElementById('shop');
             if (shopSection) {
-              scroll.scrollTo(shopSection, { offset: 0, duration: 600, disableLerp: false });
+              scroll.scrollTo(shopSection, { offset: -10, duration: 600, disableLerp: false });
             }
           }
         });

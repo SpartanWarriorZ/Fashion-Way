@@ -1532,6 +1532,14 @@
     "subcategory": "oberteile",
     "image": "https://cdn.pixabay.com/photo/2021/10/12/17/55/bride-6704274_640.jpg",
     "description": "Brautkleid",
+    "sizes": [
+      { "size": "S", "stock": 0 },
+      { "size": "M", "stock": 2 },
+      { "size": "L", "stock": 1 },
+      { "size": "XL", "stock": 0 },
+      { "size": "XXL", "stock": 3 },
+      { "size": "XXXL", "stock": 0 }
+    ],
     "id": 47
   },
   {
