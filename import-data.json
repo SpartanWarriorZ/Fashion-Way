@@ -7,6 +7,11 @@
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400",
     "description": "Elegantes Damenkleid für besondere Anlässe",
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 127
+    },
     "sizes": [
       {
         "size": "XS",
@@ -43,6 +48,11 @@
     "image": "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400",
     "image2": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Klassisches Herrenhemd für Business und formelle Anlässe",
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    },
     "sizes": [
       {
         "size": "XS",
@@ -78,6 +88,11 @@
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400",
     "description": "Robuste Kinder-Jeans für Spiel und Alltag",
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    },
     "sizes": [
       {
         "size": "110",
@@ -113,6 +128,11 @@
     "subcategory": "oberteile",
     "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400",
     "description": "Elegante Damenbluse für Business und Freizeit",
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 156
+    },
     "sizes": [
       {
         "size": "XS",
@@ -148,6 +168,11 @@
     "subcategory": "hosen",
     "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400",
     "description": "Klassische Herren-Jeans in verschiedenen Schnitten",
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 23
+    },
     "sizes": [
       {
         "size": "28",
@@ -220,7 +245,12 @@
         "size": "46",
         "stock": 3
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 203
+    }
   },
   {
     "id": 8,
@@ -251,7 +281,12 @@
         "size": "XXL",
         "stock": 7
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 145
+    }
   },
   {
     "id": 9,
@@ -286,7 +321,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 234
+    }
   },
   {
     "id": 10,
@@ -321,7 +361,12 @@
         "size": "XXL",
         "stock": 2
       }
-    ]
+    ],
+    "rating": {
+      "stars": 1,
+      "total": 5,
+      "count": 12
+    }
   },
   {
     "id": 11,
@@ -352,7 +397,12 @@
         "size": "XXL",
         "stock": 6
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 234
+    }
   },
   {
     "id": 12,
@@ -387,7 +437,12 @@
         "size": "140",
         "stock": 3
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 156
+    }
   },
   {
     "id": 13,
@@ -422,7 +477,12 @@
         "size": "XXL",
         "stock": 6
       }
-    ]
+    ],
+    "rating": {
+      "stars": 1,
+      "total": 5,
+      "count": 12
+    }
   },
   {
     "id": 14,
@@ -453,7 +513,12 @@
         "size": "XXL",
         "stock": 9
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 145
+    }
   },
   {
     "id": 15,
@@ -488,7 +553,12 @@
         "size": "140",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 16,
@@ -523,7 +593,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 17,
@@ -566,7 +641,12 @@
         "size": "42",
         "stock": 2
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 203
+    }
   },
   {
     "id": 18,
@@ -601,7 +681,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 203
+    }
   },
   {
     "id": 19,
@@ -636,7 +721,12 @@
         "size": "XXL",
         "stock": 3
       }
-    ]
+    ],
+    "rating": {
+      "stars": 1,
+      "total": 5,
+      "count": 12
+    }
   },
   {
     "id": 20,
@@ -667,7 +757,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 23
+    }
   },
   {
     "id": 21,
@@ -702,7 +797,12 @@
         "size": "140",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 22,
@@ -737,7 +837,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 34
+    }
   },
   {
     "id": 23,
@@ -768,7 +873,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 234
+    }
   },
   {
     "id": 24,
@@ -803,7 +913,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 25,
@@ -838,7 +953,12 @@
         "size": "XXL",
         "stock": 6
       }
-    ]
+    ],
+    "rating": {
+      "stars": 1,
+      "total": 5,
+      "count": 8
+    }
   },
   {
     "id": 26,
@@ -869,7 +989,12 @@
         "size": "XXL",
         "stock": 9
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 27,
@@ -904,7 +1029,12 @@
         "size": "140",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 28,
@@ -939,7 +1069,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 67
+    }
   },
   {
     "id": 29,
@@ -970,7 +1105,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 30,
@@ -1005,7 +1145,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 31,
@@ -1044,7 +1189,12 @@
         "size": "46",
         "stock": 3
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 32,
@@ -1075,7 +1225,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 34
+    }
   },
   {
     "id": 33,
@@ -1110,7 +1265,12 @@
         "size": "140",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 34,
@@ -1145,7 +1305,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 35,
@@ -1176,7 +1341,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 36,
@@ -1211,7 +1381,12 @@
         "size": "140",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 37,
@@ -1246,7 +1421,12 @@
         "size": "XXL",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 234
+    }
   },
   {
     "id": 38,
@@ -1277,7 +1457,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 203
+    }
   },
   {
     "id": 39,
@@ -1312,7 +1497,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 40,
@@ -1347,7 +1537,12 @@
         "size": "XXL",
         "stock": 2
       }
-    ]
+    ],
+    "rating": {
+      "stars": 4,
+      "total": 5,
+      "count": 178
+    }
   },
   {
     "id": 41,
@@ -1378,7 +1573,12 @@
         "size": "XXL",
         "stock": 6
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 42,
@@ -1413,7 +1613,12 @@
         "size": "140",
         "stock": 3
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 203
+    }
   },
   {
     "id": 43,
@@ -1448,7 +1653,12 @@
         "size": "XXL",
         "stock": 2
       }
-    ]
+    ],
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "id": 44,
@@ -1479,7 +1689,12 @@
         "size": "XXL",
         "stock": 5
       }
-    ]
+    ],
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 45
+    }
   },
   {
     "id": 45,
@@ -1514,7 +1729,12 @@
         "size": "140",
         "stock": 4
       }
-    ]
+    ],
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 34
+    }
   },
   {
     "name": "Herren Dildo",
@@ -1523,7 +1743,12 @@
     "subcategory": "accessoires",
     "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
     "description": "Party Yeeeee",
-    "id": 46
+    "id": 46,
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 34
+    }
   },
   {
     "name": "Agas Brautkleid",
@@ -1533,14 +1758,37 @@
     "image": "https://cdn.pixabay.com/photo/2021/10/12/17/55/bride-6704274_640.jpg",
     "description": "Brautkleid",
     "sizes": [
-      { "size": "S", "stock": 0 },
-      { "size": "M", "stock": 2 },
-      { "size": "L", "stock": 1 },
-      { "size": "XL", "stock": 0 },
-      { "size": "XXL", "stock": 3 },
-      { "size": "XXXL", "stock": 0 }
+      {
+        "size": "S",
+        "stock": 0
+      },
+      {
+        "size": "M",
+        "stock": 2
+      },
+      {
+        "size": "L",
+        "stock": 1
+      },
+      {
+        "size": "XL",
+        "stock": 0
+      },
+      {
+        "size": "XXL",
+        "stock": 3
+      },
+      {
+        "size": "XXXL",
+        "stock": 0
+      }
     ],
-    "id": 47
+    "id": 47,
+    "rating": {
+      "stars": 3,
+      "total": 5,
+      "count": 89
+    }
   },
   {
     "name": "Damen Schuhe",
@@ -1549,7 +1797,12 @@
     "subcategory": "schuhe",
     "image": "https://cdn.pixabay.com/photo/2021/10/11/18/56/shoes-6701631_640.jpg",
     "description": "Damenschuhe",
-    "id": 48
+    "id": 48,
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 34
+    }
   },
   {
     "name": "Herren Schuhe",
@@ -1584,7 +1837,12 @@
         "stock": 9
       }
     ],
-    "id": 49
+    "id": 49,
+    "rating": {
+      "stars": 2,
+      "total": 5,
+      "count": 23
+    }
   },
   {
     "id": 50,
@@ -1628,6 +1886,11 @@
         "stock": 5
       }
     ],
-    "image2": "https://cdn.pixabay.com/photo/2017/04/09/18/54/shoes-2216498_1280.jpg"
+    "image2": "https://cdn.pixabay.com/photo/2017/04/09/18/54/shoes-2216498_1280.jpg",
+    "rating": {
+      "stars": 5,
+      "total": 5,
+      "count": 89
+    }
   }
 ]

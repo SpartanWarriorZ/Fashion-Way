@@ -274,6 +274,19 @@ function createProductCard(product) {
     totalStock = product.stock || 0;
   }
 
+  // Bewertung rendern falls vorhanden
+  let ratingHTML = '';
+  if (product.rating) {
+    ratingHTML = `
+      <div class="product-rating">
+        <div class="product-stars">
+          ${renderStars(product.rating.stars)}
+        </div>
+        <span class="product-rating-count">(${product.rating.count})</span>
+      </div>
+    `;
+  }
+
   card.innerHTML = `
     <div class="product-image" style="cursor:pointer;">
       <img src="${product.image}" alt="${product.name}" loading="lazy">
@@ -281,6 +294,7 @@ function createProductCard(product) {
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
       <div class="product-price">${product.price.toFixed(2)} €</div>
+      ${ratingHTML}
       <div class="product-stock">${totalStock > 0 ? `${totalStock} verfügbar` : 'Ausverkauft'}</div>
       ${totalQuantity > 0 ? `
         <div class="cart-indicator">

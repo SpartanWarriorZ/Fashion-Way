@@ -7558,3 +7558,50 @@ footer[data-scroll-section] {
     text-align: center;
   }
 }
+
+/* Produktbewertungen in Karten */
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.product-stars {
+  display: flex;
+  gap: 1px;
+}
+
+.product-stars .star {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
+.product-stars .star.filled {
+  color: #fbbf24;
+}
+
+.product-stars .star.half {
+  color: #fbbf24;
+  position: relative;
+}
+
+.product-stars .star.half::after {
+  content: '★';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #d1d5db;
+  clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+}
+
+.product-stars .star.empty {
+  color: #d1d5db;
+}
+
+.product-rating-count {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: 500;
+}
