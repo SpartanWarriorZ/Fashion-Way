@@ -43,6 +43,129 @@ function initializeDOMElements() {
   backToTopBtn = document.getElementById('backToTopBtn');
 }
 
+// Lazy Loading für Bilder
+function setupLazyLoading() {
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('lazy-image');
+          img.classList.add('loaded');
+          
+          // Shimmer-Effekt stoppen
+          const productImage = img.closest('.product-image');
+          if (productImage) {
+            productImage.classList.add('loaded');
+          }
+          
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '50px 0px', // Lade Bilder 50px vor dem Viewport
+      threshold: 0.01
+    });
+
+    // Beobachte alle lazy-images
+    document.querySelectorAll('.lazy-image').forEach(img => {
+      imageObserver.observe(img);
+    });
+  } else {
+    // Fallback für ältere Browser
+    document.querySelectorAll('.lazy-image').forEach(img => {
+      img.src = img.dataset.src;
+      img.classList.remove('lazy-image');
+      img.classList.add('loaded');
+      
+      // Shimmer-Effekt stoppen
+      const productImage = img.closest('.product-image');
+      if (productImage) {
+        productImage.classList.add('loaded');
+      }
+    });
+  }
+}
+
+// Lazy Loading für Thumbnails
+function setupThumbnailLazyLoading() {
+  if ('IntersectionObserver' in window) {
+    const thumbnailObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('lazy-thumbnail');
+          img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '20px 0px', // Lade Thumbnails 20px vor dem Viewport
+      threshold: 0.01
+    });
+
+    // Beobachte alle lazy-thumbnails
+    document.querySelectorAll('.lazy-thumbnail').forEach(img => {
+      thumbnailObserver.observe(img);
+    });
+  } else {
+    // Fallback für ältere Browser
+    document.querySelectorAll('.lazy-thumbnail').forEach(img => {
+      img.src = img.dataset.src;
+      img.classList.remove('lazy-thumbnail');
+      img.classList.add('loaded');
+    });
+  }
+}
+
+// Smooth Scrolling für Desktop Modal Info-Sektion
+function setupModalSmoothScrolling() {
+  const modalInfoSection = document.querySelector('.product-detail-info');
+  if (!modalInfoSection) return;
+  
+  // Locomotive Scroll für die Info-Sektion einrichten
+  if (window.LocomotiveScroll) {
+    // Vorherige Instanz entfernen falls vorhanden
+    if (window.modalScroll) {
+      window.modalScroll.destroy();
+    }
+    
+    window.modalScroll = new LocomotiveScroll({
+      el: modalInfoSection,
+      smooth: true,
+      lerp: 0.1,
+      multiplier: 0.8,
+      class: 'is-revealed',
+      reloadOnContextChange: true,
+      touchMultiplier: 2,
+      smoothMobile: false, // Nur auf Desktop
+      smartphone: {
+        smooth: false
+      },
+      tablet: {
+        smooth: false
+      }
+    });
+    
+    // Scroll-Update nach kurzer Verzögerung
+    setTimeout(() => {
+      if (window.modalScroll && window.modalScroll.update) {
+        window.modalScroll.update();
+      }
+    }, 100);
+  }
+}
+
+// Modal Smooth Scrolling entfernen
+function removeModalSmoothScrolling() {
+  if (window.modalScroll) {
+    window.modalScroll.destroy();
+    window.modalScroll = null;
+  }
+}
+
 // Produkte aus JSON-Datei laden
 async function loadProducts() {
   try {
@@ -238,6 +361,10 @@ function displayProducts() {
       }
     });
   }
+  
+  // Lazy Loading für neue Bilder einrichten
+  setupLazyLoading();
+  
   // Dynamische min-height für das Grid setzen
   setTimeout(() => {
     const header = document.querySelector('.navbar');
@@ -289,7 +416,11 @@ function createProductCard(product) {
 
   card.innerHTML = `
     <div class="product-image" style="cursor:pointer;">
-      <img src="${product.image}" alt="${product.name}" loading="lazy">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f3f4f6'/%3E%3C/svg%3E" 
+           data-src="${product.image}" 
+           alt="${product.name}" 
+           class="lazy-image"
+           loading="lazy">
     </div>
     <div class="product-info">
       <h3 class="product-name">${product.name}</h3>
@@ -316,12 +447,20 @@ function createProductCard(product) {
     openProductDetailModal(product);
   });
 
-  // Event Listener für das Bild (öffnet Bild-Modal)
-  const productImage = card.querySelector('.product-image');
-  productImage.addEventListener('click', function(event) {
-    event.stopPropagation(); // Verhindere Bubble-Up zur Karte
-    openProductImageModalFromProduct(product.id);
-  });
+      // Event Listener für das Bild (öffnet Bild-Modal)
+    const productImage = card.querySelector('.product-image');
+    productImage.addEventListener('click', function(event) {
+      event.stopPropagation(); // Verhindere Bubble-Up zur Karte
+      openProductImageModalFromProduct(product.id);
+    });
+
+    // Lazy Loading Event Listener für das Bild
+    const img = card.querySelector('img');
+    if (img) {
+      img.addEventListener('load', function() {
+        productImage.classList.add('loaded');
+      });
+    }
 
   return card;
 }
@@ -1842,10 +1981,15 @@ function openProductDetailModal(product) {
     modalImg.alt = product.name;
     modalTitle.textContent = product.name;
     
-    // Bild laden mit Preloading
+    // Bild laden mit Lazy Loading und Preloading
+    modalImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800'%3E%3Crect width='600' height='800' fill='%23f3f4f6'/%3E%3C/svg%3E";
+    modalImg.classList.add('lazy-image');
+    
     const img = new Image();
     img.onload = function() {
       modalImg.src = imageUrl;
+      modalImg.classList.remove('lazy-image');
+      modalImg.classList.add('loaded');
       console.log('Bild erfolgreich geladen:', imageUrl);
       
       // Hochauflösende Version laden falls verfügbar
@@ -2148,9 +2292,17 @@ function openProductDetailModal(product) {
     if (thumbnailsContainer) {
       thumbnailsContainer.innerHTML = allImages.map((img, index) => `
         <div class="product-detail-thumbnail ${index === 0 ? 'active' : ''}" onclick="showProductDetailImage(${index})">
-          <img src="${img}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/100x100?text=Kein+Bild'" onload="console.log('Thumbnail geladen:', '${img}')" onerror="console.log('Thumbnail Fehler:', '${img}')">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f4f6'/%3E%3C/svg%3E" 
+               data-src="${img}" 
+               alt="${product.name}" 
+               class="lazy-thumbnail"
+               loading="lazy"
+               onerror="this.src='https://via.placeholder.com/100x100?text=Kein+Bild'">
         </div>
       `).join('');
+      
+      // Lazy Loading für Thumbnails einrichten
+      setupThumbnailLazyLoading();
     }
     
     // Modal öffnen
@@ -2162,6 +2314,11 @@ function openProductDetailModal(product) {
     // Locomotive Scroll pausieren falls vorhanden
     if (scroll && scroll.stop) {
       scroll.stop();
+    }
+    
+    // Smooth Scrolling für Desktop Modal Info-Sektion einrichten
+    if (window.innerWidth > 900) {
+      setupModalSmoothScrolling();
     }
     
     // Swipe-Navigation und Pfeil-Navigation für das Modal einrichten (alle Geräte)
@@ -2234,10 +2391,15 @@ function showProductDetailImage(index) {
       // WICHTIG: Gleiche Logik wie beim ersten Laden verwenden
       const imageUrl = currentProductImages[index];
       
-      // Bild laden mit Preloading (wie beim ersten Laden)
+      // Bild laden mit Lazy Loading und Preloading (wie beim ersten Laden)
+      newImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800'%3E%3Crect width='600' height='800' fill='%23f3f4f6'/%3E%3C/svg%3E";
+      newImg.classList.add('lazy-image');
+      
       const img = new Image();
       img.onload = function() {
         newImg.src = imageUrl;
+        newImg.classList.remove('lazy-image');
+        newImg.classList.add('loaded');
         console.log('Bild erfolgreich geladen:', imageUrl);
         
         // Hochauflösende Version laden falls verfügbar (wie beim ersten Laden)
@@ -2325,6 +2487,9 @@ function closeProductDetailModal() {
     if (scroll && scroll.start) {
       scroll.start();
     }
+    
+    // Modal Smooth Scrolling entfernen
+    removeModalSmoothScrolling();
     
     // Zoom zurücksetzen
     if (window.productDetailZoomState) {

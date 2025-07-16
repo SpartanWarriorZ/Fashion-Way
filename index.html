@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fashion-Way | Modern Fashion Shop</title>
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- Locomotive Scroll CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <!-- Locomotive Scroll CSS entfernt -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
-  <!-- Locomotive Scroll JS -->
-  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <!-- Locomotive Scroll JS entfernt -->
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@latest/bundled/lenis.min.js"></script>
 </head>
-<body data-scroll-container>
+<body>
   <div id="page-wrapper">
-    <header class="hero" data-scroll-section>
-      <div class="hero-bg" data-scroll></div>
-      <nav class="navbar sticky" data-scroll>
+    <header class="hero">
+      <div class="hero-bg"></div>
+      <nav class="navbar sticky">
         <div class="logo">
           <span class="logo-row">
             <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
@@ -60,16 +60,18 @@
           </ul>
         </nav>
       </nav>
-      <div class="hero-content" data-scroll data-scroll-speed="1.5">
+      <div class="hero-content">
         <h1 class="hero-title">
-          <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
+          <span class="logo-hero-anim">
+            <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
+          </span>
         </h1>
         <p class="hero-subtitle">Dein Weg zu exklusiven Styles, Trends und Inspiration.<br>Erlebe Fashion neu gedacht.</p>
         <a href="#shop" class="cta-btn" data-scroll-to><span>Jetzt shoppen</span></a>
       </div>
     </header>
 
-    <main data-scroll-section style="margin-top:2.5rem;">
+    <main style="margin-top:2.5rem;">
       <section class="products" id="shop">
         <div class="shop-main">
           <!-- Sidebar/Kategorien werden auf Mobil über dem Shop angezeigt -->
@@ -134,11 +136,11 @@
         </div>
       </section>
 
-      <section class="lookbook" id="lookbook" data-scroll-section>
+      <section class="lookbook" id="lookbook">
         <!-- Inhalt entfernt -->
       </section>
 
-      <section class="contact" id="kontakt" data-scroll-section>
+      <section class="contact" id="kontakt">
         <!-- Inhalt entfernt -->
       </section>
     </main>
@@ -168,7 +170,7 @@
           </div>
           
           <!-- Rechte Seite: Produktinformationen -->
-          <div class="product-detail-info-section">
+          <div class="product-detail-info-section" data-lenis-prevent>
             <div class="product-detail-header">
               <h2 id="productDetailTitle" class="product-detail-title"></h2>
               <div class="product-detail-category" id="productDetailCategory"></div>
@@ -284,7 +286,7 @@
         &#8594;
       </button>
     </div>
-    <footer data-scroll-section>
+    <footer>
       <div class="footer-content">
         <div class="footer-logo">
           <span class="fashion">FASHION</span><span class="minus">-</span><span class="way">WAY</span>
@@ -306,7 +308,23 @@
   </div>
   <script src="assets/js/main.js"></script>
   <script>
-    // ScrollTo-Fix für Locomotive Scroll bei Anker-Links
+    // Lenis Smooth Scroll Initialisierung
+    const lenis = new Lenis({
+      duration: 1.2,
+      smooth: true,
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // ScrollTo für Lenis
     document.querySelectorAll('[data-scroll-to]').forEach(link => {
       link.addEventListener('click', function(e) {
         const targetId = this.getAttribute('href');
@@ -314,406 +332,70 @@
           e.preventDefault();
           const target = document.querySelector(targetId);
           if (target) {
-            scroll.scrollTo(target, { offset: 0, duration: 800, disableLerp: false });
+            lenis.scrollTo(target, { offset: 0, duration: 1.2 });
           }
           if (targetId === '#shop' && window.innerWidth <= 900) {
-            scroll.scrollTo(target, { offset: -100, duration: 800, disableLerp: false });
+            lenis.scrollTo(target, { offset: -100, duration: 1.2 });
           }
         }
       });
     });
 
-    // GSAP Animationen
-    gsap.from(".hero-title .highlight", {
-      y: 80, opacity: 0, duration: 1.2, ease: "power4.out",
-      scrollTrigger: {
-        trigger: ".hero-title .highlight",
-        scroller: "[data-scroll-container]",
-        start: "top 80%"
-      }
-    });
-    gsap.from(".hero-title .redefined", {
-      y: 80, opacity: 0, duration: 1.2, delay: 0.2, ease: "power4.out",
-      scrollTrigger: {
-        trigger: ".hero-title .redefined",
-        scroller: "[data-scroll-container]",
-        start: "top 80%"
-      }
-    });
-    gsap.from(".hero-subtitle, .cta-btn", {
-      y: 40, opacity: 0, duration: 1, delay: 0.5, stagger: 0.2, ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".hero-subtitle",
-        scroller: "[data-scroll-container]",
-        start: "top 90%"
-      }
-    });
-    gsap.utils.toArray(".product-card").forEach((card, i) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          scroller: "[data-scroll-container]",
-          start: "top 80%",
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        delay: i * 0.15,
-        ease: "power3.out"
-      });
-    });
-
-    // Produktdaten aus localStorage laden (Simple CMS)
-    let products = {};
-    
-    async function loadProductsFromSimpleCMS() {
-      try {
-        // Versuche zuerst aus localStorage zu laden
-        const savedProducts = localStorage.getItem('fashionWayProducts');
-        if (savedProducts) {
-          const allProducts = JSON.parse(savedProducts);
-          console.log('Produkte aus Simple CMS geladen:', allProducts);
-          
-          // Daten in das erwartete Format konvertieren
-          // Nur Produkte mit Bestand > 0 werden auf der Website angezeigt
-          products = {
-            herren: allProducts.filter(p => p.category === 'herren' && p.stock > 0).map(p => ({
-              name: p.name,
-              price: `${p.price.toFixed(2).replace('.', ',')} €`,
-              img: p.image,
-              subcat: p.subcategory
-            })),
-            damen: allProducts.filter(p => p.category === 'damen' && p.stock > 0).map(p => ({
-              name: p.name,
-              price: `${p.price.toFixed(2).replace('.', ',')} €`,
-              img: p.image,
-              subcat: p.subcategory
-            })),
-            kinder: allProducts.filter(p => p.category === 'kinder' && p.stock > 0).map(p => ({
-              name: p.name,
-              price: `${p.price.toFixed(2).replace('.', ',')} €`,
-              img: p.image,
-              subcat: p.subcategory
-            }))
-          };
-        } else {
-          // Fallback zu statischen Daten
-          console.log('Keine Produkte im Simple CMS gefunden, lade Fallback-Daten');
-          const response = await fetch('products.json');
-          products = await response.json();
-        }
-        
-      } catch (error) {
-        console.error('Fehler beim Laden der Produkte:', error);
-        // Fallback zu statischen Daten
-        products = {
-          herren: [],
-          damen: [],
-          kinder: []
-        };
-      }
-    }
-
-    // Anzahl Produkte pro Kategorie
-    const PRODUCTS_PER_CATEGORY = 12;
-
-    function animateProductCards() {
-      const cards = document.querySelectorAll('.product-card');
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              obs.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.15 });
-        cards.forEach(card => {
-          card.classList.remove('visible');
-          observer.observe(card);
-        });
-      } else {
-        cards.forEach(card => card.classList.add('visible'));
-      }
-    }
-
-    let selectedSort = 'default';
-
-    function renderProducts(maincat, subcat, sort = 'default') {
-      const grid = document.getElementById('shopGrid');
-      grid.innerHTML = '';
-      let list = products[maincat] || [];
-      // 1. Filtern
-      let filtered = (subcat === 'alle') ? list : list.filter(p => p.subcat === subcat);
-      // 2. Sortieren
-      if (sort === 'price-asc') {
-        filtered.sort((a, b) => parseFloat(a.price.replace(',','.')) - parseFloat(b.price.replace(',','.')));
-      } else if (sort === 'price-desc') {
-        filtered.sort((a, b) => parseFloat(b.price.replace(',','.')) - parseFloat(a.price.replace(',','.')));
-      }
-      // 3. Auf gewünschte Anzahl kürzen
-      filtered = filtered.slice(0, PRODUCTS_PER_CATEGORY);
-      filtered.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'product-card';
-        el.setAttribute('data-maincat', maincat);
-        el.setAttribute('data-subcat', p.subcat);
-        el.innerHTML = `
-          <div class="product-images">
-            <img src="${p.img}" alt="${p.name}" class="product-main-img">
-            <img src="${p.img}" alt="${p.name}" class="product-hover-img">
-          </div>
-          <div class="product-content">
-            <h3>${p.name}</h3>
-            <span class="price">${p.price}</span>
-            <button class="buy-btn">Details anzeigen</button>
-          </div>
-        `;
-        grid.appendChild(el);
-      });
-      animateProductCards();
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const mainBtns = document.querySelectorAll('.main-cat-btn');
-      const subBtns = document.querySelectorAll('.sub-cat-btn');
-      let selectedMain = 'herren';
-      let selectedSub = 'alle';
-
-      function filterProducts() {
-        renderProducts(selectedMain, selectedSub, selectedSort);
-        if (window.ScrollTrigger && window.ScrollTrigger.refresh) ScrollTrigger.refresh();
-      }
-
-      mainBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-          mainBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedMain = btn.getAttribute('data-maincat');
-          subBtns.forEach(b => b.classList.remove('active'));
-          const alleBtn = document.querySelector('.sub-cat-btn[data-subcat="alle"]');
-          if (alleBtn) {
-            alleBtn.classList.add('active');
-            selectedSub = 'alle';
-          }
-          filterProducts();
-          // Nur auf Desktop automatisch zum Shop scrollen
-          if (window.innerWidth > 900) {
-            const shopSection = document.getElementById('shop');
-            if (shopSection) {
-              scroll.scrollTo(shopSection, { offset: -10, duration: 600, disableLerp: false });
-            }
-          }
-        });
-      });
-      
-      subBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-          subBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedSub = btn.getAttribute('data-subcat');
-          filterProducts();
-          // document.body.style.overflow = ''; // Entfernt, um Scroll-Fehler auf Mobil zu beheben
-        });
-      });
-
-      // Produkte laden und dann Initial-Filter
-      loadProductsFromSimpleCMS().then(() => {
-        filterProducts();
-      });
-    });
-
-    // EventListener für Sortierung
-    const sortSelect = document.getElementById('sortPrice');
-    if (sortSelect) {
-      sortSelect.addEventListener('change', function() {
-        selectedSort = this.value;
-        filterProducts();
-      });
-    }
-
-
-
-    // Hamburger Menü für Mobil
-    document.addEventListener('DOMContentLoaded', function () {
-      const burger = document.getElementById('burgerMenu');
-      const mobileNav = document.getElementById('mobileNav');
-      const closeBtn = document.getElementById('closeMobileNav');
-      
-      function toggleBurgerDisplay() {
-        if (window.innerWidth <= 900) {
-          burger.style.display = 'flex';
-        } else {
-          burger.style.display = 'none';
-          mobileNav.classList.remove('active');
-          burger.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      }
-      
-      toggleBurgerDisplay();
-      window.addEventListener('resize', toggleBurgerDisplay);
-
-      burger.addEventListener('click', function () {
-        mobileNav.classList.add('active');
-        burger.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => {
-          const firstLink = mobileNav.querySelector('a');
-          if (firstLink) firstLink.focus();
-        }, 200);
-      });
-      
-      closeBtn.addEventListener('click', function () {
-        mobileNav.classList.remove('active');
-        burger.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-      
-      // Schließe Menü bei Klick auf Link
-      mobileNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function () {
-          mobileNav.classList.remove('active');
-          burger.classList.remove('active');
-          document.body.style.overflow = '';
-        });
-      });
-      
-      // Schließe Menü bei Klick außerhalb des Menüs
-      document.addEventListener('click', function (e) {
-        if (
-          mobileNav.classList.contains('active') &&
-          !mobileNav.contains(e.target) &&
-          e.target !== burger
-        ) {
-          mobileNav.classList.remove('active');
-          burger.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
-      
-      // ESC schließt das Menü
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-          mobileNav.classList.remove('active');
-          burger.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      });
-    });
-
-    // Back to Top Button Funktionalität
+    // Back to Top Button Funktionalität (Lenis)
     document.addEventListener('DOMContentLoaded', function() {
-      const backToTopBtn = document.getElementById('backToTopBtn');
-      
-      // Button anzeigen/verstecken basierend auf Scroll-Position
+      const backToTopBtn = document.getElementById('backToTopBtn') || document.getElementById('desktopBackToTopBtn') || document.getElementById('mobileBackToTopBtn');
+      if (!backToTopBtn) return;
       function toggleBackToTop() {
-        // Button immer sichtbar auf Desktop
         backToTopBtn.classList.add('visible');
       }
-      
-      // Button immer sichtbar machen auf Desktop
       backToTopBtn.classList.add('visible');
-      
-      // Smooth Scroll nach oben
       function scrollToTop() {
-        console.log('scrollToTop called');
-        
-        // Verschiedene Methoden für Locomotive Scroll
-        if (typeof scroll !== 'undefined') {
-          console.log('Locomotive Scroll available');
-          
-          // Methode 1: Direkt scrollTo
-          if (scroll.scrollTo) {
-            console.log('Using scroll.scrollTo');
-            scroll.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
-          
-          // Methode 2: Über die Instanz
-          if (scroll.instance && scroll.instance.scrollTo) {
-            console.log('Using scroll.instance.scrollTo');
-            scroll.instance.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
-          
-          // Methode 3: Über die scroll property
-          if (scroll.scroll && scroll.scroll.scrollTo) {
-            console.log('Using scroll.scroll.scrollTo');
-            scroll.scroll.scrollTo(0, { duration: 800, disableLerp: false });
-            return;
-          }
-        }
-        
-        // Fallback für normales Scrollen
-        console.log('Using native scroll');
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        lenis.scrollTo(0, { duration: 1.2 });
       }
-      
-      // Event Listeners
       backToTopBtn.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('Back to Top Button clicked!');
         scrollToTop();
       });
-      
-      // Scroll-Event für Locomotive Scroll
-      if (window.scroll && window.scroll.on) {
-        window.scroll.on('scroll', toggleBackToTop);
-      } else {
-        // Fallback für normales Scrollen
-        window.addEventListener('scroll', toggleBackToTop);
-      }
-      
-      // Initial check
+      window.addEventListener('scroll', toggleBackToTop);
       toggleBackToTop();
     });
 
-
-
-    // Diese Event-Handler wurden entfernt, da sie unerwünschte Scroll-Events verursachten
-    // window.addEventListener('beforeunload', function () {
-    //   window.scrollTo(0, 0);
-    // });
-
-    // window.addEventListener('DOMContentLoaded', function () {
-    //   setTimeout(function() {
-    //     if (window.scroll && window.scroll.scrollTo) {
-    //       window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
-    //     } else {
-    //       window.scrollTo(0, 0);
-    //     }
-    //   }, 10);
-    // });
-    // window.addEventListener('load', function () {
-    //   setTimeout(function() {
-    //     if (window.scroll && window.scroll.scrollTo) {
-    //       window.scroll.scrollTo(0, { duration: 0, disableLerp: true });
-    //     } else {
-    //       window.scrollTo(0, 0);
-    //     }
-    //   }, 10);
-    // });
-
-    // Logo-Klick scrollt nach oben (nur auf Mobil)
+    // Logo-Klick scrollt nach oben (nur auf Mobil, Lenis)
     document.addEventListener('DOMContentLoaded', function () {
       var logo = document.querySelector('.logo');
       if (logo) {
         logo.style.cursor = 'pointer';
         logo.addEventListener('click', function(e) {
-          if (window.innerWidth > 900) return; // Auf Desktop kein Scrollen
+          if (window.innerWidth > 900) return;
           e.preventDefault();
-          if (window.scroll && window.scroll.scrollTo) {
-            window.scroll.scrollTo(0, { duration: 800, disableLerp: false });
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
+          lenis.scrollTo(0, { duration: 1.2 });
         });
       }
+    });
+
+    // Parallax-Effekt für Hero-Background
+    (function() {
+      const heroBg = document.querySelector('.hero-bg');
+      if (!heroBg) return;
+      function parallaxHeroBg() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        // Unterschiedlicher Multiplikator für Desktop und Mobil
+        const isMobile = window.innerWidth <= 900;
+        const multiplier = isMobile ? 0.08 : 0.4;
+        const offset = scrollY * multiplier;
+        heroBg.style.transform = `translateY(${offset}px)`;
+        requestAnimationFrame(parallaxHeroBg);
+      }
+      requestAnimationFrame(parallaxHeroBg);
+    })();
+
+    // Logo-Animation im Hero-Bereich (GSAP)
+    document.addEventListener('DOMContentLoaded', function () {
+      gsap.fromTo('.logo-hero-anim',
+        { y: -60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: 'power4.out', delay: 0.2 }
+      );
     });
   </script>
 </body>

@@ -1638,7 +1638,6 @@ main {
   color: #ff3e55;
   border-color: #ff3e55;
   box-shadow: 0 2px 8px #ff3e5522;
-  z-index: 1;
 }
 
 .main-cat-btn.active,
@@ -3402,7 +3401,6 @@ footer {
     transform: scale(1.02) translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     outline: none;
-    z-index: 2;
   }
   
   /* Desktop: Texte in Produktkarten weiter nach oben ziehen */
@@ -7604,4 +7602,143 @@ footer[data-scroll-section] {
   font-size: 0.8rem;
   color: #6b7280;
   font-weight: 500;
+}
+
+/* Lazy Loading Styles */
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  position: relative;
+}
+
+.lazy-image::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid #d1d5db;
+  border-top: 3px solid #ff3e55;
+  border-radius: 50%;
+  animation: lazySpin 1s linear infinite;
+  z-index: 1;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+}
+
+.lazy-image.loaded::before {
+  display: none;
+}
+
+@keyframes lazySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Placeholder für Lazy Loading */
+.product-image {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.product-image.loaded::after {
+  opacity: 0;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Lazy Loading für Thumbnails */
+.lazy-thumbnail {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  position: relative;
+}
+
+.lazy-thumbnail::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid #d1d5db;
+  border-top: 2px solid #ff3e55;
+  border-radius: 50%;
+  animation: lazySpin 1s linear infinite;
+  z-index: 1;
+}
+
+.lazy-thumbnail.loaded {
+  opacity: 1;
+}
+
+.lazy-thumbnail.loaded::before {
+  display: none;
+}
+
+/* Modal Smooth Scrolling Styles */
+.product-detail-info {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  position: relative;
+}
+
+.product-detail-info[data-scroll-container] {
+  height: 100%;
+}
+
+.product-detail-info[data-scroll-section] {
+  transform: translateY(0);
+  will-change: transform;
+}
+
+/* Desktop-spezifische Modal Scroll-Styles */
+@media (min-width: 901px) {
+  .product-detail-info {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+  }
+  
+  .product-detail-info::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .product-detail-info::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .product-detail-info::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
+  }
+  
+  .product-detail-info::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+  }
 }
