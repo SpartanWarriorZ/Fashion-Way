@@ -1892,5 +1892,41 @@
       "total": 5,
       "count": 89
     }
+  },
+  {
+    "id": 51,
+    "name": "Männer Mütze",
+    "price": 7.99,
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://img-1.kwcdn.com/product/fancy/c930507f-b0d3-41a9-8084-4ce1f43cfaef.jpg?imageView2/2/w/264/q/70/format/webp",
+    "description": "Männer Mütze für bomben Tage",
+    "sizes": [
+      {
+        "size": "XS",
+        "stock": 5
+      },
+      {
+        "size": "S",
+        "stock": 5
+      },
+      {
+        "size": "M",
+        "stock": 5
+      },
+      {
+        "size": "L",
+        "stock": 5
+      },
+      {
+        "size": "XL",
+        "stock": 5
+      },
+      {
+        "size": "XXL",
+        "stock": 5
+      }
+    ],
+    "image2": "https://img.kwcdn.com/product/open/2023-10-09/1696852151378-6b01619bbcbc4e7992a81776e8e55d83-goods.jpeg?imageView2/2/w/800/q/70/format/webp"
   }
 ]
