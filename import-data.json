@@ -1928,5 +1928,41 @@
       }
     ],
     "image2": "https://img.kwcdn.com/product/open/2023-10-09/1696852151378-6b01619bbcbc4e7992a81776e8e55d83-goods.jpeg?imageView2/2/w/800/q/70/format/webp"
+  },
+  {
+    "id": 52,
+    "name": "Daniels Cappy",
+    "price": 99.99,
+    "category": "herren",
+    "subcategory": "accessoires",
+    "image": "https://media.istockphoto.com/id/866706940/de/foto/blue-baseball-m%C3%BCtze.jpg?s=612x612&w=0&k=20&c=I7SVBP2cu2KxxKwRfY54j6dt1eF_oSkADcMY_VYezoc=",
+    "description": "Eine Cappy für wahre Herren!!",
+    "sizes": [
+      {
+        "size": "XS",
+        "stock": 2
+      },
+      {
+        "size": "S",
+        "stock": 4
+      },
+      {
+        "size": "M",
+        "stock": 6
+      },
+      {
+        "size": "L",
+        "stock": 2
+      },
+      {
+        "size": "XL",
+        "stock": 18
+      },
+      {
+        "size": "XXL",
+        "stock": 8
+      }
+    ],
+    "image2": "https://media.istockphoto.com/id/1060912434/de/vektor/wei%C3%9Fen-und-schwarzen-kappen-aus-verschiedenen-blickwinkeln.jpg?s=2048x2048&w=is&k=20&c=0GCdH5mkGX_8llw67WToT4ME9Lcq4SjqNOsT0sO7c1g="
   }
 ]
