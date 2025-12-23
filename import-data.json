@@ -1737,20 +1737,6 @@
     }
   },
   {
-    "name": "Herren Dildo",
-    "price": 99.99,
-    "category": "herren",
-    "subcategory": "accessoires",
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
-    "description": "Party Yeeeee",
-    "id": 46,
-    "rating": {
-      "stars": 2,
-      "total": 5,
-      "count": 34
-    }
-  },
-  {
     "name": "Agas Brautkleid",
     "price": 399.99,
     "category": "damen",
